@@ -1,0 +1,27 @@
+img.company-image {
+  height: 371px !important;
+  width: 731px !important;
+  padding-left: 24px;
+}
+
+.css-1bn7841-MuiStack-root {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  border: 1px solid #c4cdd5;
+  border-radius: 8px;
+  padding: 16px;
+  align-items: center;
+}
+
+.css-fv1jwa-MuiTypography-root {
+  margin: 0;
+  line-height: 1.5;
+  font-size: 1rem;
+  font-family: '__Figtree_d680cf', '__Figtree_Fallback_d680cf';
+  font-weight: 400;
+  font-weight: 400;
+  color: #637381;
+  margin-top: 16px;
+  text-align: justify;
+}

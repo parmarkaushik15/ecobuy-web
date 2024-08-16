@@ -1,0 +1,125 @@
+:root {
+    --primary-text: #000000;
+    --secondary-text: #e9fff3;
+    --white-text-white: #ffffff;
+    --black-text-black: #000000;
+}
+
+.faq-section * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.faq-section {
+    background-color: var(--white-text-white);
+    color: var(--black-text-black);
+    font-family: sans-serif;
+}
+
+.faq-section .accordion {
+    width: 100%;
+}
+
+.faq-section .accordion-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--primary-text);
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    position: relative;
+}
+
+.faq-section .accordion-button h5 {
+    margin: 0;
+    color: var(--primary-text);
+}
+
+.faq-section .accordion-button:not(.collapsed) {
+    background-color: #ffffff;
+    font-style: 22px;
+}
+button.accordion-button.collapsed {
+    font-size: 22px;
+}
+button.accordion-button {
+    font-size: 22px !important;
+}
+div#accordionExample {
+    margin-top: 63px;
+}
+
+.faq-section .accordion-button::after {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 10px;
+    border: solid var(--primary-text);
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+    transition: transform 0.2s ease-in-out;
+    position: absolute;
+    right: 1rem;
+}
+
+.faq-section .accordion-button.collapsed::after {
+    transform: rotate(-135deg);
+}
+
+.faq-section .accordion-body {
+  
+    background-color: #ffffff   ;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding-left: 24px;
+}
+
+.faq-section .accordion-collapse.show .accordion-body {
+    max-height: 200px;
+    padding-left: 24px;
+    /* Adjust this value according to the content */
+}
+
+.faq-section .accordion-item {
+    border-bottom: 1px solid var(--primary-text);
+}
+
+h6.mb-2.faq-title {
+    font-size: 31px;
+    margin-top: 10px;
+    color: #000;
+}
+
+.accordion-item.question-item {
+    padding-top: 20px;
+}
+
+.accordion-item.question-item {
+    width: 1482px !important;
+}
+h2.order-text {
+    margin-left: 17px;
+    font-size: 31px;
+}
+h2.shipping-text {
+    margin-left: 17px;
+    font-size: 31px;
+}
+h2.payment-text  {
+    margin-left: 17px;
+    font-size: 31px;
+}
+@media screen and (min-width: 768px) {
+    .faq-section .accordion-button {
+        padding: 1rem 1.5rem;
+    }
+}

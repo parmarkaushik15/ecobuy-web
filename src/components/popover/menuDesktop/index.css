@@ -1,0 +1,77 @@
+.MuiGrid-root.MuiGrid-container.MuiGrid-spacing-xs-3.css-zow5z4-MuiGrid-root {
+  display: block;
+}
+
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.is-desktop.is-desktop.css-9f8m9s-MuiPaper-root-MuiPopover-paper {
+  width: 285px;
+  margin-top: 0px;
+}
+
+a.MuiListSubheader-root.list-subheader.css-2as7wp-MuiListSubheader-root {
+  width: 154px;
+}
+
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.is-desktop.is-desktop.css-9f8m9s-MuiPaper-root-MuiPopover-paper {
+  padding-left: 69px;
+  border-radius: 0;
+}
+
+.categories-image {
+  position: relative !important;
+  width: 55px !important;
+  height: 55px !important;
+  margin-left: -51px;
+  margin-top: -16px;
+  border-radius: 50%;
+  margin-bottom: 5px;
+  border: 2px solid #e97c37;
+}
+
+ul.MuiList-root.css-vcs5-MuiList-root {
+  margin-left: 25px;
+  margin-top: 3px;
+}
+
+.grid-item {
+  padding: 10px !important;
+  /* Adjust as needed */
+}
+
+.flex-container {
+  display: flex;
+  align-items: left;
+}
+
+/* .flex-container .menu-content {
+    flex-grow: 1;
+} */
+
+@media only screen and (min-width: 1600px) and (max-width: 1700px) {
+  .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.is-desktop.is-desktop.css-9f8m9s-MuiPaper-root-MuiPopover-paper {
+    margin-left: 28px !important;
+  }
+}
+
+@media only screen and (min-width: 1366px) and (max-width: 1439px) {
+  .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.is-desktop.is-desktop.css-9f8m9s-MuiPaper-root-MuiPopover-paper {
+    margin-left: 6px !important;
+  }
+}
+@media only screen and (min-width: 1440px) and (max-width: 1599px) {
+  .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.is-desktop.is-desktop.css-9f8m9s-MuiPaper-root-MuiPopover-paper {
+    margin-left: 6px !important;
+  }
+}
+@media only screen and (min-width: 1920px) and (max-width: 2000px) {
+  .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.is-desktop.is-desktop.css-9f8m9s-MuiPaper-root-MuiPopover-paper {
+    margin-left: 189px !important;
+  }
+  
+}
+@media only screen and (min-width: 1792px) and (max-width: 1892px) {
+  .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.is-desktop.is-desktop.css-9f8m9s-MuiPaper-root-MuiPopover-paper {
+    margin-left: 133px !important;
+  }
+}
+
+
