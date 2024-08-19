@@ -23,6 +23,8 @@ export default function DailyEaring({ title, value, isLoading, isAmount, icon, c
         alignItems: 'center',
         px: 2,
         py: 1,
+        borderRadius: '0px',
+              boxShadow: 'unset',
         bgcolor: (theme) => alpha(isHex ? color : theme.palette[color].main, 0.2),
         border: (theme) => `1px solid ${isHex ? color : theme.palette[color].main}!important`
       }}

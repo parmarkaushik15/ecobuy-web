@@ -82,8 +82,8 @@ export default function RegisterForm() {
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Stack spacing={3}>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <Stack gap={0.5} width={1}>
+           
+          <Stack gap={0.5} width={1}>
               <Typography variant="overline" color="text.primary" htmlFor="firstName" component={'label'}>
                 First Name
               </Typography>
@@ -123,8 +123,6 @@ export default function RegisterForm() {
                 }}
               />
             </Stack>
-          </Stack>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <Stack gap={0.5} width={1}>
               <Typography variant="overline" color="text.primary" htmlFor="gender" component={'label'}>
                 Gender
@@ -177,7 +175,6 @@ export default function RegisterForm() {
                 }}
               />
             </Stack>
-          </Stack>
           <Stack gap={0.5} width={1}>
             <Typography variant="overline" color="text.primary" htmlFor="email" component={'label'}>
               Email

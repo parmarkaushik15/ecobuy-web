@@ -194,7 +194,7 @@ const CheckoutMain = () => {
     const selected = countries.find((v) => v.label.toLowerCase() === values.country.toLowerCase());
     const billingDetails = {
       name: values.firstName + ' ' + values.lastName,
-      email: values.email,
+      email: values.email, 
       address: {
         city: values.city,
         line1: values.address,

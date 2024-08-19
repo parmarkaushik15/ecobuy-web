@@ -58,6 +58,8 @@ export default function UserProfile({ id }) {
       <Card
         sx={{
           mb: 3,
+          borderRadius: '0px',
+          boxShadow: 'unset',
           height: 280,
           position: 'relative'
         }}

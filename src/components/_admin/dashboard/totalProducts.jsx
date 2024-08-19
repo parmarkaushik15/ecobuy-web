@@ -18,6 +18,8 @@ export default function DailyVisters({ data, isLoading }) {
         alignItems: 'center',
         px: 2,
         py: 1,
+        borderRadius: '0px',
+              boxShadow: 'unset',
         bgcolor: (theme) => alpha(theme.palette.error.main, 0.2),
         border: (theme) => `1px solid ${theme.palette.error.main}!important`
       }}

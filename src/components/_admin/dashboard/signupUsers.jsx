@@ -18,6 +18,8 @@ export default function DailyUser({ data, isLoading }) {
         alignItems: 'center',
         px: 2,
         py: 1,
+        borderRadius: '0px',
+              boxShadow: 'unset',
         bgcolor: (theme) => alpha(theme.palette.warning.main, 0.2),
         border: (theme) => `1px solid ${theme.palette.warning.main}!important`
       }}
