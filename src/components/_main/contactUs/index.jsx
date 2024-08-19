@@ -88,14 +88,14 @@ const index = () => {
           <ContactUs />
         </Grid>
         <Grid item xs={12}>
-          <iframe
+        <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3671.2106511429533!2d72.66848467407584!3d23.0527375152042!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e87fceafafe9b%3A0x5362dc3698de6d7!2sCodeQuality%20Technologies!5e0!3m2!1sen!2sin!4v1723007440003!5m2!1sen!2sin"
             width="100%"
-            height="450"
-            sx={{ border: 0 }}
+            height="450" 
             allowfullscreen=""
+            title="Ecobuy"
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
+            referrerPolicy="no-referrer-when-downgrade"
           ></iframe>
         </Grid>
       </Grid>
