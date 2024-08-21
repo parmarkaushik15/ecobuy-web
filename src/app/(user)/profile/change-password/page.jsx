@@ -53,7 +53,7 @@ export default function ChangePassword() {
             flexDirection: 'column',
             justifyContent: 'center',
             borderRadius: '0px',
-              boxShadow: 'unset',
+            boxShadow: 'unset',
             p: 3
           }}
         >

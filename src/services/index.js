@@ -649,6 +649,14 @@ export const getReviews = async () => {
   const { data } = await http.get(`/app-reviews`);
   return data;
 };
+export const getLookbook = async () => {
+  const { data } = await http.get(`/lookup`);
+  return data;
+};
+export const getSetting = async () => {
+  const { data } = await http.get(`/setting`);
+  return data;
+};
 // export const contactUs = async (payload) => {
 //   const { data } = await http.post(`/contact-us`, payload);
 //   return data;

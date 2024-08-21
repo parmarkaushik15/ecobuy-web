@@ -5,7 +5,7 @@ import logoImage from '../../public/images/EcoBuy-Transparent-logo.png';
 // mui
 import { Box } from '@mui/material';
 
-export const Logo = () => {
+export const Logo = ({ logo }) => {
   const { push } = useRouter();
   return (
     <Box
@@ -19,7 +19,20 @@ export const Logo = () => {
       }}
       onClick={() => push('/')}
     >
-      <Image draggable="false" src={logoImage} alt="banner-1" static sizes="100px" objectFit="cover" />
+      {logo ? (
+        <Image
+          width={100}
+          height={100}
+          draggable="false"
+          src={process.env.IMAGE_BASE == 'LOCAL' ? `${process.env.IMAGE_URL}${logo}` : logo}
+          alt="banner-1"
+          static
+          sizes="100px"
+          objectFit="cover"
+        />
+      ) : (
+        <Image draggable="false" src={logoImage} alt="banner-1" static sizes="100px" objectFit="cover" />
+      )}
     </Box>
   );
 };

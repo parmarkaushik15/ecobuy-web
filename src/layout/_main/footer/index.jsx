@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import NextLink from 'next/link';
 
 // mui
@@ -15,38 +15,7 @@ import { FaFacebookF, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import { MdOutlineLocationOn } from 'react-icons/md';
 import { FiMail } from 'react-icons/fi';
 import { MdOutlineCall } from 'react-icons/md';
-
-const SOCIAL_MEDIA_LINK = [
-  {
-    linkPath: 'https://www.facebook.com/',
-    icon: <FaFacebookF size={18} />
-  },
-  {
-    linkPath: 'https://www.instagram.com/',
-    icon: <FaInstagram size={18} />
-  },
-  {
-    linkPath: 'https://www.linkedin.com/',
-    icon: <FaLinkedinIn size={18} />
-  }
-];
-
-const ADDRESS = [
-  {
-    name: 'F7, Satyam plaza, Dmart road, Nikol, Ahemedabad, Gujarat',
-    icon: <MdOutlineLocationOn />
-  },
-  {
-    name: 'sales.ecobuy@gmail.com',
-    linkPath: '/',
-    icon: <FiMail fontSize={20} />
-  },
-  {
-    name: '+91 937-666-6903',
-    linkPath: '/',
-    icon: <MdOutlineCall />
-  }
-];
+import * as api from 'src/services';
 
 const MAIN_LINKS = [
   {
@@ -76,6 +45,21 @@ const MAIN_LINKS = [
 ];
 
 export default function Footer() {
+  const [setting, setSetting] = useState({});
+  useEffect(() => {
+    getSettingDetail();
+  }, []);
+
+  const getSettingDetail = async () => {
+    try {
+      const response = await api.getSetting();
+      if (response.data.length != 0) {
+        setSetting(response.data[0]);
+      }
+    } catch (error) {
+      console.error('Error fetching advertise images:', error);
+    }
+  };
   const theme = useTheme();
   return (
     <Box
@@ -96,38 +80,84 @@ export default function Footer() {
         <Grid container spacing={4}>
           <Grid item md={3}>
             <Stack spacing={3}>
-              <Logo />
+              <Logo logo={setting?.logo?.url} />
               <Typography variant="body1" color="text.secondary">
                 Eco Buy: Blending Sustainability with Style, Offering Sustainable Shopping and Hassle-Free Eco-Conscious
                 Choices.
               </Typography>
               <Stack>
-                {ADDRESS.map((item, idx) => (
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }} key={idx}>
-                    <IconButton
-                      sx={{
-                        svg: {
-                          color: theme.palette.primary.main
-                        }
-                      }}
-                    >
-                      {item.icon}
-                    </IconButton>
-                    <Typography
-                      variant="body1"
-                      color="text.secondary"
-                      component={NextLink}
-                      href={`${item.linkPath}`}
-                      sx={{
-                        ':hover': {
-                          color: theme.palette.primary.main
-                        }
-                      }}
-                    >
-                      {item.name}
-                    </Typography>
-                  </Box>
-                ))}
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <IconButton
+                    sx={{
+                      svg: {
+                        color: theme.palette.primary.main
+                      }
+                    }}
+                  >
+                    <MdOutlineLocationOn />
+                  </IconButton>
+                  <Typography
+                    variant="body1"
+                    color="text.secondary"
+                    component={NextLink}
+                    href={`/`}
+                    sx={{
+                      ':hover': {
+                        color: theme.palette.primary.main
+                      }
+                    }}
+                  >
+                    {setting.address}
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <IconButton
+                    sx={{
+                      svg: {
+                        color: theme.palette.primary.main
+                      }
+                    }}
+                  >
+                    <FiMail fontSize={20} />
+                  </IconButton>
+                  <Typography
+                    variant="body1"
+                    color="text.secondary"
+                    component={NextLink}
+                    href={`/`}
+                    sx={{
+                      ':hover': {
+                        color: theme.palette.primary.main
+                      }
+                    }}
+                  >
+                    {setting.email}
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <IconButton
+                    sx={{
+                      svg: {
+                        color: theme.palette.primary.main
+                      }
+                    }}
+                  >
+                    <MdOutlineCall />
+                  </IconButton>
+                  <Typography
+                    variant="body1"
+                    color="text.secondary"
+                    component={NextLink}
+                    href={`/`}
+                    sx={{
+                      ':hover': {
+                        color: theme.palette.primary.main
+                      }
+                    }}
+                  >
+                    {setting.phone}
+                  </Typography>
+                </Box>
               </Stack>
             </Stack>
           </Grid>
@@ -232,27 +262,46 @@ export default function Footer() {
               <NewsLetter />
 
               <Stack direction="row" alignItems="center" spacing={2}>
-                {SOCIAL_MEDIA_LINK.map((item, idx) => (
-                  <Fab
-                    size="small"
-                    color="primary"
-                    key={idx}
-                    component={NextLink}
-                    href={item.linkPath}
-                    sx={{
-                      zIndex: 1
-                    }}
-                  >
-                    {item.icon}
-                  </Fab>
-                ))}
+                <Fab
+                  size="small"
+                  color="primary"
+                  component={NextLink}
+                  href={setting?.facebookLink || '#'}
+                  sx={{
+                    zIndex: 1
+                  }}
+                >
+                  <FaFacebookF size={18} />
+                </Fab>
+                <Fab
+                  size="small"
+                  color="primary"
+                  component={NextLink}
+                  href={setting?.instaLink || '#'}
+                  sx={{
+                    zIndex: 1
+                  }}
+                >
+                  <FaInstagram size={18} />
+                </Fab>
+                <Fab
+                  size="small"
+                  color="primary"
+                  component={NextLink}
+                  href="https://www.linkedin.com"
+                  sx={{
+                    zIndex: 1
+                  }}
+                >
+                  <FaLinkedinIn size={18} />
+                </Fab>
               </Stack>
             </Stack>
           </Grid>
         </Grid>
         <Divider sx={{ my: 3 }} />
         <Typography variant="body1" color="text.primary" textAlign="center">
-          © 2024 Ecobuy. All rights reserved
+          {setting?.footerTagline}
         </Typography>
       </Container>
     </Box>

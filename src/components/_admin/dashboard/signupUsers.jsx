@@ -19,7 +19,7 @@ export default function DailyUser({ data, isLoading }) {
         px: 2,
         py: 1,
         borderRadius: '0px',
-              boxShadow: 'unset',
+        boxShadow: 'unset',
         bgcolor: (theme) => alpha(theme.palette.warning.main, 0.2),
         border: (theme) => `1px solid ${theme.palette.warning.main}!important`
       }}

@@ -19,7 +19,7 @@ export default function DailyVisters({ data, isLoading }) {
         px: 2,
         py: 1,
         borderRadius: '0px',
-              boxShadow: 'unset',
+        boxShadow: 'unset',
         bgcolor: (theme) => alpha(theme.palette.error.main, 0.2),
         border: (theme) => `1px solid ${theme.palette.error.main}!important`
       }}

@@ -36,7 +36,7 @@ export default function page() {
             flexDirection: 'column',
             justifyContent: 'center',
             borderRadius: '0px',
-              boxShadow: 'unset',
+            boxShadow: 'unset',
             p: 3
           }}
         >

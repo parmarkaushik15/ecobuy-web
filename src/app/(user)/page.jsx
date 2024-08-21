@@ -7,7 +7,8 @@ import { Container } from '@mui/material'; // Importing Container component from
 // components
 import Hero from 'src/components/_main/home/hero'; // Importing the Hero component.
 import TopBanners from 'src/components/_main/home/topBanners'; // Importing the TopBanners component.
-
+import * as api from 'src/services';
+import { useQuery } from 'react-query';
 // Dynamic imports
 const Categories = dynamic(() => import('src/components/_main/home/categories'));
 const BestSellingProducs = dynamic(() => import('src/components/_main/home/bestSelling'));
@@ -22,6 +23,7 @@ const SubscriptionModal = dynamic(() => import('src/components/_main/home/subscr
 });
 
 export default function IndexPage() {
+  const { data, isLoading } = useQuery(['get-home-compaign-all'], () => api.getHomeCompaigns());
   return (
     <>
       <Container maxWidth="xl">
@@ -42,7 +44,7 @@ export default function IndexPage() {
       <Container maxWidth="xl">
         <TopCollection />
       </Container>
-      <Banner type={'4'} />
+      {data?.data?.length > 0 && <Banner type={'4'} />}
       <Container maxWidth="xl">
         <Compaigns />
       </Container>

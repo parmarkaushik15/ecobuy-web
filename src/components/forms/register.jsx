@@ -82,99 +82,98 @@ export default function RegisterForm() {
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Stack spacing={3}>
-           
           <Stack gap={0.5} width={1}>
-              <Typography variant="overline" color="text.primary" htmlFor="firstName" component={'label'}>
-                First Name
-              </Typography>
-              <TextField
-                id="firstName"
-                fullWidth
-                type="text"
-                {...getFieldProps('firstName')}
-                error={Boolean(touched.firstName && errors.firstName)}
-                helperText={touched.firstName && errors.firstName}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <IoPerson size={24} />
-                    </InputAdornment>
-                  )
-                }}
-              />
-            </Stack>
-            <Stack gap={0.5} width={1}>
-              <Typography variant="overline" color="text.primary" htmlFor="lastName" component={'label'}>
-                Last Name
-              </Typography>
-              <TextField
-                fullWidth
-                id="lastName"
-                type="text"
-                {...getFieldProps('lastName')}
-                error={Boolean(touched.lastName && errors.lastName)}
-                helperText={touched.lastName && errors.lastName}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <IoPerson size={24} />
-                    </InputAdornment>
-                  )
-                }}
-              />
-            </Stack>
-            <Stack gap={0.5} width={1}>
-              <Typography variant="overline" color="text.primary" htmlFor="gender" component={'label'}>
-                Gender
-              </Typography>
-              <TextField
-                id="gender"
-                select
-                fullWidth
-                {...getFieldProps('gender')}
-                error={Boolean(touched.gender && errors.gender)}
-                helperText={touched.gender && errors.gender}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      {values.gender === 'male' ? (
-                        <IoMdMale size={24} />
-                      ) : values.gender === 'female' ? (
-                        <IoMdFemale size={24} />
-                      ) : (
-                        <FaTransgender />
-                      )}
-                    </InputAdornment>
-                  )
-                }}
-              >
-                {['Male', 'Female', 'Other'].map((option) => (
-                  <MenuItem key={option} value={option.toLowerCase()}>
-                    {option}
-                  </MenuItem>
-                ))}
-              </TextField>
-            </Stack>
-            <Stack gap={0.5} width={1}>
-              <Typography variant="overline" color="text.primary" htmlFor="phone" component={'label'}>
-                Phone
-              </Typography>
-              <TextField
-                fullWidth
-                id="phone"
-                type="text"
-                {...getFieldProps('phone')}
-                error={Boolean(touched.phone && errors.phone)}
-                helperText={touched.phone && errors.phone}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <MdLocalPhone size={24} />
-                    </InputAdornment>
-                  )
-                }}
-              />
-            </Stack>
+            <Typography variant="overline" color="text.primary" htmlFor="firstName" component={'label'}>
+              First Name
+            </Typography>
+            <TextField
+              id="firstName"
+              fullWidth
+              type="text"
+              {...getFieldProps('firstName')}
+              error={Boolean(touched.firstName && errors.firstName)}
+              helperText={touched.firstName && errors.firstName}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IoPerson size={24} />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Stack>
+          <Stack gap={0.5} width={1}>
+            <Typography variant="overline" color="text.primary" htmlFor="lastName" component={'label'}>
+              Last Name
+            </Typography>
+            <TextField
+              fullWidth
+              id="lastName"
+              type="text"
+              {...getFieldProps('lastName')}
+              error={Boolean(touched.lastName && errors.lastName)}
+              helperText={touched.lastName && errors.lastName}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <IoPerson size={24} />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Stack>
+          <Stack gap={0.5} width={1}>
+            <Typography variant="overline" color="text.primary" htmlFor="gender" component={'label'}>
+              Gender
+            </Typography>
+            <TextField
+              id="gender"
+              select
+              fullWidth
+              {...getFieldProps('gender')}
+              error={Boolean(touched.gender && errors.gender)}
+              helperText={touched.gender && errors.gender}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    {values.gender === 'male' ? (
+                      <IoMdMale size={24} />
+                    ) : values.gender === 'female' ? (
+                      <IoMdFemale size={24} />
+                    ) : (
+                      <FaTransgender />
+                    )}
+                  </InputAdornment>
+                )
+              }}
+            >
+              {['Male', 'Female', 'Other'].map((option) => (
+                <MenuItem key={option} value={option.toLowerCase()}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Stack>
+          <Stack gap={0.5} width={1}>
+            <Typography variant="overline" color="text.primary" htmlFor="phone" component={'label'}>
+              Phone
+            </Typography>
+            <TextField
+              fullWidth
+              id="phone"
+              type="text"
+              {...getFieldProps('phone')}
+              error={Boolean(touched.phone && errors.phone)}
+              helperText={touched.phone && errors.phone}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <MdLocalPhone size={24} />
+                  </InputAdornment>
+                )
+              }}
+            />
+          </Stack>
           <Stack gap={0.5} width={1}>
             <Typography variant="overline" color="text.primary" htmlFor="email" component={'label'}>
               Email

@@ -14,7 +14,7 @@ export default function index() {
           my: '80px',
           flexDirection: 'column',
           borderRadius: '0px',
-              boxShadow: 'unset',
+          boxShadow: 'unset',
           justifyContent: 'center',
           p: 3
         }}

@@ -13,7 +13,7 @@ export default function VerifyOtp() {
           flexDirection: 'column',
           justifyContent: 'center',
           borderRadius: '0px',
-              boxShadow: 'unset',
+          boxShadow: 'unset',
           p: 3
         }}
       >
