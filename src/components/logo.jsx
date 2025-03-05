@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useRouter } from 'next-nprogress-bar';
 import Image from 'next/image';
-import logoImage from '../../public/images/Ecobuy-Transparent-logo.png';
+import logoImage from '../../public/images/Transparent-logo.png';
 // mui
 import { Box } from '@mui/material';
 
