@@ -9,6 +9,7 @@ import Hero from 'src/components/_main/home/hero'; // Importing the Hero compone
 import TopBanners from 'src/components/_main/home/topBanners'; // Importing the TopBanners component.
 import * as api from 'src/services';
 import { useQuery } from 'react-query';
+import WhyUs from 'src/components/_main/home/whyUs';
 // Dynamic imports
 const Categories = dynamic(() => import('src/components/_main/home/categories'));
 const BestSellingProducs = dynamic(() => import('src/components/_main/home/bestSelling'));
@@ -29,8 +30,12 @@ export default function IndexPage() {
       <Container maxWidth="xl">
         <Hero />
       </Container>
+      
       <Container maxWidth="xl">
+     
         <Categories />
+
+        <WhyUs />
       </Container>
       <Banner type={'1'} />
       <Container maxWidth="xl">
@@ -54,6 +59,7 @@ export default function IndexPage() {
       </Container>
       <Container maxWidth="xl">
         <TopBanners />
+ 
       </Container>
       <SubscriptionModal />
     </>

@@ -21,7 +21,7 @@ export const metadata = {
     icon: '/favicon.png'
   },
   openGraph: {
-    images: 'https://ecobuy.vercel.app/opengraph-image.png?1c6a1fa20db2840f'
+    images: 'https://Ecobuy.vercel.app/opengraph-image.png?1c6a1fa20db2840f'
   }
 };
 

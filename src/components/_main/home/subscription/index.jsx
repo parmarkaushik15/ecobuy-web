@@ -127,7 +127,7 @@ export default function Subscription() {
                 </IconButton>
               </Box>
               <Stack spaceing={2} textAlign="center" mb={4}>
-                <Typography variant="h4">Sign up to ecobuy</Typography>
+                <Typography variant="h4">Sign up to Ecobuy</Typography>
                 <DialogContentText>
                   Enter your email address to subscribe our notification of our new post & features by email.
                 </DialogContentText>

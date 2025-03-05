@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useRouter } from 'next-nprogress-bar';
 import Image from 'next/image';
-import logoImage from '../../public/images/EcoBuy-Transparent-logo.png';
+import logoImage from '../../public/images/Ecobuy-Transparent-logo.png';
 // mui
 import { Box } from '@mui/material';
 
@@ -14,21 +14,23 @@ export const Logo = ({ logo }) => {
 
         img: {
           width: 100,
-          height: 'auto'
+          height: '56px !important'
         }
       }}
       onClick={() => push('/')}
     >
       {logo ? (
-        <Image
+        <img
           width={100}
-          height={100}
+          height={56}
           draggable="false"
           src={process.env.IMAGE_BASE == 'LOCAL' ? `${process.env.IMAGE_URL}${logo}` : logo}
           alt="banner-1"
-          static
           sizes="100px"
-          objectFit="cover"
+          className='logo' 
+          style={{
+            height: '56px !important'
+          }}
         />
       ) : (
         <Image draggable="false" src={logoImage} alt="banner-1" static sizes="100px" objectFit="cover" />

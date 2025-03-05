@@ -114,7 +114,7 @@ export default function InvoicePDF({ data }) {
             <Text style={styles.body1}>Ecobuy</Text>
             <Text style={styles.body1}>London, England</Text>
             <Text style={styles.body1}>+123 4567 890</Text>
-            <Text style={styles.body1}> info@ecobuy.com</Text>
+            <Text style={styles.body1}> info@Ecobuy.com</Text>
           </View>
           <View style={styles.col6}>
             <Text style={[styles.overline, styles.mb8]}>Invoice to</Text>
@@ -240,7 +240,7 @@ export default function InvoicePDF({ data }) {
           </View>
           <View style={[styles.col4, styles.alignRight]}>
             <Text style={styles.subtitle2}>Have a Question?</Text>
-            <Text> info@ecobuy.com</Text>
+            <Text> info@Ecobuy.com</Text>
           </View>
         </View>
       </Page>

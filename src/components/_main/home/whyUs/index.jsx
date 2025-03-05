@@ -8,7 +8,7 @@ import { Typography, Card, Stack, Divider } from '@mui/material';
 import { MdOutlineSupportAgent } from 'react-icons/md';
 import { AiOutlineShoppingCart } from 'react-icons/ai';
 import { VscFeedback } from 'react-icons/vsc';
-import { MdSettingsBackupRestore } from 'react-icons/md';
+// import { MdSettingsBackupRestore } from 'react-icons/md';
 import { RiExchangeDollarLine } from 'react-icons/ri';
 
 export default function WhyUs() {
@@ -23,11 +23,11 @@ export default function WhyUs() {
       icon: <VscFeedback size={40} />,
       description: '100% Customer'
     },
-    {
-      title: 'Free Return',
-      icon: <MdSettingsBackupRestore size={40} />,
-      description: '30 Day Returns Policy'
-    },
+    // {
+    //   title: 'Free Return',
+    //   icon: <MdSettingsBackupRestore size={40} />,
+    //   description: '30 Day Returns Policy'
+    // },
     {
       title: 'Secure System',
       icon: <RiExchangeDollarLine size={40} />,
@@ -42,6 +42,7 @@ export default function WhyUs() {
   return (
     <Card
       sx={{
+        mt: 4,
         p: 3,
         borderRadius: '0px',
         boxShadow: 'unset',
@@ -76,7 +77,8 @@ export default function WhyUs() {
                 </Typography>
               </Stack>
             </Stack>
-            {i !== 4 ? <Divider orientation="vertical" flexItem /> : null}
+            {/* {i !== 4 ? <Divider orientation="vertical" flexItem /> : null} */}
+            {i !== data.length - 1 ? <Divider orientation="vertical" flexItem /> : null}
           </React.Fragment>
         ))}
       </Stack>

@@ -3,8 +3,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // mui
-import { Card, Box, Typography, Divider } from '@mui/material';
+import { Card, Box, Typography, IconButton, Divider } from '@mui/material';
 // icons
+import { MdClear } from 'react-icons/md';
 
 // components
 import BrandsFilter from './brands';
@@ -29,7 +30,7 @@ Filter.propTypes = {
 };
 
 export default function Filter({ ...props }) {
-  const { pathname, category, shop, subCategory } = props;
+  const { onClose, pathname, category, shop, subCategory } = props;
   const { data, isLoading } = useQuery(['get-filters' + shop || '' + category || '' + 'subCategory'], () =>
     api.getAllFilters(shop?.slug || '', category?.slug || '', subCategory?.slug || '')
   );
@@ -37,10 +38,8 @@ export default function Filter({ ...props }) {
   return (
     <Card
       sx={{
-        width: '350px',
-        boxShadow: 'unset',
-        marginTop: '25px',
-        marginBottom: '20px',
+        width: '300px',
+        border: 'none !important',
         borderRadius: '0px !important'
       }}
     >
@@ -56,10 +55,10 @@ export default function Filter({ ...props }) {
         <Typography variant="h5" color="text.primary">
           Filter
         </Typography>
-        {/* 
+
         <IconButton onClick={() => onClose()}>
           <MdClear />
-        </IconButton> */}
+        </IconButton>
       </Box>
       <Box
         sx={{

@@ -47,14 +47,14 @@ const index = () => {
                       Email Address
                     </Typography>
                     <Link
-                      href="mailto:sales.ecobuy@gmail.com"
+                      href="mailto:sales.Ecobuy@gmail.com"
                       variant="subtitle2"
                       fontSize="14px"
                       fontWeight={600}
                       color="text.secondary"
                       component={NextLink}
                     >
-                      sales.ecobuy@gmail.com
+                      sales.Ecobuy@gmail.com
                     </Link>
                   </Box>
                 </Stack>

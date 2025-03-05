@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useState } from 'react';
 
 // components
 import SingleSlideCarousel from 'src/components/carousels/singleSlide';
 // slides data
 // mui
 import { Stack } from '@mui/material';
-import * as api from 'src/services';
+import * as api from 'src/services'; 
+import MegaMenu from 'src/components/mega-menu/MegaMenuDesktopVertical';
 
 export default function Hero({}) {
   const [val, setVal] = useState([]);
@@ -39,8 +40,11 @@ export default function Hero({}) {
   }, []);
 
   return (
-    <Stack direction="row" gap={2}>
-      <SingleSlideCarousel data={val} />
-    </Stack>
+    <Stack direction="row" gap={2} mt={2}>
+    <Suspense>
+      <MegaMenu />
+    </Suspense>
+    <SingleSlideCarousel data={val} />
+  </Stack>
   );
 }

@@ -1,11 +1,12 @@
 'use client';
 import PropTypes from 'prop-types';
 import { useState, useEffect, useCallback } from 'react';
+import dynamic from 'next/dynamic';
 import { isString } from 'lodash';
 
 // mui
-import { Stack } from '@mui/material';
-import { Typography, Skeleton } from '@mui/material';
+import { Stack, Drawer } from '@mui/material';
+import { Typography, Skeleton, Button } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
@@ -13,8 +14,13 @@ import Select from '@mui/material/Select';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next-nprogress-bar';
 // icon
+import { MdTune } from 'react-icons/md';
+// dynamic component
+const Filter = dynamic(() => import('src/components/_main/products/filters'), {
+  loading: () => <Skeleton variant="rounded" width={'100%'} height={185} />
+});
 
-export default function SortBar({ productData, isLoading, sortData }) {
+export default function SortBar({ compaign, productData, shop, isLoading, sortData, category, subCategory }) {
   // filterData
   const router = useRouter();
   const pathname = usePathname();
@@ -28,6 +34,7 @@ export default function SortBar({ productData, isLoading, sortData }) {
   const page = searchParams.get('page');
 
   const [state, setState] = useState(null);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const createQueryString = useCallback(
     (name, value, key) => {
@@ -124,7 +131,7 @@ export default function SortBar({ productData, isLoading, sortData }) {
           )}
         </Typography>
         <Stack direction="row" gap={1} alignItems="center">
-          {/* {compaign ? null : (
+          {compaign ? null : (
             <Button
               onClick={() => setOpenDrawer(true)}
               variant="outlined"
@@ -137,7 +144,7 @@ export default function SortBar({ productData, isLoading, sortData }) {
             >
               Filters
             </Button>
-          )} */}
+          )}
 
           {/* <IconButton
             onClick={() => setOpenDrawer(true)}
@@ -198,7 +205,7 @@ export default function SortBar({ productData, isLoading, sortData }) {
           </FormControl>
         </Stack>
       </Stack>
-      {/* <Drawer
+      <Drawer
         anchor={'right'}
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
@@ -218,7 +225,7 @@ export default function SortBar({ productData, isLoading, sortData }) {
           isMobile
           onClose={() => setOpenDrawer(false)}
         />
-      </Drawer> */}
+      </Drawer>
     </>
   );
 }

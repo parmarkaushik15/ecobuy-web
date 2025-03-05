@@ -60,7 +60,7 @@ const RefundReturnPolicy = () => {
           Contact Us
         </Typography>
         <Typography variant="body1" paragraph>
-          If you have any questions on how to return your item to us, contact us at support@ecobuy.com.
+          If you have any questions on how to return your item to us, contact us at support@Ecobuy.com.
         </Typography>
       </Container>
     </>

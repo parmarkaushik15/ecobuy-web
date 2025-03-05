@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 // components
 import RootStyled from './styled';
 // material
-import { Box, ListSubheader } from '@mui/material';
+import { Box, ListSubheader, ListItem } from '@mui/material';
 
 IconBullet.propTypes = {
   type: PropTypes.string.isRequired
@@ -22,8 +22,6 @@ MenuDesktopList.propTypes = {
 };
 export default function MenuDesktopList({ ...props }) {
   const { parent, onClose } = props;
-  console.log('parent', parent);
-  console.log('Props', props);
 
   return (
     <RootStyled disablePadding>
@@ -40,7 +38,7 @@ export default function MenuDesktopList({ ...props }) {
         >
           {parent?.name}
         </ListSubheader>
-        {/* {parent?.subCategories?.map((subCategory) => (
+        {parent?.subCategories?.map((subCategory) => (
           <React.Fragment key={Math.random()}>
             <ListItem
               className="list-item"
@@ -55,7 +53,7 @@ export default function MenuDesktopList({ ...props }) {
               {subCategory?.name}
             </ListItem>
           </React.Fragment>
-        ))} */}
+        ))}
       </>
     </RootStyled>
   );

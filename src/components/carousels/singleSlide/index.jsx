@@ -65,15 +65,15 @@ CarouselItem.propTypes = {
 
 function CarouselItem({ ...props }) {
   const { item } = props;
+
   return (
     <Paper
       sx={{
         position: 'relative',
         borderBottom: (theme) => '1px solid ' + theme.palette.divider,
         zIndex: 11,
-        height: { xs: 120, sm: 300, md: 500, lg: 500 },
+        height: { xs: 125, sm: 225, md: 270, lg: 370 },
         borderRadius: 0,
-
         img: {
           borderRadius: 0,
           objectPosition: { md: 'center', xs: 'left' }
@@ -90,7 +90,6 @@ function CarouselItem({ ...props }) {
         draggable="false"
         sizes="700px"
       />
-
       <Box
         sx={{
           top: 0,
@@ -108,6 +107,7 @@ export default function SingleSlideCarousel({ ...props }) {
   const { themeMode } = useSelector(({ settings }) => settings);
   const [[page, direction], setPage] = useState([0, 0]);
   const imageIndex = Math.abs(page % data?.length);
+
   const paginate = (newDirection) => {
     setPage([page + newDirection, newDirection]);
   };
@@ -128,11 +128,10 @@ export default function SingleSlideCarousel({ ...props }) {
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden',
-        height: { xs: 120, sm: 300, md: 500, lg: 500 },
-        borderRadius: '0px',
+        height: { xs: 120, sm: 220, md: 250, lg: 343 },
+        borderRadius: '12px',
         overflow: 'hidden',
         boxShadow: 'unset',
-        marginTop: '15px'
       }}
     >
       {isEmpty ? (
@@ -156,7 +155,6 @@ export default function SingleSlideCarousel({ ...props }) {
               width: '100%',
               height: '100%',
               overflow: 'hidden',
-              boxShadow: 'unset',
               top: 0
             }}
             key={page}

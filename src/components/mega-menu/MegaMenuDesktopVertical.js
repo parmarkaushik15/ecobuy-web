@@ -112,7 +112,8 @@ export default function MegaMenuDesktopVertical({ ...other }) {
         border: (theme) => `1px solid ${theme.palette.divider}`,
         display: { md: 'flex', xs: 'none' },
         flexDirection: 'column',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        boxShadow: 'unset',
       }}
     >
       <div>

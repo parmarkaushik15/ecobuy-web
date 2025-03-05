@@ -81,10 +81,7 @@ export default function Footer() {
           <Grid item md={3}>
             <Stack spacing={3}>
               <Logo logo={setting?.logo?.url} />
-              <Typography variant="body1" color="text.secondary">
-                Eco Buy: Blending Sustainability with Style, Offering Sustainable Shopping and Hassle-Free Eco-Conscious
-                Choices.
-              </Typography>
+               
               <Stack>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                   <IconButton
@@ -107,7 +104,7 @@ export default function Footer() {
                       }
                     }}
                   >
-                    {setting.address}
+                    {setting?.address}
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -131,7 +128,7 @@ export default function Footer() {
                       }
                     }}
                   >
-                    {setting.email}
+                    {setting?.email}
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -155,7 +152,7 @@ export default function Footer() {
                       }
                     }}
                   >
-                    {setting.phone}
+                    {setting?.phone}
                   </Typography>
                 </Box>
               </Stack>
@@ -335,7 +332,7 @@ export default function Footer() {
 //               <br />
 //               <br />
 //             </Typography>
-//             <Typography variant="body2">info@ecobuy.com</Typography>
+//             <Typography variant="body2">info@Ecobuy.com</Typography>
 //             <Typography variant="body2">
 //               <i className="fa fa-phone" /> +91 9106559673
 //             </Typography>

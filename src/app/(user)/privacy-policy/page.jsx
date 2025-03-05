@@ -70,7 +70,7 @@ const PrivacyPolicy = () => {
           Contact Us
         </Typography>
         <Typography variant="body1" paragraph>
-          If you have any questions about this Privacy Policy, please contact us at privacy@ecobuy.com.
+          If you have any questions about this Privacy Policy, please contact us at privacy@Ecobuy.com.
         </Typography>
       </Container>
     </>

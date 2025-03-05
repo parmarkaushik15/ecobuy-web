@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 
 // mui
-import { Skeleton, useMediaQuery, Grid } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 
 // api
 import * as api from 'src/services';
@@ -22,10 +22,6 @@ ProductListing.propTypes = {
 };
 // dynamic components
 const Pagination = dynamic(() => import('src/components/pagination'));
-// dynamic component
-const Filter = dynamic(() => import('src/components/_main/products/filters'), {
-  loading: () => <Skeleton variant="rounded" width={'100%'} height={185} />
-});
 
 const sortData = [
   { title: 'Top Rated', key: 'top', value: -1 },
@@ -79,21 +75,8 @@ export default function ProductListing({ category, subCategory, shop, compaign }
         isLoading={isLoading}
         compaign={compaign}
       />
-      <Grid container>
-        <Grid item xs={3}>
-          <Filter
-            category={subCategory?.parentCategory || category}
-            subCategory={subCategory}
-            shop={shop}
-            pathname="/products"
-            isMobile
-          />
-        </Grid>
-        <Grid item xs={9}>
-          <ProductList data={data} isLoading={isLoading} isMobile={isMobile} />
-          <Pagination data={data} />
-        </Grid>
-      </Grid>
+      <ProductList data={data} isLoading={isLoading} isMobile={isMobile} />
+      <Pagination data={data} />
     </>
   );
 }
