@@ -45,7 +45,7 @@ const Search = dynamic(() => import('src/components/dialog/search'), {
 export default function Navbar() {
   const { checkout } = useSelector(({ product }) => product);
   const isMobile = useMediaQuery('(max-width:768px)');
-const [setting, setSetting] = useState({});
+  const [setting, setSetting] = useState({});
   useEffect(() => {
     getSettingDetail();
   }, []);
@@ -87,7 +87,7 @@ const [setting, setSetting] = useState({});
         <Container maxWidth="xl">
           <Toolbar disableGutters className="toolbar" sx={{ px: '0px!important' }}>
             <Stack gap={4} direction="row" alignItems={'center'}>
-             <Logo logo={setting?.logo?.url} />
+              <Logo logo={setting?.logo?.url} />
             </Stack>
 
             <Stack gap={2} direction="row" alignItems={'center'}>

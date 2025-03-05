@@ -113,7 +113,7 @@ export default function MegaMenuDesktopVertical({ ...other }) {
         display: { md: 'flex', xs: 'none' },
         flexDirection: 'column',
         justifyContent: 'space-between',
-        boxShadow: 'unset',
+        boxShadow: 'unset'
       }}
     >
       <div>

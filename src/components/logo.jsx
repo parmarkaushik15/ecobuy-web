@@ -27,7 +27,7 @@ export const Logo = ({ logo }) => {
           src={process.env.IMAGE_BASE == 'LOCAL' ? `${process.env.IMAGE_URL}${logo}` : logo}
           alt="banner-1"
           sizes="100px"
-          className='logo' 
+          className="logo"
           style={{
             height: '56px !important'
           }}

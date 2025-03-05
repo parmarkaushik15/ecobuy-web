@@ -131,7 +131,7 @@ export default function SingleSlideCarousel({ ...props }) {
         height: { xs: 120, sm: 220, md: 250, lg: 343 },
         borderRadius: '12px',
         overflow: 'hidden',
-        boxShadow: 'unset',
+        boxShadow: 'unset'
       }}
     >
       {isEmpty ? (

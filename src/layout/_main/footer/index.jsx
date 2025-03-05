@@ -81,7 +81,7 @@ export default function Footer() {
           <Grid item md={3}>
             <Stack spacing={3}>
               <Logo logo={setting?.logo?.url} />
-               
+
               <Stack>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                   <IconButton
