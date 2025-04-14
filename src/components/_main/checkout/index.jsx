@@ -8,8 +8,5 @@ import CheckoutMain from './mainCheckout';
 import * as api from 'src/services';
 
 export default function Checkout() {
- 
-  return (
-    <CheckoutMain />
-  );
+  return <CheckoutMain />;
 }

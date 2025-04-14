@@ -24,7 +24,7 @@ StatusDialog.propTypes = {
 export default function StatusDialog({ onClose, id, status, refetch, endPoint, type, deleteMessage }) {
   const { isLoading, mutate } = useMutation(api[endPoint], {
     onSuccess: () => {
-      toast.success(type); 
+      toast.success(type);
       refetch();
       onClose();
     },
@@ -34,7 +34,7 @@ export default function StatusDialog({ onClose, id, status, refetch, endPoint, t
   });
   const handleDelete = () => {
     mutate({
-      slug:id,
+      slug: id,
       status
     });
   };
@@ -65,9 +65,7 @@ export default function StatusDialog({ onClose, id, status, refetch, endPoint, t
         Warning
       </DialogTitle>
       <DialogContent sx={{ pb: '16px !important' }}>
-        <DialogContentText> 
-          {deleteMessage}
-        </DialogContentText>
+        <DialogContentText>{deleteMessage}</DialogContentText>
       </DialogContent>
       <DialogActions sx={{ pt: '8px !important' }}>
         <Button onClick={onClose}> cancel </Button>

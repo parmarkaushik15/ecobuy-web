@@ -6,7 +6,8 @@ import React from 'react';
 import * as api from 'src/services';
 import { useCurrencyConvert } from 'src/hooks/convertCurrency';
 const StripeCheckout = React.forwardRef((props, ref) => {
-  const { setCheckoutError,
+  const {
+    setCheckoutError,
     error,
     mutate,
     totalWithDiscount,
@@ -14,12 +15,12 @@ const StripeCheckout = React.forwardRef((props, ref) => {
     values,
     currency,
     couponCode,
-    setProcessingTo } = props;
+    setProcessingTo
+  } = props;
   const cCurrency = useCurrencyConvert();
   React.useImperativeHandle(ref, () => ({
-    onSubmit,
+    onSubmit
   }));
-
 
   const elements = useElements();
   const stripe = useStripe();
@@ -74,7 +75,7 @@ const StripeCheckout = React.forwardRef((props, ref) => {
 
       mutate({
         ...data,
-        paymentMethod: "STRIPE",
+        paymentMethod: 'STRIPE',
         couponCode,
         paymentId: paymentMethodReq?.paymentMethod.id
       });
@@ -85,9 +86,7 @@ const StripeCheckout = React.forwardRef((props, ref) => {
     }
   };
 
-  return (
-    <StripeCheckoutForm error={error} />
-  );
+  return <StripeCheckoutForm error={error} />;
 });
 
 StripeCheckout.propTypes = {

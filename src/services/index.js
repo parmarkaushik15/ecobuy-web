@@ -491,7 +491,7 @@ export const getCart = async (ids) => {
   });
   return data;
 };
- 
+
 export const getAllCategories = async () => {
   const { data } = await http.get(`/all-categories`);
   return data;
@@ -544,7 +544,6 @@ export const paymentIntents = async (amount, currency, note = 'Online purchase')
   return data;
 };
 
-
 export const phonePePaymentIntents = async (amount, currency, phone, userId) => {
   const { data } = await http.post(`/phone-pe/payment-intents`, {
     amount,
@@ -554,7 +553,6 @@ export const phonePePaymentIntents = async (amount, currency, phone, userId) => 
   });
   return data;
 };
-
 
 export const phonePePaymentStatus = async (id) => {
   const { data } = await http.get(`/phone-pe/validate/response/${id}`);

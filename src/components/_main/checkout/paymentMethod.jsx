@@ -22,7 +22,7 @@ PaymentMethodCard.propTypes = {
 export default function PaymentMethodCard({ paymentGateway, value, setValue, error, setGateway }) {
   const handleChange = (event) => {
     setValue(event.target.value);
-    const gateway = paymentGateway.find((item)=>event.target.value == item.pgConstant);
+    const gateway = paymentGateway.find((item) => event.target.value == item.pgConstant);
     setGateway(gateway);
   };
   return (
@@ -34,35 +34,24 @@ export default function PaymentMethodCard({ paymentGateway, value, setValue, err
 
         <Stack spacing={1} mt={1}>
           <RadioGroup value={value} onChange={handleChange} sx={{ pl: 1 }}>
-
-            {
-              paymentGateway && paymentGateway.map((item) => <FormControlLabel
-                value={item.pgConstant}
-                control={<Radio />}
-                label={
-                  <Stack direction="row" alignItem="center" spacing={1} ml={1}>
-                    {
-                      item.pgConstant == "COD" && <IoCash size={20} />
-                    }
-                    {
-                      item.pgConstant == "PAYPAL" && <FaPaypal size={20} />
-                    }
-                    {
-                      item.pgConstant == "STRIPE" && <BsStripe size={20} />
-                    }
-                    {
-                      item.pgConstant == "PHONEPE" && <BsCash size={20} />
-                    }
-                    <Typography variant="subtitle2">{item.pgName}</Typography>
-                  </Stack>
-                }
-              />)
-            }
-
- 
+            {paymentGateway &&
+              paymentGateway.map((item) => (
+                <FormControlLabel
+                  value={item.pgConstant}
+                  control={<Radio />}
+                  label={
+                    <Stack direction="row" alignItem="center" spacing={1} ml={1}>
+                      {item.pgConstant == 'COD' && <IoCash size={20} />}
+                      {item.pgConstant == 'PAYPAL' && <FaPaypal size={20} />}
+                      {item.pgConstant == 'STRIPE' && <BsStripe size={20} />}
+                      {item.pgConstant == 'PHONEPE' && <BsCash size={20} />}
+                      <Typography variant="subtitle2">{item.pgName}</Typography>
+                    </Stack>
+                  }
+                />
+              ))}
           </RadioGroup>
         </Stack>
-       
       </CardContent>
     </Card>
   );

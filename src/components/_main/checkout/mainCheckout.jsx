@@ -17,7 +17,6 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import * as api from 'src/services';
 // stripe
 
-
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 // Componensts
@@ -87,7 +86,6 @@ const CheckoutMain = () => {
   const [totalWithDiscount, setTotalWithDiscount] = useState(null);
   const { mutate, isLoading } = useMutation('order', api.placeOrder, {
     onSuccess: (data) => {
-
       toast.success('Order placed!');
       setProcessingTo(false);
 
@@ -104,9 +102,6 @@ const CheckoutMain = () => {
 
   const [paymentGateway, setPaymentGateway] = useState([]);
 
- 
-
-
   useEffect(() => {
     getSettingDetail();
   }, []);
@@ -116,29 +111,29 @@ const CheckoutMain = () => {
       const response = await api.getSetting();
       if (response.pg) {
         const pg = JSON.parse(atob(response.pg));
-        const stripe = pg.find((item) => item.pgConstant == "STRIPE");
+        const stripe = pg.find((item) => item.pgConstant == 'STRIPE');
         if (stripe) {
           setStripePromise(loadStripe(stripe.apiKey));
-        };
-        const phonepe = pg.find((item) => item.pgConstant == "PHONEPE");
+        }
+        const phonepe = pg.find((item) => item.pgConstant == 'PHONEPE');
         if (phonepe) {
-          if (typeof window !== "undefined" && !window.PhonePe) {
-            const script = document.createElement("script");
-            script.src = "https://mercury.phonepe.com/web/bundle/checkout.js";
+          if (typeof window !== 'undefined' && !window.PhonePe) {
+            const script = document.createElement('script');
+            script.src = 'https://mercury.phonepe.com/web/bundle/checkout.js';
             script.async = true;
             script.onload = () => {
-               console.log("script is loaded")
+              console.log('script is loaded');
             };
-            script.onerror = () => console.error("Failed to load PhonePe SDK");
+            script.onerror = () => console.error('Failed to load PhonePe SDK');
             document.body.appendChild(script);
-          } 
-        };
-        const paypal = pg.find((item) => item.pgConstant == "PAYPAL");
+          }
+        }
+        const paypal = pg.find((item) => item.pgConstant == 'PAYPAL');
         if (paypal) {
           initial['client-id'] = paypal.apiKey;
           setInitialOptions(initial);
-        };
-        setPaymentGateway(pg)
+        }
+        setPaymentGateway(pg);
       }
       console.log(response);
     } catch (error) {
@@ -148,7 +143,6 @@ const CheckoutMain = () => {
 
   const { mutate: getCartMutate } = useMutation(api.getCart, {
     onSuccess: (res) => {
-
       setLoading(false);
     },
     onError: (err) => {
@@ -180,16 +174,16 @@ const CheckoutMain = () => {
     // shipping: Yup.boolean().required('Postal is required'),
     shippingAddress: checked
       ? Yup.object().shape({
-        firstName: Yup.string().required('First name is required'),
-        lastName: Yup.string().required('Last name is required'),
-        phone: Yup.string().required('Phone is required'),
-        email: Yup.string().email('Enter email Valid').required('Email is required'),
-        address: Yup.string().required('Address is required'),
-        city: Yup.string().required('City is required'),
-        state: Yup.string().required('State is required'),
-        country: Yup.string().required('Country is required'),
-        zip: Yup.string().required('Postal is required')
-      })
+          firstName: Yup.string().required('First name is required'),
+          lastName: Yup.string().required('Last name is required'),
+          phone: Yup.string().required('Phone is required'),
+          email: Yup.string().email('Enter email Valid').required('Email is required'),
+          address: Yup.string().required('Address is required'),
+          city: Yup.string().required('City is required'),
+          state: Yup.string().required('State is required'),
+          country: Yup.string().required('Country is required'),
+          zip: Yup.string().required('Postal is required')
+        })
       : Yup.string().nullable().notRequired()
   });
 
@@ -234,9 +228,9 @@ const CheckoutMain = () => {
         conversionRate: rate,
         shipping: process.env.SHIPPING_FEE || 0
       };
-      if (data.paymentMethod === "STRIPE") {
+      if (data.paymentMethod === 'STRIPE') {
         childRef.current?.onSubmit(data);
-      } else if (data.paymentMethod === "PHONEPE") {
+      } else if (data.paymentMethod === 'PHONEPE') {
         onPhonePeSubmit(data);
       } else {
         mutate(data);
@@ -244,25 +238,23 @@ const CheckoutMain = () => {
     }
   });
   const { errors, values, touched, handleSubmit, getFieldProps, isValid } = formik;
-  const [redirectUrl, setRedirectUrl] = useState("");
+  const [redirectUrl, setRedirectUrl] = useState('');
   const [open, setOpen] = useState(false);
 
-
   const handleTransactionCallback = async (response) => {
-    if (response === "USER_CANCEL") {
-
-    } else if (response === "CONCLUDED") { 
-      let dataObj = localStorage.getItem("dataObj");
-      if(dataObj) {
+    if (response === 'USER_CANCEL') {
+    } else if (response === 'CONCLUDED') {
+      let dataObj = localStorage.getItem('dataObj');
+      if (dataObj) {
         dataObj = JSON.parse(atob(dataObj));
       }
       setProcessingTo(true);
       const result = await api.phonePePaymentStatus(dataObj?.merchantTransactionId);
-      if(result.data.data.code === "PAYMENT_SUCCESS") {
+      if (result.data.data.code === 'PAYMENT_SUCCESS') {
         const obj = {
           ...dataObj,
           paymentId: result.data.data.data.transactionId
-        }
+        };
         mutate(obj);
       }
       console.log(result);
@@ -282,27 +274,26 @@ const CheckoutMain = () => {
       const obj = {
         ...data,
         merchantTransactionId: result.data.data.merchantTransactionId
-      } 
-      localStorage.setItem("dataObj", btoa(JSON.stringify(obj)));
+      };
+      localStorage.setItem('dataObj', btoa(JSON.stringify(obj)));
       setPhonePeObj(obj);
       if (redirectUrl) {
-        if (typeof window !== "undefined" && window.PhonePeCheckout) {
+        if (typeof window !== 'undefined' && window.PhonePeCheckout) {
           try {
             window.PhonePeCheckout.transact({
               tokenUrl: redirectUrl,
               callback: handleTransactionCallback,
-              type: "IFRAME",
+              type: 'IFRAME'
             });
           } catch (error) {
-            console.error("PhonePe Payment Error:", error);
+            console.error('PhonePe Payment Error:', error);
           }
         } else {
-          console.error("PhonePe SDK not loaded");
+          console.error('PhonePe SDK not loaded');
         }
       }
       console.log(redirectUrl);
 
-     
       console.log(result);
     } catch (e) {
       console.log(e.response.data);
@@ -315,7 +306,7 @@ const CheckoutMain = () => {
 
     const totalItems = sum(items.map((item) => item.quantity));
     const data = {
-      paymentMethod: "PAYPAL",
+      paymentMethod: 'PAYPAL',
       items: items,
       user: values,
       totalItems,
@@ -331,26 +322,17 @@ const CheckoutMain = () => {
 
   const onClose = () => {
     setOpen(false);
-  }
+  };
 
   return (
     <FormikProvider value={formik}>
       <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-        <IconButton
-          onClick={onClose}
-          style={{ position: "absolute", top: 10, right: 10 }}
-        >
+        <IconButton onClick={onClose} style={{ position: 'absolute', top: 10, right: 10 }}>
           <IoCloseCircleOutline />
         </IconButton>
         <DialogContent style={{ padding: 0 }}>
           {redirectUrl ? (
-            <iframe
-              src={redirectUrl}
-              width="100%"
-              height="600px"
-              style={{ border: "none" }}
-              title="Redirect Page"
-            />
+            <iframe src={redirectUrl} width="100%" height="600px" style={{ border: 'none' }} title="Redirect Page" />
           ) : (
             <p>Loading...</p>
           )}
@@ -387,10 +369,8 @@ const CheckoutMain = () => {
               />
               <br />
 
-              <Collapse in={paymentMethod === "STRIPE"}>
-
+              <Collapse in={paymentMethod === 'STRIPE'}>
                 <Card>
-
                   <CardContent>
                     <Typography variant="subtitle1" color="text.secondary" mt={1} mb={1}>
                       Credit Card
@@ -406,13 +386,14 @@ const CheckoutMain = () => {
                         values={values}
                         couponCode={couponCode}
                         currency={currency}
-                        setProcessingTo={setProcessingTo} />
+                        setProcessingTo={setProcessingTo}
+                      />
                     </Elements>
                   </CardContent>
                 </Card>
               </Collapse>
 
-              <Collapse in={paymentMethod === "PAYPAL"}>
+              <Collapse in={paymentMethod === 'PAYPAL'}>
                 <PayPalScriptProvider options={initialOptions}>
                   <PayPalPaymentMethod
                     onSuccess={onSuccessPaypal}
@@ -426,7 +407,7 @@ const CheckoutMain = () => {
                 </PayPalScriptProvider>
               </Collapse>
 
-              <Collapse in={paymentMethod !== "PAYPAL"}>
+              <Collapse in={paymentMethod !== 'PAYPAL'}>
                 <LoadingButton
                   variant="contained"
                   fullWidth

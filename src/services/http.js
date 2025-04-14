@@ -38,5 +38,5 @@ http.interceptors.request.use(
     console.log(error);
     return Promise.reject(error);
   }
-); 
+);
 export default http;
