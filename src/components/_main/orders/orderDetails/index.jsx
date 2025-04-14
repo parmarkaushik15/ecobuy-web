@@ -101,8 +101,8 @@ export default function Details({ ...props }) {
                       <strong>Method</strong>:{' '}
                       {data?.paymentMethod === 'COD'
                         ? 'Cash On Delivery'
-                        : data?.paymentMethod === 'PayPal'
-                          ? 'Paypal'
+                        : data?.paymentMethod === "PAYPAL"
+                          ? "PAYPAL"
                           : 'Credit Card'}
                     </Typography>
                     {data?.paymentId && (

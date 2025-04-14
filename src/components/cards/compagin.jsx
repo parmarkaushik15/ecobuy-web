@@ -22,7 +22,7 @@ const renderer = ({ days, hours, minutes, seconds }) => {
           alignItems: 'center',
           justifyContent: 'center',
           bgcolor: (theme) => alpha(theme.palette.primary.main, 0.1),
-          borderRadius: 2
+          borderRadius: '5px'
         }
       }}
     >
@@ -67,7 +67,7 @@ export default function CompaginCard({ compaign, isLoading }) {
     <Card
       sx={{
         boxShadow: 'unset',
-        borderRadius: 0
+        borderRadius: '5px'
       }}
     >
       <Box

@@ -97,13 +97,13 @@ const RootStyled = styled('div')(({ theme }) => ({
     '& .wishlist-button': {
       minHeight: 48,
       height: 48,
-      borderRadius: '8px'
+      borderRadius: '5px'
     },
 
     '& .remove-wishlist-button': {
       minHeight: 48,
       height: 48,
-      borderRadius: '8px',
+      borderRadius: '5px',
 
       '&.bg-grey': {
         backgroundColor: theme.palette.grey[500]

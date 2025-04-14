@@ -248,7 +248,7 @@ export default function Search({ ...props }) {
                   overflow: 'auto',
                   px: 1,
                   li: {
-                    borderRadius: '8px',
+                    borderRadius: '5px',
                     border: `1px solid transparent`,
                     '&:hover, &.Mui-focusVisible, &.Mui-selected ': {
                       border: (theme) => `1px solid ${theme.palette.primary.main}`,

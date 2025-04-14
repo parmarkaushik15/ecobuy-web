@@ -184,7 +184,7 @@ export default function Index() {
             <Grid item md={4} sm={6} xs={12} key={Math.random()}>
               <Stack
                 textAlign="center"
-                sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: 1, p: 2 }}
+                sx={{ border: `1px solid ${theme.palette.divider}`, borderRadius: '5px', p: 2 }}
                 key={idx}
               >
                 {/* <Typography variant="h3" color="text.secondary">

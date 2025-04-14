@@ -93,7 +93,7 @@ const CompareTable = () => {
                       position: 'relative',
                       width: '100%',
                       height: { md: 320, sm: 170, xs: 150 },
-                      borderRadius: 2,
+                      borderRadius: '5px',
                       overflow: 'hidden'
                     }}
                   >

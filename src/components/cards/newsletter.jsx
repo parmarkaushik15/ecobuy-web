@@ -14,7 +14,7 @@ const RootStyle = styled(Paper)(({ theme }) => ({
   marginBottom: '0.5rem',
   backgroundColor: theme.palette.background.paper,
   border: '1px solid ' + theme.palette.divider,
-  borderRadius: 4,
+  borderRadius: '5px',
 
   '& .phone-container': {
     display: 'flex',

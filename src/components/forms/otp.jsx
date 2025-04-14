@@ -25,7 +25,7 @@ const renderer = ({ minutes, seconds }) => {
           bgcolor: 'background.default',
           border: (theme) => '1px solid ' + theme.palette.divider,
           p: 1,
-          borderRadius: '4px',
+          borderRadius: '5px',
           maxWidth: 100,
           mx: 'auto',
           mt: 2,
@@ -39,7 +39,7 @@ const renderer = ({ minutes, seconds }) => {
           sx={{
             height: 28,
             width: 28,
-            borderRadius: '2px'
+            borderRadius: '5px'
           }}
         >
           <Typography variant="body1" color="text.primary" fontWeight={800} fontSize={14} lineHeight={1}>
@@ -59,7 +59,7 @@ const renderer = ({ minutes, seconds }) => {
           sx={{
             height: 28,
             width: 28,
-            borderRadius: '2px'
+            borderRadius: '5px'
           }}
         >
           <Typography variant="body1" color="text.primary" fontWeight={800} fontSize={14} lineHeight={1}>

@@ -19,7 +19,7 @@ const RootStyle = styled(Paper)(({ theme }) => ({
   marginBottom: '0.5rem',
   backgroundColor: theme.palette.background.paper,
   border: '1px solid ' + theme.palette.divider,
-  borderRadius: 4,
+  borderRadius: '5px',
   '& .name': {
     fontWeight: 600,
     color: theme.palette.info.main
@@ -80,7 +80,7 @@ export default function AgendaCodeMobile({ item, isLoading, handleClickOpen }) {
                   height: 50,
                   width: 50,
                   minWidth: 50,
-                  borderRadius: 1,
+                  borderRadius: '5px',
                   border: `1px solid ${theme.palette.divider}`
                 }}
               >

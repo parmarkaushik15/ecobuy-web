@@ -12,7 +12,7 @@ export default function index() {
           maxWidth: 560,
           m: 'auto',
           my: '80px',
-          borderRadius: '0px',
+          borderRadius: '5px',
           boxShadow: 'unset',
           flexDirection: 'column',
           justifyContent: 'center',

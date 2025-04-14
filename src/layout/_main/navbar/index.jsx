@@ -68,7 +68,7 @@ export default function Navbar() {
           position: 'sticky',
           top: -0.5,
           zIndex: 999,
-          borderRadius: 0,
+          borderRadius: '5px',
           pr: '0px !important',
           bgcolor: (theme) => alpha(theme.palette.background.paper, 1),
           borderTop: (theme) => `1px solid ${theme.palette.divider}`,
@@ -76,7 +76,7 @@ export default function Navbar() {
           '& .toolbar': {
             justifyContent: 'space-between',
             backdropFilter: 'blur(6px)',
-            borderRadius: 0,
+            borderRadius: '5px',
             WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
             bgcolor: (theme) => alpha(theme.palette.background.paper, 1),
             px: 3,

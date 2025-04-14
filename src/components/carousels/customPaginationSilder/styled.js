@@ -22,7 +22,7 @@ const RootStyled = styled(Box)(({ theme }) => ({
       backgroundColor: 'transparent',
       borderRadius: 0,
       img: {
-        borderRadius: '8px',
+        borderRadius: '5px',
         objectPosition: 'center',
         border: `1px solid ${theme.palette.divider}`,
         ...(theme.direction === 'rtl' && {
@@ -47,7 +47,7 @@ const RootStyled = styled(Box)(({ theme }) => ({
         position: 'relative',
         cursor: 'pointer',
         img: {
-          borderRadius: '8px',
+          borderRadius: '5px',
           border: `2px solid ${theme.palette.divider}`
         },
 

@@ -21,7 +21,7 @@ const ThumbImgStyle = styled(Box)(({ theme }) => ({
   minWidth: 40,
   objectFit: 'cover',
   marginRight: theme.spacing(2),
-  borderRadius: 8,
+  borderRadius: '5px',
   border: `1px solid ${theme.palette.divider}`,
   position: 'relative',
   overflow: 'hidden'

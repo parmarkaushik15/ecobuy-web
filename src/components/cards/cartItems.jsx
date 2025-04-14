@@ -32,10 +32,10 @@ export default function CheckoutCard({ cart, loading }) {
                       position: 'relative',
                       height: 64,
                       width: 64,
-                      borderRadius: '8px',
+                      borderRadius: '5px',
                       border: '1px solid rgba(145, 158, 171, 0.32)',
                       img: {
-                        borderRadius: '8px'
+                        borderRadius: '5px'
                         // border: "1px solid rgba(145, 158, 171, 0.32)",
                       }
                     }}

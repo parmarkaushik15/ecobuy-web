@@ -21,6 +21,9 @@ export default function HeaderBreadcrumbs({ ...props }) {
       sx={{
         ...sx,
         width: '100%',
+        display: 'flex', // Added to enable flexbox
+        justifyContent: 'center', // Centers horizontally
+        alignItems: 'center', // Centers vertically
         ...(admin && {
           mb: 3,
           height: '100px'
@@ -31,9 +34,9 @@ export default function HeaderBreadcrumbs({ ...props }) {
           color: 'common.white',
           position: 'relative',
           overflow: 'hidden',
-          height: '300px',
+          height: '150px',
           background: createGradient(theme.palette.primary.main, theme.palette.primary.dark),
-          borderRadius: '0px'
+          borderRadius: '5px'
         })
       }}
     >
@@ -50,9 +53,9 @@ export default function HeaderBreadcrumbs({ ...props }) {
               left: '50%',
               transform: 'translateX(-50%)',
               bgcolor: alpha(theme.palette.primary.light, 0.5),
-              height: { xs: 60, md: 80 },
-              width: { xs: 60, md: 80 },
-              borderRadius: '0px',
+              // height: { xs: 60, md: 80 },
+              // width: { xs: 60, md: 80 },
+              borderRadius: '5px',
               zIndex: 0
             }
           })
@@ -91,7 +94,7 @@ export default function HeaderBreadcrumbs({ ...props }) {
                   </Typography>
                   <MBreadcrumbs icon={icon} admin={admin} links={links} {...other} />
                 </Grid>
-                <Grid item md={9}>
+                {/* <Grid item md={9}>
                   <p
                     style={{
                       fontFamily: "'Poppins', sans-serif",
@@ -107,7 +110,7 @@ export default function HeaderBreadcrumbs({ ...props }) {
                   >
                     {heading}
                   </p>
-                </Grid>
+                </Grid> */}
               </Grid>
             </Box>
           </Container>

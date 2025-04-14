@@ -118,7 +118,7 @@ function ReviewItem({ ...props }) {
       {!isLoading && Boolean(review.images.length) ? (
         <>
           <Box p={3}>
-            <Grid container spacing={2} sx={{ img: { borderRadius: '8px' } }}>
+            <Grid container spacing={2} sx={{ img: { borderRadius: '5px' } }}>
               {review.images.map((image) => (
                 <Grid item xs={6} md={3} lg={2} key={Math.random()}>
                   <Box

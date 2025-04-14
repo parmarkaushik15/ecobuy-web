@@ -40,7 +40,7 @@ export default function Categories() {
             color="primary"
             size="large"
             sx={{
-              borderRadius: 6,
+              borderRadius: '5px',
               display: { xs: 'none', md: 'flex' },
               minWidth: 130,
               px: 1
@@ -73,7 +73,7 @@ export default function Categories() {
             color="primary"
             size="small"
             sx={{
-              borderRadius: 6,
+              borderRadius: '5px',
               mx: 'auto',
               mt: 3,
               display: { md: 'none', xs: 'flex' },

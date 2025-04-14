@@ -25,7 +25,8 @@ import {
   FormGroup,
   Skeleton,
   Switch,
-  InputAdornment
+  InputAdornment,
+  Box
 } from '@mui/material';
 // api
 import * as api from 'src/services';
@@ -202,6 +203,18 @@ export default function ProductForm({
   };
   return (
     <Stack spacing={3}>
+      <>
+        {(currentProduct?.approvalStatus == 'need info' || currentProduct?.approvalStatus == 'rejected') && (
+          <Box textAlign={'left'} sx={{ background: '#ddd', p: 2 }}>
+            <Typography component="h2" color="error" sx={{ fontSize: 20, fontWeight: 700 }}>
+              Reason
+            </Typography>
+            <Typography component="p" color="text.secondarydark" mb={1}>
+              {currentProduct.notes}
+            </Typography>
+          </Box>
+        )}
+      </>
       <FormikProvider value={formik}>
         <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
           <Grid container spacing={3}>

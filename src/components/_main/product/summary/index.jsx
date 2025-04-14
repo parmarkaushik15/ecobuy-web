@@ -231,7 +231,7 @@ export default function ProductDetailsSumary({ ...props }) {
         <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={7}>
-              <Card sx={{ p: 2 }}>
+              <Card sx={{ p: 2, height: '100%', border: '1px solid #f0f0f0' }}>
                 <Typography noWrap variant="h4" paragraph className="heading">
                   {product?.name}
                 </Typography>

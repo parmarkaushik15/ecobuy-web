@@ -37,7 +37,7 @@ const ThumbImgStyle = styled(Box)(({ theme }) => ({
   minWidth: 44,
   objectFit: 'cover',
   margin: theme.spacing(1),
-  borderRadius: '8px',
+  borderRadius: '5px',
   position: 'relative',
   overflow: 'hidden'
 }));
@@ -69,7 +69,7 @@ export default function OrderRowas({ ...props }) {
               variant="rectangular"
               width={44}
               height={44}
-              sx={{ borderRadius: 1, margin: (theme) => theme.spacing(0, 1) }}
+              sx={{ borderRadius: '5px', margin: (theme) => theme.spacing(0, 1) }}
             />
           ) : row?.items.length > 0 ? (
             <ThumbImgStyle>

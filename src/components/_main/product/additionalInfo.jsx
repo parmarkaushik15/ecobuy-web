@@ -15,7 +15,7 @@ export default function AdditionalInfo() {
         <Grid item xs={12} md={4} key={item.title}>
           <Card
             sx={{
-              borderRadius: '8px',
+              borderRadius: '5px',
               width: '100%',
               position: 'relative',
               py: 4,

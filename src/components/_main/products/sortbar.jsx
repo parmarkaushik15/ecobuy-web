@@ -95,7 +95,7 @@ export default function SortBar({ compaign, productData, shop, isLoading, sortDa
           button: {
             mr: 1,
             border: (theme) => `1px solid ${theme.palette.divider}`,
-            borderRadius: '4px',
+            borderRadius: '5px',
             '&.active': {
               border: (theme) => `1px solid ${theme.palette.primary.main}`,
               svg: {

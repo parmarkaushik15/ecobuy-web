@@ -32,7 +32,7 @@ export default function TopCollections() {
           color="primary"
           size="large"
           sx={{
-            borderRadius: 6
+            borderRadius: '5px'
           }}
           endIcon={<IoIosArrowForward />}
           component={NextLink}

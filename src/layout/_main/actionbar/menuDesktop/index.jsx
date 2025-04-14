@@ -60,7 +60,7 @@ function MenuDesktopItem({ ...props }) {
             size="large"
             sx={{
               boxShadow: 'none',
-              borderRadius: 0,
+              borderRadius: '5px',
               width: 280,
               bgcolor: (theme) => alpha(theme.palette.common.black, 0.1),
               '&.arrow-icon': {

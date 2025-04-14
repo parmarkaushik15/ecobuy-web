@@ -73,9 +73,9 @@ function CarouselItem({ ...props }) {
         borderBottom: (theme) => '1px solid ' + theme.palette.divider,
         zIndex: 11,
         height: { xs: 125, sm: 225, md: 270, lg: 370 },
-        borderRadius: 0,
+        borderRadius: '5px',
         img: {
-          borderRadius: 0,
+          borderRadius: '5px',
           objectPosition: { md: 'center', xs: 'left' }
         }
       }}
@@ -129,7 +129,7 @@ export default function SingleSlideCarousel({ ...props }) {
         alignItems: 'center',
         overflow: 'hidden',
         height: { xs: 120, sm: 220, md: 250, lg: 343 },
-        borderRadius: '12px',
+        borderRadius: '5px',
         overflow: 'hidden',
         boxShadow: 'unset'
       }}

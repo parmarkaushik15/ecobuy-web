@@ -15,7 +15,7 @@ export default function index() {
         border: 'none !important',
         borderRadius: '0px !important',
         border: '1px solid #eee',
-        borderRadius: 1
+        borderRadius: '5px'
       }}
     >
       <Box

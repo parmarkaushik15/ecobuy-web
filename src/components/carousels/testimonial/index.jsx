@@ -53,7 +53,7 @@ function TestimonialDetailsCarousel({ ...props }) {
             width: '100%',
             maxWidth: 500,
             boxShadow: 'unset',
-            borderRadius: 0,
+            borderRadius: '5px',
             ml: 'auto'
           }}
         >

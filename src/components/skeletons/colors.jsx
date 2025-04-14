@@ -15,7 +15,7 @@ export default function Colors() {
               <Skeleton
                 key={Math.random()}
                 variant="rectangular"
-                sx={{ borderRadius: '4px', minWidth: 24 }}
+                sx={{ borderRadius: '5px', minWidth: 24 }}
                 width={24}
                 height={24}
               />

@@ -45,7 +45,9 @@ export default function Order({ data, isLoading }) {
         pb: 2,
         '& .apexcharts-canvas': {
           margin: '0 auto'
-        }
+        },
+        borderRadius: '0px',
+        boxShadow: 'unset'
       }}
     >
       <CardHeader title={'Order Report'} sx={{ pb: 3 }} />

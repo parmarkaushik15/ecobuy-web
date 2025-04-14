@@ -3,6 +3,8 @@ import { useRouter } from 'next-nprogress-bar';
 import { enUS } from 'date-fns/locale';
 
 // mui
+import { capitalize } from 'lodash';
+
 import {
   Box,
   TableRow,
@@ -13,7 +15,8 @@ import {
   IconButton,
   Rating,
   Tooltip,
-  Link
+  Link,
+  useTheme
 } from '@mui/material';
 
 // redux
@@ -26,10 +29,13 @@ import BlurImage from 'src/components/blurImage';
 
 // icons
 import { MdEdit } from 'react-icons/md';
-import { MdDelete } from 'react-icons/md';
+import { MdDelete, MdCancel, MdCheckCircle } from 'react-icons/md';
 import { IoEye } from 'react-icons/io5';
+import { useState } from 'react';
 export default function ProductRow({ isLoading, row, handleClickOpen, isVendor }) {
   const router = useRouter();
+  const theme = useTheme();
+  const [isActive, setIsActive] = useState(row?.status == 'active');
   return (
     <TableRow hover key={Math.random()}>
       <TableCell component="th" scope="row" sx={{ maxWidth: 300 }}>
@@ -40,7 +46,7 @@ export default function ProductRow({ isLoading, row, handleClickOpen, isVendor }
           }}
         >
           {isLoading ? (
-            <Skeleton variant="rectangular" width={50} height={50} sx={{ borderRadius: 1 }} />
+            <Skeleton variant="rectangular" width={50} height={50} sx={{ borderRadius: '5px' }} />
           ) : (
             <Box
               sx={{
@@ -51,9 +57,9 @@ export default function ProductRow({ isLoading, row, handleClickOpen, isVendor }
                 bgcolor: 'background.default',
                 mr: 2,
                 border: (theme) => '1px solid ' + theme.palette.divider,
-                borderRadius: '6px',
+                borderRadius: '5px',
                 img: {
-                  borderRadius: '2px'
+                  borderRadius: '5px'
                 }
               }}
             >
@@ -119,6 +125,50 @@ export default function ProductRow({ isLoading, row, handleClickOpen, isVendor }
           />
         )}
       </TableCell> */}
+      <TableCell>
+        {isLoading ? (
+          <Skeleton variant="text" />
+        ) : (
+          <Label
+            variant="filled"
+            sx={{
+              bgcolor:
+                row?.approvalStatus === 'approved'
+                  ? 'success.light'
+                  : row?.approvalStatus === 'pending'
+                    ? 'info.light'
+                    : row?.approvalStatus === 'rejected' || row?.approvalStatus === 'blocked'
+                      ? 'error.light'
+                      : 'warning.light',
+              color:
+                row?.approvalStatus === 'approved'
+                  ? 'success.dark'
+                  : row?.approvalStatus === 'pending'
+                    ? 'info.dark'
+                    : row?.approvalStatus === 'rejected' || row?.approvalStatus === 'blocked'
+                      ? 'error.dark'
+                      : 'warning.dark',
+              textTransform: 'capitalize'
+            }}
+          >
+            {row?.approvalStatus}
+            {console.log('approvalStatus=', row?.approvalStatus)}
+            {console.log('row=', row)}
+          </Label>
+        )}
+      </TableCell>
+      <TableCell>
+        {isLoading ? (
+          <Skeleton variant="text" />
+        ) : (
+          <Label
+            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+            color={row?.viewStatus?.toLowerCase() === 'active' ? 'success' : 'error'}
+          >
+            {capitalize(row?.viewStatus)}
+          </Label>
+        )}
+      </TableCell>
       <TableCell align="right">
         {isLoading ? (
           <Stack direction="row" justifyContent="flex-end">
@@ -128,12 +178,24 @@ export default function ProductRow({ isLoading, row, handleClickOpen, isVendor }
           </Stack>
         ) : (
           <Stack direction="row" justifyContent="flex-end">
-            <Tooltip title="Preview">
+            {/* <Tooltip title="Preview">
               <Link target="_blank" href={`/product/${row.slug}`}>
                 <IconButton>
                   <IoEye />
                 </IconButton>
               </Link>
+            </Tooltip> */}
+            <Tooltip title={row?.viewStatus == 'active' ? 'Deactive' : 'Active'}>
+              <IconButton
+                onClick={() => handleClickOpen(row.slug, row?.viewStatus == 'active' ? 'deactive' : 'active')}
+              >
+                {row?.viewStatus == 'active' ? (
+                  <MdCancel style={{ color: 'red' }} />
+                ) : (
+                  <MdCheckCircle style={{ color: 'green' }} />
+                )}{' '}
+                {/* Use different icons for active/inactive */}
+              </IconButton>
             </Tooltip>
             <Tooltip title="Edit">
               <IconButton onClick={() => router.push(`/${isVendor ? 'vendor' : 'admin'}/products/${row.slug}`)}>
@@ -141,7 +203,7 @@ export default function ProductRow({ isLoading, row, handleClickOpen, isVendor }
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
-              <IconButton onClick={handleClickOpen(row.slug)}>
+              <IconButton onClick={() => handleClickOpen(row.slug, 'delete')}>
                 <MdDelete />
               </IconButton>
             </Tooltip>

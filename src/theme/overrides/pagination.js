@@ -11,7 +11,7 @@ export default function Pagination(theme) {
             fontWeight: theme.typography.fontWeightBold
           },
           '&.MuiPaginationItem-ellipsis': {
-            borderRadius: '4px',
+            borderRadius: '5px',
             height: 32
           }
         },

@@ -23,7 +23,7 @@ const RootStyle = styled('div')(({ theme }) => ({
   margin: theme.spacing(3),
   padding: theme.spacing(3),
   //   borderRadius: theme.shape.borderRadiusMd,
-  borderRadius: '8px',
+  borderRadius: '5px',
   backgroundColor: theme.palette.background.default
 }));
 export default function ProductDetailsReviewForm({ ...props }) {

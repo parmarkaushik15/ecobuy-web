@@ -47,7 +47,7 @@ export default function Index() {
         // backgroundSize: 'cover',
         minHeight: 680,
         height: '100%',
-        borderRadius: 6,
+        borderRadius: '5px',
         overflow: 'hidden',
         display: 'flex',
         flexDirection: 'column',
@@ -70,7 +70,7 @@ export default function Index() {
             bgcolor: 'primary.main',
             px: 2,
             py: 0.5,
-            borderRadius: 1
+            borderRadius: '5px'
           }}
         >
           30% Off
@@ -87,7 +87,7 @@ export default function Index() {
             py: 1.5,
             bgcolor: theme.palette.background.paper,
             textAlign: 'center',
-            borderRadius: 1
+            borderRadius: '5px'
           }}
         >
           <Typography variant="body1" color="text.primary" fontWeight={700} fontSize={24}>
@@ -103,7 +103,7 @@ export default function Index() {
             py: 1.5,
             bgcolor: theme.palette.background.paper,
             textAlign: 'center',
-            borderRadius: 1
+            borderRadius: '5px'
           }}
         >
           <Typography variant="body1" color="text.primary" fontWeight={700} fontSize={24}>
@@ -119,7 +119,7 @@ export default function Index() {
             py: 1.5,
             bgcolor: theme.palette.background.paper,
             textAlign: 'center',
-            borderRadius: 1
+            borderRadius: '5px'
           }}
         >
           <Typography variant="body1" color="text.primary" fontWeight={700} fontSize={24}>
@@ -135,7 +135,7 @@ export default function Index() {
         color="primary"
         size="large"
         sx={{
-          borderRadius: 6
+          borderRadius: '5px'
         }}
         component={NextLink}
         href={``}

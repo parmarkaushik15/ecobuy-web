@@ -225,7 +225,7 @@ export default function Index() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  borderRadius: '0px',
+                  borderRadius: '5px',
                   height: '100%',
                   boxShadow: 'unset',
                   px: { lg: 3, md: 1 },
@@ -276,7 +276,7 @@ export default function Index() {
                       color={index % 2 === 0 ? 'primary' : 'secondary'}
                       size={isDeskTopBtn ? 'large' : 'small'}
                       sx={{
-                        borderRadius: 6
+                        borderRadius: '5px'
                       }}
                     >
                       {item.buttonTitle}

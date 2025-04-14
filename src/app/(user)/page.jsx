@@ -30,8 +30,9 @@ export default function IndexPage() {
       <Container maxWidth="xl">
         <Hero />
       </Container>
-
+      
       <Container maxWidth="xl">
+     
         <Categories />
 
         <WhyUs />
@@ -58,6 +59,7 @@ export default function IndexPage() {
       </Container>
       <Container maxWidth="xl">
         <TopBanners />
+ 
       </Container>
       <SubscriptionModal />
     </>

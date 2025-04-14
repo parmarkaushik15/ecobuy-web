@@ -43,7 +43,7 @@ const AirbnbSlider = styled(Slider)(({ theme }) => ({
   '& .MuiSlider-thumb': {
     height: 27,
     width: 27,
-    borderRadius: '8px',
+    borderRadius: '5px',
     backgroundColor: '#fff',
     border: '1px solid currentColor',
 
@@ -57,14 +57,14 @@ const AirbnbSlider = styled(Slider)(({ theme }) => ({
   },
   '& .MuiSlider-track': {
     height: 27,
-    borderRadius: '8px',
+    borderRadius: '5px',
     backgroundColor: theme.palette.primary.main
   },
   '& .MuiSlider-rail': {
     color: theme.palette.mode === 'dark' ? '#bfbfbf' : '#d8d8d8',
     opacity: theme.palette.mode === 'dark' ? undefined : 1,
     height: 27,
-    borderRadius: '8px'
+    borderRadius: '5px'
   }
 }));
 

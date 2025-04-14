@@ -92,7 +92,7 @@ export default function ShopProductCard({ ...props }) {
       onMouseLeave={() => setOpenActions(false)}
       sx={{
         display: 'block',
-        borderRadius: '0px',
+        borderRadius: '5px',
         boxShadow: 'unset'
       }}
     >
@@ -169,7 +169,7 @@ export default function ShopProductCard({ ...props }) {
                 left: '50%',
                 transform: 'translate(-50%, 0px)',
                 bgcolor: 'background.paper',
-                borderRadius: '0px',
+                borderRadius: '5px',
                 p: '2px',
                 zIndex: 11
               }}

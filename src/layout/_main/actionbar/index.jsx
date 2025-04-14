@@ -21,7 +21,7 @@ export default function Navbar() {
           position: 'sticky',
           top: 80,
           zIndex: 999,
-          borderRadius: 0,
+          borderRadius: '5px',
           bgcolor: (theme) => theme.palette.primary.main,
           display: { md: 'flex', xs: 'none' },
           pr: '0px !important'

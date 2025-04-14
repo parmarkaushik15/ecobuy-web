@@ -12,13 +12,13 @@ const RootStyled = styled(Box)(({ theme }) => ({
   '& .mail-box': {
     padding: theme.spacing(1.5),
     border: `1px solid ${theme.palette.primary.main}`,
-    borderRadius: '8px',
+    borderRadius: '5px',
     background: theme.palette.background.paper,
     '& .choose-btn': {
       height: 48,
       width: 48,
       background: alpha(theme.palette.primary.light, 0.2),
-      borderRadius: '4px',
+      borderRadius: '5px',
       lineHeight: '0',
       svg: {
         height: 28,
@@ -30,7 +30,7 @@ const RootStyled = styled(Box)(({ theme }) => ({
   '& .phone-box': {
     padding: theme.spacing(1.5),
     border: `1px solid ${theme.palette.info.main}`,
-    borderRadius: '8px',
+    borderRadius: '5px',
     background: theme.palette.background.paper,
     '& .choose-btn': {
       display: 'flex',
@@ -39,7 +39,7 @@ const RootStyled = styled(Box)(({ theme }) => ({
       height: 48,
       width: 48,
       background: alpha(theme.palette.info.light, 0.2),
-      borderRadius: '4px',
+      borderRadius: '5px',
       lineHeight: '0',
       svg: {
         height: 28,
@@ -50,7 +50,7 @@ const RootStyled = styled(Box)(({ theme }) => ({
   },
   '& .form-section': {
     border: `1px solid ${theme.palette.primary.main}`,
-    borderRadius: '16px',
+    borderRadius: '5px',
     padding: '24px',
     background: theme.palette.background.paper
   },

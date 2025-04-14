@@ -125,12 +125,12 @@ export default function Brands() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    borderRadius: '0px',
+                    borderRadius: '5px',
                     position: 'relative',
                     boxShadow: 'unset',
                     mb: 3,
                     img: {
-                      borderRadius: '8px',
+                      borderRadius: '5px',
                       objectFit: 'contain'
                     }
                   }}

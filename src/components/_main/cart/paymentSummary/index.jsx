@@ -75,7 +75,7 @@ export default function PaymentSummary({ loading, cart }) {
             fullWidth
             size="large"
             sx={{
-              borderRadius: '8px'
+              borderRadius: '5px'
             }}
             disabled={isEmptyCart}
             loading={loading}

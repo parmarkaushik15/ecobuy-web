@@ -128,7 +128,7 @@ export default function ColorsMain({ ...props }) {
                 width: 24,
                 height: 24,
                 bgcolor: v,
-                borderRadius: '4px',
+                borderRadius: '5px',
                 border: (theme) =>
                   state.colors.includes(v)
                     ? `2px solid ${theme.palette.primary.main}`

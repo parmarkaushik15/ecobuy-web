@@ -23,7 +23,7 @@ const AppBar = styled(MuiAppBar, {
   WebkitBackdropFilter: 'blur(6px)', // Fix on Mobile
   background: alpha(theme.palette.background.default, 0.72),
   borderBottom: '1px solid ' + theme.palette.divider,
-  borderRadius: 0,
+  borderRadius: '5px',
   top: 65,
   width: `calc(100% - ${65}px)`,
   // , xs: 65 },

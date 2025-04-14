@@ -10,6 +10,7 @@ import DeleteDialog from 'src/components/dialog/delete';
 // components
 import Table from 'src/components/table/table';
 import Product from 'src/components/table/rows/product';
+import StatusDialog from 'src/components/dialog/status';
 // api
 import * as api from 'src/services';
 import { useQuery } from 'react-query';
@@ -20,15 +21,25 @@ const TABLE_HEAD = [
   { id: 'inventoryType', label: 'Status', alignRight: false, sort: false },
   { id: 'rating', label: 'Rating', alignRight: false, sort: true },
   { id: 'price', label: 'Price', alignRight: false, sort: true },
+  { id: 'approvalStatus', label: 'Approval Status', alignRight: false, sort: true },
+  { id: 'viewStatus', label: 'Status', alignRight: false, sort: true },
   { id: '', label: 'Actions', alignRight: true }
 ];
-export default function AdminProducts({ brands, categories, shops, isVendor }) {
+export default function AdminProducts({ isVendor }) {
   const searchParams = useSearchParams();
 
   const [open, setOpen] = useState(false);
   const [apicall, setApicall] = useState(false);
   const [id, setId] = useState(null);
-  const { data, isLoading } = useQuery(
+  const [statusOpen, setStatusOpen] = useState(false);
+
+  const [status, setStatus] = useState('');
+
+  const { data: categories } = useQuery('getAllCategories', api.getAllCategories);
+  const { data: shops } = useQuery('getAllShops', api.getAllShopsByAdmin);
+  const { data: brands } = useQuery('getAllBrandsByAdmin', api.getAllBrandsByAdmin);
+
+  const { data, isLoading, refetch } = useQuery(
     ['admin-products', apicall, searchParams.toString()],
     () => api[isVendor ? 'getVendorProducts' : 'getProductsByAdmin'](searchParams.toString()),
     {
@@ -36,12 +47,22 @@ export default function AdminProducts({ brands, categories, shops, isVendor }) {
     }
   );
 
-  const handleClickOpen = (prop) => () => {
+  const handleClickOpen = (prop, type) => {
+    console.log('type=', type);
     setId(prop);
-    setOpen(true);
+    if (type === 'delete') {
+      setOpen(true);
+    } else if (type === 'deactive' || type === 'active') {
+      setStatus(type);
+      setStatusOpen(true);
+    }
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleStatusClose = () => {
+    setStatusOpen(false);
   };
 
   return (
@@ -58,9 +79,17 @@ export default function AdminProducts({ brands, categories, shops, isVendor }) {
           }
         />
       </Dialog>
-      <Stack spacing={2} direction="row" alignItems="center" justifyContent="space-between" mb={2}>
-        {}
-      </Stack>
+      <Dialog onClose={handleStatusClose} open={statusOpen} maxWidth={'xs'}>
+        <StatusDialog
+          onClose={handleStatusClose}
+          id={id}
+          status={status}
+          refetch={refetch}
+          endPoint="statusVendorByAdmin"
+          type={'Product status updatd'}
+          deleteMessage={'Are you sure you want to update status?'}
+        />
+      </Dialog>
       <Table
         headData={TABLE_HEAD}
         data={data}
@@ -72,7 +101,18 @@ export default function AdminProducts({ brands, categories, shops, isVendor }) {
         isVendor={isVendor}
         filters={
           isVendor
-            ? []
+            ? [
+                {
+                  name: 'Category',
+                  param: 'category',
+                  data: categories
+                },
+                {
+                  name: 'Brand',
+                  param: 'brand',
+                  data: brands
+                }
+              ]
             : [
                 {
                   name: 'Shop',

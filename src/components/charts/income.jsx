@@ -46,7 +46,7 @@ export default function IncomeChart({ income, commission, isVendor, isLoading })
   });
 
   return (
-    <Card>
+    <Card sx={{ borderRadius: '0px', boxShadow: 'unset' }}>
       <CardHeader
         title={'Income Report'}
         action={
@@ -72,7 +72,7 @@ export default function IncomeChart({ income, commission, isVendor, isLoading })
       <Box sx={{ mt: 3, mx: 3 }}>
         {isLoading ? (
           <>
-            <Skeleton variant="rectangular" width="100%" height={isMobile ? 260 : 360} sx={{ borderRadius: 2 }} />
+            <Skeleton variant="rectangular" width="100%" height={isMobile ? 260 : 360} sx={{ borderRadius: '5px' }} />
             <Box
               sx={{
                 display: 'flex',
@@ -109,18 +109,18 @@ export default function IncomeChart({ income, commission, isVendor, isLoading })
                   ? [
                       {
                         name: 'Income',
-                        data: income[seriesData]
+                        data: income?.[seriesData]
                       }
                     ]
                   : [
                       {
                         name: 'Income',
-                        data: income[seriesData]
+                        data: income?.[seriesData]
                       },
 
                       {
                         name: 'Commission',
-                        data: commission[seriesData]
+                        data: commission?.[seriesData]
                       }
                     ].slice(0, !isVendor ? 2 : 1)
               }

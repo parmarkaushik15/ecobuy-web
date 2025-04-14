@@ -68,7 +68,7 @@ export default function OrderList({ isLoading, row, isUser, isVendor }) {
           }}
         >
           {isLoading ? (
-            <Skeleton variant="rectangular" width={50} height={50} sx={{ borderRadius: 1 }} />
+            <Skeleton variant="rectangular" width={50} height={50} sx={{ borderRadius: '5px' }} />
           ) : (
             <ThumbImgStyle>
               <BlurImage priority fill alt={row.items[0]?.name} src={imageUrl} objectFit="cover" />

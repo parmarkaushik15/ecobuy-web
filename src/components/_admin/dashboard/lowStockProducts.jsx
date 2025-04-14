@@ -8,17 +8,19 @@ import { Dialog } from '@mui/material';
 // components
 import DeleteDialog from 'src/components/dialog/delete';
 import Table from 'src/components/table/table';
-import Product from 'src/components/table/rows/product';
+import Product from 'src/components/table/rows/lowStockProduct';
 // api
 import * as api from 'src/services';
 import { useQuery } from 'react-query';
 const TABLE_HEAD = [
   { id: 'name', label: 'Product', alignRight: false, sort: true },
   { id: 'createdAt', label: 'Date', alignRight: false, sort: true },
-  { id: 'inventoryType', label: 'Status', alignRight: false, sort: false },
+  { id: 'inventoryType', label: 'Stock', alignRight: false, sort: false },
   { id: 'rating', label: 'Rating', alignRight: false, sort: true },
-  { id: 'price', label: 'Price', alignRight: false, sort: true },
-  { id: '', label: 'Actions', alignRight: true }
+  { id: 'price', label: 'Price', alignRight: false, sort: true }
+  // { id: 'approvalStatus', label: 'Approval Status', alignRight: false, sort: true },
+  // { id: 'viewStatus', label: 'Status', alignRight: false, sort: true },
+  // { id: '', label: 'Actions', alignRight: true }
 ];
 
 AdminProducts.propTypes = {

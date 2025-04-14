@@ -41,7 +41,7 @@ export default function ShopCard({ ...props }) {
         // px: 3,
         // py: 2,
         boxShadow: 'unset',
-        borderRadius: 0
+        borderRadius: '5px'
       }}
     >
       <Box
@@ -181,7 +181,7 @@ export default function ShopCard({ ...props }) {
               onClick={() => router.push(baseUrl + shop?.slug)}
               startIcon={<AiOutlineShop />}
               sx={{
-                borderRadius: 6,
+                borderRadius: '5px',
                 fontWeight: 400,
                 whiteSpace: 'nowrap',
                 px: 2
@@ -210,7 +210,7 @@ export default function ShopCard({ ...props }) {
               color="secondary"
               startIcon={<FaRegUser size={16} />}
               sx={{
-                borderRadius: 6,
+                borderRadius: '5px',
                 fontWeight: 400,
                 px: 2
               }}

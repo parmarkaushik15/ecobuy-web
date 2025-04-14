@@ -36,7 +36,7 @@ export default function Index() {
           color="primary"
           size="large"
           sx={{
-            borderRadius: 6,
+            borderRadius: '5px',
             display: { xs: 'none', md: 'flex' },
             minWidth: 130,
             px: 1
@@ -61,7 +61,7 @@ export default function Index() {
         color="primary"
         size="small"
         sx={{
-          borderRadius: 6,
+          borderRadius: '5px',
           mx: 'auto',
           display: { md: 'none', xs: 'flex' },
           maxWidth: '120px'

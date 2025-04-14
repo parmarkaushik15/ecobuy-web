@@ -77,14 +77,14 @@ export default function AdminProductCard({ item, isLoading, handleClickOpen, isD
         ...(isDashboard
           ? {
               mb: 0,
-              borderRadius: 0,
+              borderRadius: '5px',
               borderBottom: '1px solid ' + theme.palette.divider,
               boxShadow: 'none'
             }
           : {
               mb: '0.5rem',
               border: '1px solid ' + theme.palette.divider,
-              borderRadius: '4px'
+              borderRadius: '5px'
             })
       }}
     >

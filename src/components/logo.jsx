@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { useRouter } from 'next-nprogress-bar';
 import Image from 'next/image';
-import logoImage from '../../public/images/Transparent-logo.png';
+import logoImage from '../../public/images/Ecobuy-Transparent-logo.png';
 // mui
 import { Box } from '@mui/material';
 
@@ -27,7 +27,7 @@ export const Logo = ({ logo }) => {
           src={process.env.IMAGE_BASE == 'LOCAL' ? `${process.env.IMAGE_URL}${logo}` : logo}
           alt="banner-1"
           sizes="100px"
-          className="logo"
+          className='logo' 
           style={{
             height: '56px !important'
           }}

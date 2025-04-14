@@ -210,7 +210,7 @@ export default function Sidebar({ handleDrawerClose, handleDrawerOpen, open }) {
                 disablePadding
                 sx={{
                   display: 'block',
-                  borderRadius: '8px',
+                  borderRadius: '5px',
                   border: `1px solid transparent`,
                   ...(active === '/vendor/' + item.slug &&
                     initial && {
@@ -234,7 +234,7 @@ export default function Sidebar({ handleDrawerClose, handleDrawerOpen, open }) {
                       minHeight: 48,
                       justifyContent: open ? 'initial' : 'center',
                       px: 2.5,
-                      borderRadius: '8px'
+                      borderRadius: '5px'
                     }}
                   >
                     <ListItemIcon

@@ -44,7 +44,7 @@ const CheckoutForm = ({ error }) => {
       <Paper
         sx={{
           height: 40,
-          borderRadius: '4px',
+          borderRadius: '5px',
           bgcolor: 'background.default',
           boxShadow: 'none',
           border: (theme) => '1px solid ' + theme.palette.divider,

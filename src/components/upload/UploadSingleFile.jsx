@@ -145,7 +145,7 @@ export default function UploadSingleFile({ error, file, sx, onDrop, loading, ...
             }
             sx={{
               top: 8,
-              borderRadius: 1,
+              borderRadius: '5px',
               objectFit: 'contain',
               position: 'absolute',
               width: 'calc(100% - 16px)',

@@ -20,7 +20,7 @@ export default function AdminBestSelling({ ...props }) {
 
   return (
     <>
-      <Card sx={{ height: '100%' }}>
+      <Card sx={{ height: '100%', borderRadius: '0px', boxShadow: 'unset' }}>
         <CardHeader title={'Best Selling'} />
         {data?.length < 1 ? (
           <NoDataFoundIllustration
@@ -43,10 +43,10 @@ export default function AdminBestSelling({ ...props }) {
                           position: 'relative',
                           height: 64,
                           width: 64,
-                          borderRadius: '8px',
+                          borderRadius: '5px',
                           border: '1px solid rgba(145, 158, 171, 0.32)',
                           img: {
-                            borderRadius: '8px'
+                            borderRadius: '5px'
                             // border: "1px solid rgba(145, 158, 171, 0.32)",
                           }
                         }}

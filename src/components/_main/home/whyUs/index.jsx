@@ -44,7 +44,7 @@ export default function WhyUs() {
       sx={{
         mt: 4,
         p: 3,
-        borderRadius: '0px',
+        borderRadius: '5px',
         boxShadow: 'unset',
         display: {
           md: 'block',

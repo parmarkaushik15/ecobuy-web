@@ -14,7 +14,7 @@ const RootStyled = styled('div')(({ theme }) => ({
   '& .list-item-avatar': {
     width: 80,
     height: 80,
-    borderRadius: '8px',
+    borderRadius: '5px',
     cursor: 'pointer',
     border: `1px solid ${theme.palette.divider}`
   },
@@ -32,12 +32,12 @@ const RootStyled = styled('div')(({ theme }) => ({
     marginRight: theme.spacing(1)
   },
   '& .list-skeleton': {
-    borderRadius: '8px',
+    borderRadius: '5px',
     float: 'right'
   },
   '& .list-icon-btn': {
     border: `1px solid ${theme.palette.divider}`,
-    borderRadius: '8px !important'
+    borderRadius: '5px !important'
   },
   [theme.breakpoints.down('md')]: {
     '& .main-stack': {

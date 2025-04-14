@@ -56,7 +56,7 @@ export default function Category({ isLoading, row, handleClickOpen }) {
           }}
         >
           {isLoading ? (
-            <Skeleton variant="rectangular" width={50} height={50} sx={{ borderRadius: 1 }} />
+            <Skeleton variant="rectangular" width={50} height={50} sx={{ borderRadius: '5px' }} />
           ) : (
             <ThumbImgStyle>
               <BlurImage

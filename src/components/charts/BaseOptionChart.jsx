@@ -131,7 +131,7 @@ export default function BaseOptionChart(value) {
       // Bar
       bar: {
         columnWidth: '60%',
-        borderRadius: 3,
+        borderRadius: '5px',
         borderRadiusApplication: 'end',
         borderRadiusWhenStacked: 'last'
       },

@@ -13,7 +13,7 @@ export default function index() {
           m: 'auto',
           my: '80px',
           flexDirection: 'column',
-          borderRadius: '0px',
+          borderRadius: '5px',
           boxShadow: 'unset',
           justifyContent: 'center',
           p: 3

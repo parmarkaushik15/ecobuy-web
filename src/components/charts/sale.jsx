@@ -32,12 +32,12 @@ export default function Income({ data, isLoading }) {
   });
 
   return (
-    <Card sx={{ pb: 1.5 }}>
+    <Card sx={{ pb: 1.5, borderRadius: '0px', boxShadow: 'unset' }}>
       <CardHeader title={'Sales Report'} />
 
       {isLoading ? (
         <Box mx={3}>
-          <Skeleton variant="rectangular" width="100%" height={219} sx={{ borderRadius: 2, mt: 3 }} />
+          <Skeleton variant="rectangular" width="100%" height={219} sx={{ borderRadius: '5px', mt: 3 }} />
           <Box
             sx={{
               display: 'flex',

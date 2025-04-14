@@ -58,7 +58,7 @@ function CarouselItem({ ...props }) {
         pb: { md: '38%', sm: '82%', xs: '142%' },
         zIndex: 11,
         bgcolor: 'transparent',
-        borderRadius: 0
+        borderRadius: '5px'
       }}
     >
       <ProductCard loading={isLoading} product={index} />
@@ -104,7 +104,7 @@ export default function ProductsCarousel({ ...props }) {
       elevation={0}
       sx={{
         position: 'relative',
-        borderRadius: 0,
+        borderRadius: '5px',
         width: '100%',
         marginLeft: 0,
         '& .slide-wrapper ': {

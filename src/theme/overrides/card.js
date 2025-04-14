@@ -7,9 +7,9 @@ export default function Card(theme) {
           zIndex: 0, // Fix Safari overflow: hidden with border radius
           border: `1px solid ${theme.palette.divider} !important`,
           transition: 'all ease-in-out 0.3s',
-          background: theme.palette.background.paper,
-          borderRadius: theme.spacing(2),
-          boxShadow: theme.shadows[10]
+          background: theme.palette.background.paper
+          // borderRadius: theme.spacing(2)
+          // boxShadow: theme.shadows[10]
         }
       }
     },

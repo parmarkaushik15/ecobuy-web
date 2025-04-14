@@ -7,11 +7,11 @@ const RootStyled = styled(RadioGroup)(({ theme }) => ({
     zIndex: 0,
     overflow: 'hidden',
     position: 'relative',
-    borderRadius: '8px',
+    borderRadius: '5px',
     '& .button': {
       display: 'block',
       height: 94,
-      borderRadius: '8px',
+      borderRadius: '5px',
       background: theme.palette.background.paper,
       '& .MuiButton-startIcon': {
         margin: '0 auto'

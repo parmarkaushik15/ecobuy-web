@@ -18,10 +18,10 @@ import { styled } from '@mui/system';
 const StyledImage = styled('img')(({ theme }) => ({
   width: '100%',
   height: 'auto',
-  borderRadius: '8px',
+  borderRadius: '5px',
   objectFit: 'cover',
   [theme.breakpoints.down('sm')]: {
-    borderRadius: '4px'
+    borderRadius: '5px'
   }
 }));
 

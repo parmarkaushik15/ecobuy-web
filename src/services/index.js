@@ -303,6 +303,12 @@ export const updateVendorProduct = async ({ currentSlug, ...payload }) => {
   const { data: response } = await http.put(`/vendor/products/${currentSlug}`, payload);
   return response;
 };
+export const statusVendorByAdmin = async (param) => {
+  const { data } = await http.put(`/admin/update/status/products/${param.slug}`, {
+    viewStatus: param.status
+  });
+  return data;
+};
 export const getOrdersByVendor = async (payload) => {
   const { data } = await http.get(`/vendor/orders?${payload}`);
   return data;
@@ -485,7 +491,7 @@ export const getCart = async (ids) => {
   });
   return data;
 };
-
+ 
 export const getAllCategories = async () => {
   const { data } = await http.get(`/all-categories`);
   return data;
@@ -535,6 +541,23 @@ export const paymentIntents = async (amount, currency, note = 'Online purchase')
     currency,
     description: note
   });
+  return data;
+};
+
+
+export const phonePePaymentIntents = async (amount, currency, phone, userId) => {
+  const { data } = await http.post(`/phone-pe/payment-intents`, {
+    amount,
+    currency,
+    phone,
+    userId
+  });
+  return data;
+};
+
+
+export const phonePePaymentStatus = async (id) => {
+  const { data } = await http.get(`/phone-pe/validate/response/${id}`);
   return data;
 };
 
@@ -661,3 +684,8 @@ export const getSetting = async () => {
 //   const { data } = await http.post(`/contact-us`, payload);
 //   return data;
 // };
+
+export const getOrderInfo = async (oid) => {
+  const { data } = await http.get(`/track-order/${oid}`);
+  return data;
+};

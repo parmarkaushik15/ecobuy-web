@@ -66,11 +66,11 @@ export default async function ProductDetail({ params: { slug } }) {
       />
       <Container maxWidth="xl">
         <Stack gap={5}>
-          <Grid container spacing={2} justifyContent="center">
+          <Grid container spacing={2} justifyContent="center" sx={{ mt: 1 }}>
             <Grid item xs={12} sm={6} md={4} lg={4}>
               <ProductDetailsCarousel slug={slug} product={data} data={data} />
             </Grid>
-            <Grid item xs={12} md={8} lg={8}>
+            <Grid item xs={12} md={2} lg={8}>
               <ProductDetailsSumary
                 id={data?._id}
                 product={data}

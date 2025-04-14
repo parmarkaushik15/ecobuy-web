@@ -37,7 +37,7 @@ export default function ProductRow({ isLoading, row, handleClickOpen }) {
           }}
         >
           {isLoading ? (
-            <Skeleton variant="rectangular" width={50} height={50} sx={{ borderRadius: 1 }} />
+            <Skeleton variant="rectangular" width={50} height={50} sx={{ borderRadius: '5px' }} />
           ) : (
             <Box
               sx={{
@@ -48,9 +48,9 @@ export default function ProductRow({ isLoading, row, handleClickOpen }) {
                 bgcolor: 'background.default',
                 mr: 2,
                 border: (theme) => '1px solid ' + theme.palette.divider,
-                borderRadius: '6px',
+                borderRadius: '5px',
                 img: {
-                  borderRadius: '2px'
+                  borderRadius: '5px'
                 }
               }}
             >
@@ -78,7 +78,7 @@ export default function ProductRow({ isLoading, row, handleClickOpen }) {
           }}
         >
           {isLoading ? (
-            <Skeleton variant="rectangular" width={50} height={50} sx={{ borderRadius: 1 }} />
+            <Skeleton variant="rectangular" width={50} height={50} sx={{ borderRadius: '5px' }} />
           ) : row.vendor?.cover ? (
             <BlurImageAvatar
               priority
