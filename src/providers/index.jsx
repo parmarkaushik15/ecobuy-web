@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 
@@ -12,7 +12,7 @@ import { Provider } from 'react-redux';
 import { reduxStore, persistor } from 'src/redux';
 import { PersistGate } from 'redux-persist/integration/react';
 
-// react quert
+// react query
 import { QueryClient, QueryClientProvider } from 'react-query';
 
 // toast
@@ -21,6 +21,7 @@ import { Toaster } from 'react-hot-toast';
 // components
 import GlobalStyles from 'src/theme/globalStyles';
 import AuthProvider from './auth';
+import { initCsrf } from 'src/services/http';
 
 // dynamic import
 const ProgressBar = dynamic(() => import('src/components/ProgressBar'), {
@@ -38,6 +39,10 @@ export default function Providers(props) {
         }
       })
   );
+
+  useEffect(() => {
+    initCsrf();
+  }, []);
 
   return (
     <Provider store={reduxStore}>
