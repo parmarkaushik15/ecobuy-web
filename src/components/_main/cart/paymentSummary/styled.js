@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 const RootStyled = styled(Card)(() => ({
   '.MuiRadio-root': {
     padding: '5px'
-  }
+  },
+  boxShadow: 'none'
 }));
 export default RootStyled;

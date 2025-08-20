@@ -15,6 +15,7 @@ import TestimonialCarousel from 'src/components/carousels/testimonial';
 import { useSelector } from 'react-redux';
 // api
 import * as api from 'src/services';
+import { useQuery } from 'react-query';
 
 // data
 // const data = [
@@ -82,6 +83,12 @@ export default function Testimonials() {
     }
   };
 
+  const { data: pageContextData, isLoading: loadingContext } = useQuery(['get-ofers-aboutus-page-context'], () => {
+    return api.getOffersAboutusPageContext();
+  });
+
+  const content = pageContextData?.data?.content || {};
+
   return (
     <Box
       sx={{
@@ -105,13 +112,12 @@ export default function Testimonials() {
               lineHeight={1.2}
               textAlign={{ xs: 'center', md: 'left' }}
             >
-              Let's explore customer sentiments towards our offerings.
+              {content?.aboutUsTitle || 'Lets explore customer sentiments towards our offerings.'}
             </Typography>
             <Stack sx={{ display: { xs: 'none', md: 'flex' } }}>
               <Typography variant="body1" color="text.secondary" mb={2} maxWidth={{ xs: '100%', md: 550 }}>
-                Discover what customers are saying about our products. Dive into the feedback on the quality and
-                performance of our offerings. Gain insights into how our customers perceive our products and their
-                overall satisfaction. Your opinions matter, and we're here to listen..
+                {content?.aboutUsSubTitle ||
+                  'Discover what customers are saying about our products. Dive into the feedback on the quality and performance of our offerings. Gain insights into how our customers perceive our products and their overall satisfaction. Your opinions matter, and were here to listen..'}
               </Typography>
             </Stack>
             <Stack

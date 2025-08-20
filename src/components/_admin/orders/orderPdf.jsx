@@ -111,10 +111,10 @@ export default function InvoicePDF({ data }) {
         <View style={[styles.gridContainer, styles.mb40]}>
           <View style={styles.col6}>
             <Text style={[styles.overline, styles.mb8]}>Invoice from</Text>
-            <Text style={styles.body1}>Ecobuy</Text>
+            <Text style={styles.body1}>Perfumeswale</Text>
             <Text style={styles.body1}>London, England</Text>
             <Text style={styles.body1}>+123 4567 890</Text>
-            <Text style={styles.body1}> info@Ecobuy.com</Text>
+            <Text style={styles.body1}> info@Perfumeswale.com</Text>
           </View>
           <View style={styles.col6}>
             <Text style={[styles.overline, styles.mb8]}>Invoice to</Text>
@@ -240,7 +240,7 @@ export default function InvoicePDF({ data }) {
           </View>
           <View style={[styles.col4, styles.alignRight]}>
             <Text style={styles.subtitle2}>Have a Question?</Text>
-            <Text> info@Ecobuy.com</Text>
+            <Text> info@Perfumeswale.com</Text>
           </View>
         </View>
       </Page>

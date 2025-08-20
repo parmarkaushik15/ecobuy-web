@@ -2,6 +2,8 @@ import { styled, alpha } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 
 const RootStyled = styled(Card)(({ theme }) => ({
+  borderRadius: 0,
+  boxShadow: 'none',
   '& .body-row': {
     '& .MuiTableCell-root': {
       background: alpha(theme.palette.primary.main, 0.1)

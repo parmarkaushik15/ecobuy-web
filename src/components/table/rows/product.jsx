@@ -29,7 +29,7 @@ import BlurImage from 'src/components/blurImage';
 
 // icons
 import { MdEdit } from 'react-icons/md';
-import { MdDelete, MdCancel, MdCheckCircle } from 'react-icons/md';
+import { MdDelete, MdCancel, MdCheckCircle, MdTextIncrease } from 'react-icons/md';
 import { IoEye } from 'react-icons/io5';
 import { useState } from 'react';
 export default function ProductRow({ isLoading, row, handleClickOpen, isVendor }) {
@@ -82,25 +82,7 @@ export default function ProductRow({ isLoading, row, handleClickOpen, isVendor }
         <Skeleton variant="text" />
       </TableCell> */}
       <TableCell>{isLoading ? <Skeleton variant="text" /> : <>{fDateShort(row?.createdAt, enUS)}</>}</TableCell>
-      <TableCell>
-        {isLoading ? (
-          <Skeleton variant="text" />
-        ) : (
-          <Label
-            variant={'filled'}
-            color={
-              (row?.available < 1 && 'error') ||
-              (row?.available < 20 && 'warning') ||
-              (row?.available >= 20 && 'success') ||
-              'primary'
-            }
-          >
-            {(row?.available < 1 && 'Out of stock') ||
-              (row?.available < 20 && 'Low stock') ||
-              (row?.available >= 20 && 'In stock')}
-          </Label>
-        )}
-      </TableCell>
+      <TableCell>{isLoading ? <Skeleton variant="text" /> : row?.available}</TableCell>
       <TableCell align="left">
         {isLoading ? (
           <Skeleton variant="text" />
@@ -185,6 +167,11 @@ export default function ProductRow({ isLoading, row, handleClickOpen, isVendor }
                 </IconButton>
               </Link>
             </Tooltip> */}
+            <Tooltip title="Stock">
+              <IconButton onClick={() => handleClickOpen(row, 'stock')}>
+                <MdTextIncrease />
+              </IconButton>
+            </Tooltip>
             <Tooltip title={row?.viewStatus == 'active' ? 'Deactive' : 'Active'}>
               <IconButton
                 onClick={() => handleClickOpen(row.slug, row?.viewStatus == 'active' ? 'deactive' : 'active')}

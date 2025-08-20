@@ -8,12 +8,12 @@ import LoginMain from 'src/components/_main/auth/login';
 
 // Meta information
 export const metadata = {
-  title: 'Login to Ecobuy | Your Gateway to Seamless Shopping and Secure Transactions',
+  title: 'Login to Perfumeswale | Your Gateway to Seamless Shopping and Secure Transactions',
   description:
-    'Log in to Ecobuy for secure access to your account. Enjoy seamless shopping, personalized experiences, and hassle-free transactions. Your trusted portal to a world of convenience awaits. Login now!',
-  applicationName: 'Ecobuy',
-  authors: 'Ecobuy',
-  keywords: 'ecommerce, Ecobuy, Commerce, Login Ecobuy, LoginFrom Ecobuy'
+    'Log in to Perfumeswale for secure access to your account. Enjoy seamless shopping, personalized experiences, and hassle-free transactions. Your trusted portal to a world of convenience awaits. Login now!',
+  applicationName: 'Perfumeswale',
+  authors: 'Perfumeswale',
+  keywords: 'ecommerce, Perfumeswale, Commerce, Login Perfumeswale, LoginFrom Perfumeswale'
 };
 
 export default async function Login() {

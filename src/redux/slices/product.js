@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // ----------------------------------------------------------------------
 
-const shippingFee = parseInt(process.env.SHIPPING_FEE);
 const initialState = {
   checkout: {
     activeStep: 0,
@@ -11,7 +10,8 @@ const initialState = {
     subtotal: 0,
     total: 0,
     discount: 0,
-    shipping: shippingFee,
+    shipping: 0,
+    isFreeShipping: false,
     billing: null
   }
 };
@@ -20,13 +20,21 @@ const slice = createSlice({
   name: 'product',
   initialState,
   reducers: {
+    // SET SHIPPING DETAILS
+    setShippingDetails(state, action) {
+      const { shippingCost, isFreeShipping } = action.payload;
+      state.checkout.shipping = isFreeShipping ? 0 : shippingCost;
+      state.checkout.isFreeShipping = isFreeShipping;
+      state.checkout.total = state.checkout.subtotal - state.checkout.discount + (isFreeShipping ? 0 : shippingCost);
+    },
+
     // CHECKOUT
     getCart(state, action) {
       const cart = action.payload;
 
       const subtotal = sum(cart.map((product) => (product.priceSale || product.price) * product.quantity));
       const discount = cart.length === 0 ? 0 : state.checkout.discount;
-      const shipping = cart.length === 0 ? 0 : shippingFee;
+      const shipping = cart.length === 0 ? 0 : state.checkout.shipping;
       const billing = cart.length === 0 ? null : state.checkout.billing;
 
       state.checkout.cart = cart;
@@ -34,42 +42,52 @@ const slice = createSlice({
       state.checkout.shipping = shipping;
       state.checkout.billing = billing;
       state.checkout.subtotal = subtotal;
-      state.checkout.total = subtotal + (parseInt(shipping) || 0);
+      state.checkout.total = subtotal - discount + shipping;
     },
 
     addCart(state, action) {
       const product = action.payload;
       const updatedProduct = {
         ...product,
-        sku: `${product.sku}-${product.size}-${product.color}`
+        sku: `${product.sku}-${product.size}-${product.color}`,
+        subtotal: (product.priceSale || product.price) * product.quantity
       };
-      const isEmptyCart = state.checkout.cart.length === 0;
-      if (isEmptyCart) {
-        state.checkout.cart = [...state.checkout.cart, updatedProduct];
-      } else {
-        state.checkout.cart = map(state.checkout.cart, (_product) => {
-          const isExisted = _product.sku === updatedProduct.sku;
-          if (isExisted) {
+      const existingItem = state.checkout.cart.find((item) => item.sku === updatedProduct.sku);
+
+      if (existingItem) {
+        state.checkout.cart = map(state.checkout.cart, (item) => {
+          if (item.sku === updatedProduct.sku) {
             return {
-              ..._product,
-              quantity: _product.quantity + product.quantity
+              ...item,
+              quantity: item.quantity + product.quantity,
+              subtotal: (item.priceSale || item.price) * (item.quantity + product.quantity)
             };
           }
-          return _product;
+          return item;
         });
+      } else {
+        state.checkout.cart = [...state.checkout.cart, updatedProduct];
       }
-      state.checkout.cart = uniqBy([...state.checkout.cart, updatedProduct], 'sku');
+
+      state.checkout.cart = uniqBy(state.checkout.cart, 'sku');
+      state.checkout.subtotal = sum(state.checkout.cart.map((item) => (item.priceSale || item.price) * item.quantity));
+      state.checkout.total = state.checkout.subtotal - state.checkout.discount + state.checkout.shipping;
     },
 
     clearCart(state, action) {
       const updateCart = filter(state.checkout.cart, (item) => item.sku !== action.payload);
 
       state.checkout.cart = updateCart;
+      state.checkout.subtotal = sum(updateCart.map((item) => (item.priceSale || item.price) * item.quantity));
+      state.checkout.total = state.checkout.subtotal - state.checkout.discount + state.checkout.shipping;
     },
+
     deleteCart(state, action) {
       const updateCart = filter(state.checkout.cart, (item) => item.sku !== action.payload);
 
       state.checkout.cart = updateCart;
+      state.checkout.subtotal = sum(updateCart.map((item) => (item.priceSale || item.price) * item.quantity));
+      state.checkout.total = state.checkout.subtotal - state.checkout.discount + state.checkout.shipping;
     },
 
     resetCart(state) {
@@ -78,37 +96,44 @@ const slice = createSlice({
       state.checkout.total = 0;
       state.checkout.subtotal = 0;
       state.checkout.discount = 0;
+      state.checkout.shipping = state.checkout.isFreeShipping ? 0 : state.checkout.shipping;
       state.checkout.billing = null;
     },
 
     increaseQuantity(state, action) {
       const productSku = action.payload;
-      const updateCart = map(state.checkout.cart, (product) => {
-        if (product.sku === productSku) {
+      state.checkout.cart = map(state.checkout.cart, (product) => {
+        if (product.sku === productSku && product.quantity < product.available) {
+          const newQuantity = product.quantity + 1;
           return {
             ...product,
-            quantity: product.quantity + 1
+            quantity: newQuantity,
+            subtotal: (product.priceSale || product.price) * newQuantity
           };
         }
         return product;
       });
 
-      state.checkout.cart = updateCart;
+      state.checkout.subtotal = sum(state.checkout.cart.map((item) => (item.priceSale || item.price) * item.quantity));
+      state.checkout.total = state.checkout.subtotal - state.checkout.discount + state.checkout.shipping;
     },
 
     decreaseQuantity(state, action) {
       const productSku = action.payload;
-      const updateCart = map(state.checkout.cart, (product) => {
-        if (product.sku === productSku) {
+      state.checkout.cart = map(state.checkout.cart, (product) => {
+        if (product.sku === productSku && product.quantity > 1) {
+          const newQuantity = product.quantity - 1;
           return {
             ...product,
-            quantity: product.quantity - 1
+            quantity: newQuantity,
+            subtotal: (product.priceSale || product.price) * newQuantity
           };
         }
         return product;
       });
 
-      state.checkout.cart = updateCart;
+      state.checkout.subtotal = sum(state.checkout.cart.map((item) => (item.priceSale || item.price) * item.quantity));
+      state.checkout.total = state.checkout.subtotal - state.checkout.discount + state.checkout.shipping;
     },
 
     createBilling(state, action) {
@@ -118,7 +143,7 @@ const slice = createSlice({
     applyDiscount(state, action) {
       const discount = action.payload;
       state.checkout.discount = discount;
-      state.checkout.total = state.checkout.subtotal - discount;
+      state.checkout.total = state.checkout.subtotal - discount + state.checkout.shipping;
     }
   }
 });
@@ -131,13 +156,11 @@ export const {
   getCart,
   addCart,
   resetCart,
-  onGotoStep,
-  onBackStep,
-  onNextStep,
   clearCart,
   deleteCart,
   createBilling,
   applyDiscount,
   increaseQuantity,
-  decreaseQuantity
+  decreaseQuantity,
+  setShippingDetails
 } = slice.actions;

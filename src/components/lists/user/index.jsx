@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { setLogout } from 'src/redux/slices/user';
 import { resetWishlist } from 'src/redux/slices/wishlist';
+import { resetCart } from 'src/redux/slices/product';
 // mui
 import { Typography, Divider, ListItemIcon, Button, MenuItem, Box } from '@mui/material';
 // icons
@@ -37,6 +38,7 @@ export default function UserList({ ...props }) {
     deleteCookies('token');
     dispatch(setLogout());
     dispatch(resetWishlist());
+    dispatch(resetCart());
     setOpen(false);
     setTimeout(() => {
       location.href = '/auth/login';

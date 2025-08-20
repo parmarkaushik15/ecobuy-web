@@ -125,7 +125,7 @@ export default function SortBar({ compaign, productData, shop, isLoading, sortDa
                 {productData?.total < Number(itemsPerPage) * (Number(page) || 1)
                   ? productData?.total
                   : Number(itemsPerPage) * (Number(page) || 1)}{' '}
-                of {productData?.total} items
+                of {productData?.total === 0 ? '0' : productData?.total} items
               </>
             )
           )}

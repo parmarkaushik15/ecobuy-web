@@ -27,7 +27,7 @@ export default function BrandPage() {
             All Brands
           </Typography>
           <Typography variant="body1" color="text.secondary" textAlign="center">
-            Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry.
+            Browse all the top perfume brands we offer, carefully selected for every style and occasion.
           </Typography>
         </Box>
         <Box>

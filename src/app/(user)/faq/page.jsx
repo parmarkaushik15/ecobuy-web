@@ -43,6 +43,8 @@ import * as api from 'src/services';
 
 // Skeleton component import
 import HeaderBreadcrumbsSkeleton from 'src/components/skeletons/breadcrumbs';
+import Head from 'next/head';
+
 const HeaderBreadcrumbs = dynamic(() => import('src/components/headerBreadcrumbs'), {
   loading: () => <HeaderBreadcrumbsSkeleton />
 });
@@ -133,8 +135,17 @@ const FAQ = () => {
 };
 
 export default function Page() {
+  const pageTitle = 'FAQs | Perfumeswale';
+
+  useEffect(() => {
+    document.title = pageTitle; // Force title update
+  }, []);
+
   return (
     <>
+      <Head>
+        <title>{pageTitle}</title>
+      </Head>
       <HeaderBreadcrumbs
         heading="FAQ"
         links={[

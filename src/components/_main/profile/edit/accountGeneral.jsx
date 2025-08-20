@@ -179,7 +179,7 @@ export default function AccountGeneral() {
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <Grid container spacing={3} mt={3}>
           <Grid item xs={12} md={4}>
-            <Card sx={{ py: 11.8, px: 3, textAlign: 'center' }}>
+            <Card sx={{ py: 11.8, px: 3, textAlign: 'center', borderRadius: 0, boxShadow: 'unset' }}>
               {isLoading || avatarLoading || loadingUpload ? (
                 <Stack alignItems="center">
                   <Skeleton variant="circular" width={142} height={142} />
@@ -243,7 +243,9 @@ export default function AccountGeneral() {
                 p: 3,
                 '& .MuiTypography-root': {
                   marginBottom: '8px !important'
-                }
+                },
+                borderRadius: 0,
+                boxShadow: 'unset'
               }}
             >
               <Stack spacing={{ xs: 2 }}>

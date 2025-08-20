@@ -11,24 +11,24 @@ import ActionBar from 'src/layout/_main/actionbar';
 
 // Meta information
 export const metadata = {
-  title: 'Ecobuy E-commerce',
+  title: 'Perfumeswale E-commerce',
   description:
-    'Log in to Ecobuy for secure access to your account. Enjoy seamless shopping, personalized experiences, and hassle-free transactions. Your trusted portal to a world of convenience awaits. Login now!',
-  applicationName: 'Ecobuy',
-  authors: 'Ecobuy',
-  keywords: 'ecommerce, Ecobuy, Commerce, Login Ecobuy, LoginFrom Ecobuy',
+    'Log in to Perfumeswale for secure access to your account. Enjoy seamless shopping, personalized experiences, and hassle-free transactions. Your trusted portal to a world of convenience awaits. Login now!',
+  applicationName: 'Perfumeswale',
+  authors: 'Perfumeswale',
+  keywords: 'ecommerce, Perfumeswale, Commerce, Login Perfumeswale, LoginFrom Perfumeswale',
   icons: {
     icon: '/favicon.png'
   },
   openGraph: {
-    images: 'https://Ecobuy.vercel.app/opengraph-image.png?1c6a1fa20db2840f'
+    images: 'https://Perfumeswale.vercel.app/opengraph-image.png?1c6a1fa20db2840f'
   }
 };
 
 export default async function RootLayout({ children }) {
   return (
     <>
-      <Topbar />
+      {/* <Topbar /> */}
       <Navbar />
       <ActionBar />
       {children}

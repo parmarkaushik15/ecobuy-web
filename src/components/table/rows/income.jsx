@@ -4,11 +4,10 @@ import { useRouter } from 'next-nprogress-bar';
 
 // mui
 import { useTheme } from '@mui/material/styles';
-import { Box, TableRow, Skeleton, TableCell, Stack, IconButton, Tooltip, Typography } from '@mui/material';
+import { TableRow, Skeleton, TableCell, Stack, IconButton, Tooltip } from '@mui/material';
 
 // components
 import Label from 'src/components/label';
-import BlurImage from 'src/components/blurImage';
 
 // utils
 import { fCurrency } from 'src/utils/formatNumber';
@@ -21,90 +20,39 @@ import { IoEye } from 'react-icons/io5';
 IncomeList.propTypes = {
   isLoading: PropTypes.bool.isRequired,
   row: PropTypes.shape({
-    items: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        cover: PropTypes.string,
-        imageUrl: PropTypes.string,
-        cover: PropTypes.string
-      })
-    ).isRequired,
-    user: PropTypes.shape({
-      firstName: PropTypes.string.isRequired,
-      lastName: PropTypes.string.isRequired
+    _id: PropTypes.string.isRequired,
+    shopTitle: PropTypes.string,
+    totalOrders: PropTypes.number,
+    totalAmount: PropTypes.number,
+    commissionPer: PropTypes.string,
+    commissionAmount: PropTypes.number,
+    status: PropTypes.string,
+    paymentStatus: PropTypes.string,
+    month: PropTypes.string,
+    createdAt: PropTypes.string,
+    updatedAt: PropTypes.string,
+    orders: PropTypes.shape({
+      length: PropTypes.number
     }),
-    createdAt: PropTypes.instanceOf(Date).isRequired,
-    date: PropTypes.instanceOf(Date).isRequired,
-    status: PropTypes.oneOf(['delivered', 'ontheway', 'pending']).isRequired,
-    total: PropTypes.number.isRequired,
-    shop: PropTypes.object.isRequired,
-    orders: PropTypes.array.isRequired,
-    totalIncome: PropTypes.number.isRequired,
-    totalCommission: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    thisMonth: PropTypes.bool,
-    _id: PropTypes.string.isRequired
+    total: PropTypes.number,
+    totalIncome: PropTypes.number,
+    totalCommission: PropTypes.number,
+    date: PropTypes.string
   }).isRequired,
   handleClickOpen: PropTypes.func,
-  isPayout: PropTypes.bool,
   isVendor: PropTypes.bool
 };
 
-export default function IncomeList({ isLoading, row, handleClickOpen, isPayout, isVendor }) {
+export default function IncomeList({ isLoading, row, handleClickOpen, isVendor }) {
   const theme = useTheme();
   const router = useRouter();
+
   return (
-    <TableRow hover key={Math.random()}>
-      {isPayout ? (
-        <TableCell component="th" scope="row" sx={{ maxWidth: 300 }}>
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center'
-            }}
-          >
-            {isLoading ? (
-              <Skeleton variant="rectangular" width={50} height={50} sx={{ borderRadius: '5px' }} />
-            ) : (
-              <Box
-                sx={{
-                  position: 'relative',
-                  overflow: 'hidden',
-                  width: 50,
-                  height: 50,
-                  bgcolor: 'background.default',
-                  mr: 2,
-                  border: (theme) => '1px solid ' + theme.palette.divider,
-                  borderRadius: '5px',
-                  img: {
-                    borderRadius: '5px'
-                  }
-                }}
-              >
-                <BlurImage
-                  alt={row?.name}
-                  blurDataURL={row?.shop?.logo.blurDataURL}
-                  placeholder="blur"
-                  src={
-                    process.env.IMAGE_BASE == 'LOCAL'
-                      ? `${process.env.IMAGE_URL}${row?.shop?.logo?.url}`
-                      : row?.shop?.logo?.url
-                  }
-                  layout="fill"
-                  objectFit="cover"
-                />
-              </Box>
-            )}
-            <Typography variant="subtitle2" noWrap>
-              {isLoading ? <Skeleton variant="text" width={120} sx={{ ml: 1 }} /> : row?.shop?.title}
-            </Typography>
-          </Box>
-        </TableCell>
-      ) : null}
-      <TableCell>{isLoading ? <Skeleton variant="text" /> : row?.orders?.length || 0}</TableCell>
-      <TableCell>{isLoading ? <Skeleton variant="text" /> : fCurrency(row.total)}</TableCell>
-      <TableCell>{isLoading ? <Skeleton variant="text" /> : fCurrency(row.totalIncome)}</TableCell>
-      <TableCell>{isLoading ? <Skeleton variant="text" /> : fCurrency(row.totalCommission)}</TableCell>
+    <TableRow hover key={row?._id}>
+      <TableCell>{isLoading ? <Skeleton variant="text" /> : row.totalOrders || 0}</TableCell>
+      <TableCell>{isLoading ? <Skeleton variant="text" /> : fCurrency(row.totalAmount)}</TableCell>
+      <TableCell>{isLoading ? <Skeleton variant="text" /> : fCurrency(row.totalAmount)}</TableCell>
+      <TableCell>{isLoading ? <Skeleton variant="text" /> : fCurrency(row.commissionAmount)}</TableCell>
       <TableCell>
         {isLoading ? (
           <Skeleton variant="text" />
@@ -112,9 +60,9 @@ export default function IncomeList({ isLoading, row, handleClickOpen, isPayout, 
           <Label
             variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
             color={
-              (row?.status === 'paid' && 'success') ||
-              (row?.status === 'hold' && 'error') ||
-              (row?.status === 'pending' && 'info') ||
+              (row.status === 'approved' && 'success') ||
+              (row.status === 'pending' && 'info') ||
+              (row.status === 'rejected' && 'error') ||
               'error'
             }
           >
@@ -122,30 +70,37 @@ export default function IncomeList({ isLoading, row, handleClickOpen, isPayout, 
           </Label>
         )}
       </TableCell>
-      <TableCell>{isLoading ? <Skeleton variant="text" /> : <>{fDateShort(row.date).slice(3)}</>}</TableCell>
-
+      <TableCell>
+        {isLoading ? (
+          <Skeleton variant="text" />
+        ) : (
+          <Label
+            variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
+            color={
+              (row.paymentStatus === 'done' && 'success') ||
+              (row.paymentStatus === 'pending' && 'info') ||
+              (row.paymentStatus === 'failed' && 'error') ||
+              'error'
+            }
+          >
+            {row.paymentStatus}
+          </Label>
+        )}
+      </TableCell>
+      <TableCell>{isLoading ? <Skeleton variant="text" /> : fDateShort(row.month).slice(3)}</TableCell>
       <TableCell align="right">
         <Stack direction="row" justifyContent="flex-end">
           {isLoading ? (
             <Skeleton variant="circular" width={34} height={34} sx={{ mr: 1 }} />
-          ) : row?.thisMonth ? null : (
-            !isVendor && (
-              <Tooltip title="Edit">
+          ) : (
+            isVendor && (
+              <Tooltip title="Edit Status">
                 <IconButton onClick={() => handleClickOpen(row)}>
                   <MdEdit />
                 </IconButton>
               </Tooltip>
             )
           )}
-          {isLoading ? (
-            <Skeleton variant="circular" width={34} height={34} sx={{ mr: 1 }} />
-          ) : row?._id ? (
-            <Tooltip title="Preview">
-              <IconButton onClick={() => router.push(`/${isVendor ? 'vendor' : 'admin'}/payments/${row._id}`)}>
-                <IoEye />
-              </IconButton>
-            </Tooltip>
-          ) : null}
         </Stack>
       </TableCell>
     </TableRow>

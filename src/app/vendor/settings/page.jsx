@@ -6,9 +6,9 @@ import AccountGeneral from 'src/components/_main/profile/edit/accountGeneral';
 
 // Meta information
 export const metadata = {
-  title: 'Setting - Ecobuy',
-  applicationName: 'Ecobuy',
-  authors: 'Ecobuy'
+  title: 'Setting-Vendor | Perfumeswale',
+  applicationName: 'Perfumeswale',
+  authors: 'Perfumeswale'
 };
 export default function page() {
   return (

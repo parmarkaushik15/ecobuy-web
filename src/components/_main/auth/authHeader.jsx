@@ -12,7 +12,7 @@ export default function AuthHeader() {
           Welcome
         </Typography>
         <Typography textAlign="center" variant="h2" color="primary.contrastText" className="company-name">
-          Ecobuy
+          Perfumeswale
         </Typography>
         <Typography
           textAlign="center"

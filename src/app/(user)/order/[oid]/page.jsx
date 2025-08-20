@@ -9,13 +9,13 @@ import TableCard from 'src/components/table/order';
 
 // Meta information
 export const metadata = {
-  title: 'Order Confirmation | Ecobuy - Your Order Has Been Successfully Placed',
+  title: 'Order Confirmation | Perfumeswale - Your Order Has Been Successfully Placed',
   description:
-    'Congratulations! Your order has been successfully placed on Ecobuy. Thank you for choosing us for your shopping needs. Expect fast processing and delivery. Stay tuned for updates on your order status. Shop more with Ecobuy!',
-  applicationName: 'Ecobuy',
-  authors: 'Ecobuy',
+    'Congratulations! Your order has been successfully placed on Perfumeswale. Thank you for choosing us for your shopping needs. Expect fast processing and delivery. Stay tuned for updates on your order status. Shop more with Perfumeswale!',
+  applicationName: 'Perfumeswale',
+  authors: 'Perfumeswale',
   keywords:
-    'order confirmation, Ecobuy, order placed, successful order, order processing, order delivery, order status, order updates, fast delivery, shopping confirmation, shopping success, shopping updates, online shopping'
+    'order confirmation, Perfumeswale, order placed, successful order, order processing, order delivery, order status, order updates, fast delivery, shopping confirmation, shopping success, shopping updates, online shopping'
 };
 
 export default async function OrderMain({ params }) {

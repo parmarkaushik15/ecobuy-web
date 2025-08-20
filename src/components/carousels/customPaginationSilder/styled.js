@@ -46,14 +46,13 @@ const RootStyled = styled(Box)(({ theme }) => ({
         minHeight: 60,
         position: 'relative',
         cursor: 'pointer',
-        img: {
+        '& img, & video': {
           borderRadius: '5px',
-          border: `2px solid ${theme.palette.divider}`
+          border: `1px solid ${theme.palette.divider}`
         },
-
         '&.active': {
-          img: {
-            border: `2px solid ${theme.palette.primary.main}`
+          '& img, & video': {
+            border: `1px solid ${theme.palette.primary.main}`
           }
         }
       }

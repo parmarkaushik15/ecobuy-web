@@ -17,7 +17,7 @@ export default function ShopSetting() {
     <>
       <HeaderBreadcrumbs
         admin
-        heading="Categories List"
+        heading="Shop Settings"
         links={[
           {
             name: 'Dashboard',
@@ -32,6 +32,7 @@ export default function ShopSetting() {
           }
         ]}
       />
+      {console.log('dataaaaa', data, isLoading)}
       <ShopSettingMain data={data?.data} isLoading={isLoading} />
     </>
   );

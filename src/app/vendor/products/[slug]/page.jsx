@@ -8,8 +8,8 @@ import EditProduct from 'src/components/_admin/products/editProduct';
 import * as api from 'src/services';
 
 export default async function page({ params }) {
-  const { data: categories } = await api.getAllCategories();
-  const { data: brands } = await api.getAllBrandsByAdmin();
+  // const { data: categories } = await api.getAllCategories();
+  // const { data: brands } = await api.getAllBrandsByAdmin();
 
   return (
     <div>
@@ -23,14 +23,14 @@ export default async function page({ params }) {
           },
           {
             name: 'Products',
-            href: '/dashboard/products'
+            href: '/vendor/products'
           },
           {
             name: 'Add Product'
           }
         ]}
       />
-      <EditProduct brands={brands} categories={categories} slug={params.slug} isVendor />
+      <EditProduct slug={params.slug} isVendor />
     </div>
   );
 }

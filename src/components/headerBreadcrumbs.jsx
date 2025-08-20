@@ -21,22 +21,22 @@ export default function HeaderBreadcrumbs({ ...props }) {
       sx={{
         ...sx,
         width: '100%',
-        display: 'flex', // Added to enable flexbox
-        justifyContent: 'center', // Centers horizontally
-        alignItems: 'center', // Centers vertically
         ...(admin && {
           mb: 3,
           height: '100px'
         }),
         ...(!admin && {
+          display: 'flex', // Added to enable flexbox
+          justifyContent: 'center', // Centers horizontally
+          alignItems: 'center', // Centers vertically
           p: 3,
           mt: 3,
           color: 'common.white',
           position: 'relative',
           overflow: 'hidden',
-          height: '150px',
+          height: '130px',
           background: createGradient(theme.palette.primary.main, theme.palette.primary.dark),
-          borderRadius: '5px'
+          borderRadius: '0px'
         })
       }}
     >
@@ -52,10 +52,9 @@ export default function HeaderBreadcrumbs({ ...props }) {
               bottom: '-30%',
               left: '50%',
               transform: 'translateX(-50%)',
-              bgcolor: alpha(theme.palette.primary.light, 0.5),
-              // height: { xs: 60, md: 80 },
-              // width: { xs: 60, md: 80 },
-              borderRadius: '5px',
+              height: { xs: 60, md: 80 },
+              width: { xs: 60, md: 80 },
+              borderRadius: '50px',
               zIndex: 0
             }
           })

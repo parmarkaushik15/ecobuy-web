@@ -4,7 +4,7 @@ import React from 'react';
 import NextLink from 'next/link';
 
 // mui
-import { Typography, Box, Button, Stack } from '@mui/material';
+import { Typography, Box, Button, Stack, Skeleton } from '@mui/material';
 // api
 import * as api from 'src/services';
 import { useQuery } from 'react-query';
@@ -15,6 +15,12 @@ import { IoIosArrowForward } from 'react-icons/io';
 export default function Index() {
   const { data, isLoading } = useQuery(['featured-products'], () => api.getFeaturedProducts());
 
+  const { data: pageContextData, isLoading: loadingContext } = useQuery(['get-home-page-context'], () => {
+    return api.getHomePageContext();
+  });
+
+  const content = pageContextData?.data?.content || {};
+
   return (
     <Box>
       <Stack
@@ -24,34 +30,52 @@ export default function Index() {
         textAlign={{ xs: 'center', md: 'left' }}
       >
         <Box>
-          <Typography variant="h3" color="primary" mt={{ xs: 4, md: 8 }}>
-            Featured Products
-          </Typography>
-          <Typography variant="body1" color="text.secondary" mb={{ xs: 3, md: 5 }}>
-            Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry.
-          </Typography>
+          {loadingContext ? (
+            <>
+              <Skeleton variant="text" width={200} height={40} />
+              <Skeleton variant="text" width={300} height={24} />
+            </>
+          ) : (
+            <>
+              <Typography variant="h3" color="primary" mt={{ xs: 4, md: 8 }}>
+                {content?.featuredProductsTitle || 'Featured Products'}
+              </Typography>
+              <Typography variant="body1" color="text.secondary" mb={{ xs: 3, md: 5 }}>
+                {content?.featuredProductsSubTitle ||
+                  'Handpicked fragrances that stand out for their quality, popularity, and uniqueness.'}
+              </Typography>
+            </>
+          )}
         </Box>
-        <Button
-          variant="contained"
-          color="primary"
-          size="large"
-          sx={{
-            borderRadius: '5px',
-            display: { xs: 'none', md: 'flex' },
-            minWidth: 130,
-            px: 1
-          }}
-          endIcon={<IoIosArrowForward />}
-          component={NextLink}
-          href={`/products?featured=true`}
-        >
-          View More
-        </Button>
+        {loadingContext ? (
+          <Skeleton variant="text" width={100} height={40} />
+        ) : (
+          <Button
+            variant="text"
+            color="primary"
+            size="large"
+            sx={{
+              alignItems: 'center',
+              textTransform: 'none',
+              fontSize: '1rem',
+              display: { xs: 'none', md: 'flex' },
+              minWidth: 130,
+              fontWeight: 500,
+              textDecoration: 'none',
+              '&:hover': { textDecoration: 'underline', backgroundColor: 'transparent' }
+            }}
+            endIcon={<IoIosArrowForward />}
+            component={NextLink}
+            href={`/products?featured=true`}
+          >
+            View More
+          </Button>
+        )}
       </Stack>
 
       {!isLoading && !Boolean(data?.data.length) ? (
         <Typography variant="h3" color="error.main" textAlign="center">
-          Products not found
+          {content?.featuredProductsNoDataTitle || 'Products not found'}
         </Typography>
       ) : (
         <ProductsCarousel data={data?.data || []} isLoading={isLoading} />

@@ -5,7 +5,7 @@ import { useMutation } from 'react-query';
 // mui
 import { styled } from '@mui/material/styles';
 import { LoadingButton } from '@mui/lab';
-import { Card, Stack, TextField, Typography, Box, FormHelperText, Grid, Skeleton } from '@mui/material';
+import { Card, Stack, TextField, Typography, Box, FormHelperText, Grid, Skeleton, Button } from '@mui/material';
 // components
 import UploadSingleFile from 'src/components/upload/UploadSingleFile';
 // yup
@@ -28,7 +28,9 @@ const LabelStyle = styled(Typography)(({ theme }) => ({
   ...theme.typography.subtitle2,
   color: theme.palette.text.secondary,
   marginBottom: theme.spacing(1),
-  lineHeight: 2.5
+  lineHeight: 2.5,
+  borderRadius: 0,
+  boxShadow: 'none'
 }));
 
 export default function ShopSettingFrom({ data: currentShop, isLoading: categoryLoading }) {
@@ -37,7 +39,8 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
     loading: false,
     name: '',
     search: '',
-    open: false
+    open: false,
+    isEditing: false
   });
 
   const { mutate, isLoading } = useMutation(
@@ -50,18 +53,23 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
       retry: false,
       onSuccess: (data) => {
         toast.success(currentShop ? data.message : 'Shop is under review!');
-        // router.push('/dashboard/categories');
       },
       onError: (error) => {
         toast.error(error.response.data.message);
       }
     }
   );
-  // const { mutate: deleteMutate } = useMutation(api.singleDeleteFile, {
-  //   onError: (error) => {
-  //     toast.error(error.response.data.message);
-  //   }
-  // });
+
+  const { mutate: updateShippingInfo, isLoading: shippingLoading } = useMutation(api.updateVendorShopAddress, {
+    onSuccess: (data) => {
+      toast.success('Shop information updated successfully');
+      setstate((prev) => ({ ...prev, isEditingShipping: false }));
+    },
+    onError: (error) => {
+      toast.error(error.response.data.message);
+    }
+  });
+
   const ShopSettingScema = Yup.object().shape({
     title: Yup.string().required('title is required'),
     cover: Yup.mixed().required('Cover is required'),
@@ -82,9 +90,21 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
       city: Yup.string().required('City is required'),
       state: Yup.string().required('State is required'),
       streetAddress: Yup.string().required('Street Address is required')
+    }),
+    shippingInfo: Yup.object().shape({
+      pickup: Yup.string().required('Pickup Location is required'),
+      name: Yup.string().required('Name is required'),
+      email: Yup.string().required('Email is required'),
+      phone: Yup.string().required('Phone is required'),
+      address: Yup.string().required('Address is required'),
+      address_2: Yup.string(),
+      city: Yup.string().required('City is required'),
+      state: Yup.string().required('State is required'),
+      country: Yup.string().required('Country is required'),
+      pin_code: Yup.string().required('Pin Code is required')
     })
   });
-  console.log(currentShop, 'currentShop');
+
   const formik = useFormik({
     initialValues: {
       title: currentShop?.title || '',
@@ -95,25 +115,36 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
       metaDescription: currentShop?.metaDescription || '',
       file: currentShop?.cover || '',
       slug: currentShop?.slug || '',
-      phone: currentShop?.phone || Number,
+      phone: currentShop?.phone || '',
       paymentInfo: {
         holderName: currentShop?.paymentInfo?.holderName || '',
         holderEmail: currentShop?.paymentInfo?.holderEmail || '',
         bankName: currentShop?.paymentInfo?.bankName || '',
-        AccountNo: currentShop?.paymentInfo?.AccountNo || Number
+        AccountNo: currentShop?.paymentInfo?.AccountNo || ''
       },
       address: {
-        country: currentShop?.address.country || '',
-        city: currentShop?.address.city || '',
-        state: currentShop?.address.state || '',
+        country: currentShop?.address?.country || '',
+        city: currentShop?.address?.city || '',
+        state: currentShop?.address?.state || '',
         streetAddress: currentShop?.address.streetAddress || ''
+      },
+      shippingInfo: {
+        pickup: currentShop?.shippingInfo?.pickup || '',
+        name: currentShop?.shippingInfo?.name || '',
+        email: currentShop?.shippingInfo?.email || '',
+        phone: currentShop?.shippingInfo?.phone || '',
+        address: currentShop?.shippingInfo?.address || '',
+        address_2: currentShop?.shippingInfo?.address_2 || '',
+        city: currentShop?.shippingInfo?.city || '',
+        state: currentShop?.shippingInfo?.state || '',
+        country: currentShop?.shippingInfo?.country || '',
+        pin_code: currentShop?.shippingInfo?.pin_code || ''
       }
     },
     enableReinitialize: true,
     validationSchema: ShopSettingScema,
     onSubmit: async (values) => {
       const { ...rest } = values;
-      // console.log(...rest, 'reset');
       try {
         mutate({
           ...rest,
@@ -126,8 +157,9 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
       }
     }
   });
+
   const { errors, values, touched, handleSubmit, setFieldValue, getFieldProps } = formik;
-  // handle drop logo
+
   const handleDropLogo = async (acceptedFiles) => {
     setstate({ ...state, loading: 2 });
     const file = acceptedFiles[0];
@@ -157,13 +189,10 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
         setstate({ ...state, loading: false });
       })
       .then(() => {
-        // if (values.file) {
-        //   deleteMutate(values.logo._id);
-        // }
         setstate({ ...state, loading: false });
       });
   };
-  // handle drop cover
+
   const handleDropCover = async (acceptedFiles) => {
     setstate({ ...state, loading: 2 });
     const file = acceptedFiles[0];
@@ -193,28 +222,30 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
         setstate({ ...state, loading: false });
       })
       .then(() => {
-        // if (values.file) {
-        //   deleteMutate(values.cover._id);
-        // }
         setstate({ ...state, loading: false });
       });
   };
+
   const handleTitleChange = (event) => {
-    const title = event.target.value;
+    const title = event.target.value || '';
     const slug = title
       .toLowerCase()
       .replace(/[^a-zA-Z0-9\s]+/g, '')
-      .replace(/\s+/g, '-'); // convert to lowercase, remove special characters, and replace spaces with hyphens
-    formik.setFieldValue('slug', slug); // set the value of slug in the formik state
-    formik.handleChange(event); // handle the change in formik
+      .replace(/\s+/g, '-');
+    formik.setFieldValue('slug', slug);
+    formik.handleChange(event);
   };
+
   return (
     <Box position="relative">
       <FormikProvider value={formik}>
         <Form noValidate autoComplete="off" onSubmit={handleSubmit}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={8}>
-              <Card sx={{ p: 3 }}>
+              <Card sx={{ p: 3, borderRadius: 0, boxShadow: 'none' }}>
+                <Stack direction="row" justifyContent="space-between" alignItems="center">
+                  <LabelStyle>Shop Settings</LabelStyle>
+                </Stack>
                 <Stack direction="row" spacing={3} flexGrow="wrap">
                   <Box sx={{ width: '100%' }}>
                     <Stack direction="row" justifyContent="space-between">
@@ -244,6 +275,7 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                         category
                         accept="image/*"
                         loading={state.logoLoading}
+                        disabled={!state.isEditing} // Added to disable when not editing
                       />
                     )}
                     {touched.logo && errors.logo && (
@@ -268,10 +300,11 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                           id="title"
                           fullWidth
                           {...getFieldProps('title')}
-                          onChange={handleTitleChange} // add onChange handler for title
+                          onChange={handleTitleChange}
                           error={Boolean(touched.title && errors.title)}
                           helperText={touched.title && errors.title}
                           sx={{ mt: 1 }}
+                          disabled={!state.isEditing} // Added to disable when not editing
                         />
                       )}
                     </div>
@@ -293,6 +326,7 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                           {...getFieldProps('slug')}
                           error={Boolean(touched.slug && errors.slug)}
                           helperText={touched.slug && errors.slug}
+                          disabled={!state.isEditing} // Added to disable when not editing
                         />
                       )}
                     </div>
@@ -313,6 +347,7 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                           {...getFieldProps('metaTitle')}
                           error={Boolean(touched.metaTitle && errors.metaTitle)}
                           helperText={touched.metaTitle && errors.metaTitle}
+                          disabled={!state.isEditing} // Added to disable when not editing
                         />
                       )}
                     </div>
@@ -323,7 +358,7 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                     {categoryLoading ? (
                       <Skeleton variant="text" width={100} />
                     ) : (
-                      <LabelStyle component={'label'} htmlFor="description">
+                      <LabelStyle component={'label'} htmlFor="description HolzShop">
                         {' '}
                         {'Description'}{' '}
                       </LabelStyle>
@@ -337,8 +372,9 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                         {...getFieldProps('description')}
                         error={Boolean(touched.description && errors.description)}
                         helperText={touched.description && errors.description}
-                        rows={9}
+                        rows={11.4}
                         multiline
+                        disabled={!state.isEditing} // Added to disable when not editing
                       />
                     )}
                   </Box>
@@ -360,8 +396,9 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                         {...getFieldProps('metaDescription')}
                         error={Boolean(touched.metaDescription && errors.metaDescription)}
                         helperText={touched.metaDescription && errors.metaDescription}
-                        rows={9}
+                        rows={11.4}
                         multiline
+                        disabled={!state.isEditing} // Added to disable when not editing
                       />
                     )}
                   </Box>
@@ -394,6 +431,7 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                       category
                       accept="image/*"
                       loading={state.loading}
+                      disabled={!state.isEditing} // Added to disable when not editing
                     />
                   )}
                   {touched.cover && errors.cover && (
@@ -401,7 +439,7 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                       {touched.cover && errors.cover}
                     </FormHelperText>
                   )}
-                </Box>{' '}
+                </Box>
               </Card>
             </Grid>
             <Grid item xs={12} md={4}>
@@ -413,7 +451,16 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                 }}
               >
                 <Stack spacing={3}>
-                  <Card sx={{ p: 3 }}>
+                  <Card sx={{ p: 3, borderRadius: 0, boxShadow: 'none' }}>
+                    <Stack direction="row" justifyContent="space-between" alignItems="center">
+                      <LabelStyle>Owner</LabelStyle>
+                      <Button
+                        variant="contained"
+                        onClick={() => setstate((prev) => ({ ...prev, isEditing: !prev.isEditing }))}
+                      >
+                        {state.isEditing ? 'Cancel' : 'Edit'}
+                      </Button>
+                    </Stack>
                     <Stack spacing={2}>
                       <div>
                         {categoryLoading ? (
@@ -432,6 +479,7 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                             {...getFieldProps('paymentInfo.holderName')}
                             error={Boolean(touched.paymentInfo?.holderName && errors.paymentInfo?.holderName)}
                             helperText={touched.paymentInfo?.holderName && errors.paymentInfo?.holderName}
+                            disabled={!state.isEditing} // Added to disable when not editing
                           />
                         )}
                       </div>
@@ -452,6 +500,7 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                             {...getFieldProps('paymentInfo.holderEmail')}
                             error={Boolean(touched.paymentInfo?.holderEmail && errors.paymentInfo?.holderEmail)}
                             helperText={touched.paymentInfo?.holderEmail && errors.paymentInfo?.holderEmail}
+                            disabled={!state.isEditing} // Added to disable when not editing
                           />
                         )}
                       </div>
@@ -472,6 +521,7 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                             {...getFieldProps('paymentInfo.bankName')}
                             error={Boolean(touched.paymentInfo?.bankName && errors.paymentInfo?.bankName)}
                             helperText={touched.paymentInfo?.bankName && errors.paymentInfo?.bankName}
+                            disabled={!state.isEditing} // Added to disable when not editing
                           />
                         )}
                       </div>
@@ -492,6 +542,7 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                             {...getFieldProps('paymentInfo.AccountNo')}
                             error={Boolean(touched.paymentInfo?.AccountNo && errors.paymentInfo?.AccountNo)}
                             helperText={touched.paymentInfo?.AccountNo && errors.paymentInfo?.AccountNo}
+                            disabled={!state.isEditing} // Added to disable when not editing
                           />
                         )}
                       </div>
@@ -512,6 +563,7 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                             {...getFieldProps('phone')}
                             error={Boolean(touched.phone && errors.phone)}
                             helperText={touched.phone && errors.phone}
+                            disabled={!state.isEditing} // Added to disable when not editing
                           />
                         )}
                       </div>
@@ -532,6 +584,7 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                             {...getFieldProps('address.country')}
                             error={Boolean(touched.address?.country && errors.address?.country)}
                             helperText={touched.address?.country && errors.address?.country}
+                            disabled={!state.isEditing} // Added to disable when not editing
                           />
                         )}
                       </div>
@@ -552,6 +605,7 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                             {...getFieldProps('address.city')}
                             error={Boolean(touched.address?.city && errors.address?.city)}
                             helperText={touched.address?.city && errors.address?.city}
+                            disabled={!state.isEditing} // Added to disable when not editing
                           />
                         )}
                       </div>
@@ -572,6 +626,7 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                             {...getFieldProps('address.state')}
                             error={Boolean(touched.address?.state && errors.address?.state)}
                             helperText={touched.address?.state && errors.address?.state}
+                            disabled={!state.isEditing} // Added to disable when not editing
                           />
                         )}
                       </div>
@@ -592,58 +647,278 @@ export default function ShopSettingFrom({ data: currentShop, isLoading: category
                             {...getFieldProps('address.streetAddress')}
                             error={Boolean(touched.address?.streetAddress && errors.address?.streetAddress)}
                             helperText={touched.address?.streetAddress && errors.address?.streetAddress}
+                            disabled={!state.isEditing} // Added to disable when not editing
                           />
                         )}
                       </div>
-
-                      {/* <FormControl fullWidth sx={{ select: { textTransform: 'capitalize' } }}>
-                        {categoryLoading ? (
-                          <Skeleton variant="text" width={70} />
-                        ) : (
-                          <LabelStyle component={'label'} htmlFor="status">
-                            {'Status'}
-                          </LabelStyle>
-                        )}
-                        {categoryLoading ? (
-                          <Skeleton variant="rectangular" width="100%" height={56} />
-                        ) : (
-                          <Select
-                            id="status"
-                            native
-                            {...getFieldProps('status')}
-                            error={Boolean(touched.status && errors.status)}
-                          >
-                            <option value="" style={{ display: 'none' }} />
-                            {STATUS_OPTIONS.map((status) => (
-                              <option key={status} value={status}>
-                                {status}
-                              </option>
-                            ))}
-                          </Select>
-                        )}
-                        {touched.status && errors.status && (
-                          <FormHelperText error sx={{ px: 2, mx: 0 }}>
-                            {touched.status && errors.status}
-                          </FormHelperText>
-                        )}
-                      </FormControl> */}
                     </Stack>
                   </Card>
-                  {categoryLoading ? (
-                    <Skeleton variant="rectangular" width="100%" height={56} />
-                  ) : (
-                    <LoadingButton
-                      type="submit"
-                      variant="contained"
-                      size="large"
-                      loading={isLoading}
-                      sx={{ ml: 'auto', mt: 3 }}
-                    >
-                      {currentShop ? 'Edit Shop' : 'Save'}
-                    </LoadingButton>
-                  )}
                 </Stack>
               </div>
+            </Grid>
+            <Grid item xs={12}>
+              <Card sx={{ p: 3, borderRadius: 0, boxShadow: 'none' }}>
+                <Stack>
+                  {' '}
+                  {/* Added spacing to match other sections */}
+                  {categoryLoading ? (
+                    <Skeleton variant="text" width={250} height={30} />
+                  ) : (
+                    <Stack direction="row" justifyContent="space-between" alignItems="center">
+                      <LabelStyle>Warehouse/Pickup Connection</LabelStyle>
+                      {/* Removed Edit/Cancel button from here */}
+                    </Stack>
+                  )}
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      {categoryLoading ? (
+                        <Skeleton variant="text" width={150} height={20} />
+                      ) : (
+                        <LabelStyle component={'label'} htmlFor="pickup">
+                          Pickup Location
+                        </LabelStyle>
+                      )}
+                      {categoryLoading ? (
+                        <Skeleton variant="rectangular" width="100%" height={56} />
+                      ) : (
+                        <TextField
+                          fullWidth
+                          id="pickup"
+                          {...getFieldProps('shippingInfo.pickup')}
+                          error={Boolean(touched.shippingInfo?.pickup && errors.shippingInfo?.pickup)}
+                          helperText={touched.shippingInfo?.pickup && errors.shippingInfo?.pickup}
+                          disabled={!state.isEditing}
+                        />
+                      )}
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      {categoryLoading ? (
+                        <Skeleton variant="text" width={150} height={20} />
+                      ) : (
+                        <LabelStyle component={'label'} htmlFor="shipping_name">
+                          Name
+                        </LabelStyle>
+                      )}
+                      {categoryLoading ? (
+                        <Skeleton variant="rectangular" width="100%" height={56} />
+                      ) : (
+                        <TextField
+                          fullWidth
+                          id="shipping_name"
+                          {...getFieldProps('shippingInfo.name')}
+                          error={Boolean(touched.shippingInfo?.name && errors.shippingInfo?.name)}
+                          helperText={touched.shippingInfo?.name && errors.shippingInfo?.name}
+                          disabled={!state.isEditing}
+                        />
+                      )}
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      {categoryLoading ? (
+                        <Skeleton variant="text" width={150} height={20} />
+                      ) : (
+                        <LabelStyle component={'label'} htmlFor="shipping_email">
+                          Email
+                        </LabelStyle>
+                      )}
+                      {categoryLoading ? (
+                        <Skeleton variant="rectangular" width="100%" height={56} />
+                      ) : (
+                        <TextField
+                          fullWidth
+                          id="shipping_email"
+                          {...getFieldProps('shippingInfo.email')}
+                          error={Boolean(touched.shippingInfo?.email && errors.shippingInfo?.email)}
+                          helperText={touched.shippingInfo?.email && errors.shippingInfo?.email}
+                          disabled={!state.isEditing}
+                        />
+                      )}
+                    </Grid>
+                    <Grid item xs={12} md={4}>
+                      {categoryLoading ? (
+                        <Skeleton variant="text" width={150} height={20} />
+                      ) : (
+                        <LabelStyle component={'label'} htmlFor="shipping_phone">
+                          Phone
+                        </LabelStyle>
+                      )}
+                      {categoryLoading ? (
+                        <Skeleton variant="rectangular" width="100%" height={56} />
+                      ) : (
+                        <TextField
+                          fullWidth
+                          id="shipping_phone"
+                          {...getFieldProps('shippingInfo.phone')}
+                          error={Boolean(touched.shippingInfo?.phone && errors.shippingInfo?.phone)}
+                          helperText={touched.shippingInfo?.phone && errors.shippingInfo?.phone}
+                          disabled={!state.isEditing}
+                        />
+                      )}
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      {categoryLoading ? (
+                        <Skeleton variant="text" width={150} height={20} />
+                      ) : (
+                        <LabelStyle component={'label'} htmlFor="shipping_address">
+                          Address
+                        </LabelStyle>
+                      )}
+                      {categoryLoading ? (
+                        <Skeleton variant="rectangular" width="100%" height={120} />
+                      ) : (
+                        <TextField
+                          fullWidth
+                          id="shipping_address"
+                          {...getFieldProps('shippingInfo.address')}
+                          error={Boolean(touched.shippingInfo?.address && errors.shippingInfo?.address)}
+                          helperText={touched.shippingInfo?.address && errors.shippingInfo?.address}
+                          multiline
+                          rows={4}
+                          disabled={!state.isEditing}
+                        />
+                      )}
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      {categoryLoading ? (
+                        <Skeleton variant="text" width={150} height={20} />
+                      ) : (
+                        <LabelStyle component={'label'} htmlFor="shipping_address_2">
+                          Address 2
+                        </LabelStyle>
+                      )}
+                      {categoryLoading ? (
+                        <Skeleton variant="rectangular" width="100%" height={120} />
+                      ) : (
+                        <TextField
+                          fullWidth
+                          id="shipping_address_2"
+                          {...getFieldProps('shippingInfo.address_2')}
+                          error={Boolean(touched.shippingInfo?.address_2 && errors.shippingInfo?.address_2)}
+                          helperText={touched.shippingInfo?.address_2 && errors.shippingInfo?.address_2}
+                          multiline
+                          rows={4}
+                          disabled={!state.isEditing}
+                        />
+                      )}
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      {categoryLoading ? (
+                        <Skeleton variant="text" width={150} height={20} />
+                      ) : (
+                        <LabelStyle component={'label'} htmlFor="shipping_city">
+                          City
+                        </LabelStyle>
+                      )}
+                      {categoryLoading ? (
+                        <Skeleton variant="rectangular" width="100%" height={56} />
+                      ) : (
+                        <TextField
+                          fullWidth
+                          id="shipping_city"
+                          {...getFieldProps('shippingInfo.city')}
+                          error={Boolean(touched.shippingInfo?.city && errors.shippingInfo?.city)}
+                          helperText={touched.shippingInfo?.city && errors.shippingInfo?.city}
+                          disabled={!state.isEditing}
+                        />
+                      )}
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      {categoryLoading ? (
+                        <Skeleton variant="text" width={150} height={20} />
+                      ) : (
+                        <LabelStyle component={'label'} htmlFor="shipping_state">
+                          State
+                        </LabelStyle>
+                      )}
+                      {categoryLoading ? (
+                        <Skeleton variant="rectangular" width="100%" height={56} />
+                      ) : (
+                        <TextField
+                          fullWidth
+                          id="shipping_state"
+                          {...getFieldProps('shippingInfo.state')}
+                          error={Boolean(touched.shippingInfo?.state && errors.shippingInfo?.state)}
+                          helperText={touched.shippingInfo?.state && errors.shippingInfo?.state}
+                          disabled={!state.isEditing}
+                        />
+                      )}
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      {categoryLoading ? (
+                        <Skeleton variant="text" width={150} height={20} />
+                      ) : (
+                        <LabelStyle component={'label'} htmlFor="shipping_country">
+                          Country
+                        </LabelStyle>
+                      )}
+                      {categoryLoading ? (
+                        <Skeleton variant="rectangular" width="100%" height={56} />
+                      ) : (
+                        <TextField
+                          fullWidth
+                          id="shipping_country"
+                          {...getFieldProps('shippingInfo.country')}
+                          error={Boolean(touched.shippingInfo?.country && errors.shippingInfo?.country)}
+                          helperText={touched.shippingInfo?.country && errors.shippingInfo?.country}
+                          disabled={!state.isEditing}
+                        />
+                      )}
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      {categoryLoading ? (
+                        <Skeleton variant="text" width={150} height={20} />
+                      ) : (
+                        <LabelStyle component={'label'} htmlFor="shipping_pin_code">
+                          Pin Code
+                        </LabelStyle>
+                      )}
+                      {categoryLoading ? (
+                        <Skeleton variant="rectangular" width="100%" height={56} />
+                      ) : (
+                        <TextField
+                          fullWidth
+                          id="shipping_pin_code"
+                          {...getFieldProps('shippingInfo.pin_code')}
+                          error={Boolean(touched.shippingInfo?.pin_code && errors.shippingInfo?.pin_code)}
+                          helperText={touched.shippingInfo?.pin_code && errors.shippingInfo?.pin_code}
+                          disabled={!state.isEditing}
+                        />
+                      )}
+                    </Grid>
+                  </Grid>
+                  {categoryLoading ? (
+                    <Skeleton variant="rectangular" width={200} height={40} sx={{ mt: 3, ml: 'auto' }} />
+                  ) : (
+                    state.isEditing && (
+                      <Stack direction="row" justifyContent="flex-end" spacing={2} sx={{ mt: 3 }}>
+                        <LoadingButton
+                          variant="contained"
+                          size="large"
+                          onClick={() => {
+                            const shippingPayload = {
+                              pickup: values.shippingInfo.pickup,
+                              name: values.shippingInfo.name,
+                              email: values.shippingInfo.email,
+                              phone: values.shippingInfo.phone,
+                              address: values.shippingInfo.address,
+                              address_2: values.shippingInfo.address_2,
+                              city: values.shippingInfo.city,
+                              state: values.shippingInfo.state,
+                              country: values.shippingInfo.country,
+                              pin_code: values.shippingInfo.pin_code
+                            };
+                            updateShippingInfo(shippingPayload); // Update shipping info
+                            handleSubmit(); // Update shop settings
+                            setstate((prev) => ({ ...prev, isEditing: false })); // Exit edit mode
+                          }}
+                          loading={isLoading || shippingLoading}
+                        >
+                          Save All Changes
+                        </LoadingButton>
+                      </Stack>
+                    )
+                  )}
+                </Stack>
+              </Card>
             </Grid>
           </Grid>
         </Form>

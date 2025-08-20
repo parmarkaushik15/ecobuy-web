@@ -76,7 +76,15 @@ function MBreadcrumbs({ links, admin, activeLast = false, ...other }) {
   ));
 
   return (
-    <Breadcrumbs separator="›" {...other}>
+    <Breadcrumbs
+      separator="›"
+      {...other}
+      sx={{
+        '& .MuiBreadcrumbs-separator': {
+          color: '#ffffff' // or 'white'
+        }
+      }}
+    >
       {activeLast ? listDefault : listActiveLast}
     </Breadcrumbs>
   );

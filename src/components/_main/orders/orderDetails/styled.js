@@ -1,54 +1,36 @@
-import { styled, alpha } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import { createGradient } from 'src/theme/palette';
 
 const RootStyled = styled(Box)(({ theme }) => ({
   marginBottom: theme.spacing(4),
   '& .detail-card': {
     minHeight: 226,
     position: 'relative',
-    background: createGradient(theme.palette.primary.main, theme.palette.primary.dark),
-    color: theme.palette.common.white,
-    zIndex: 0,
-    '&:before': {
-      content: "''",
+    background: theme.palette.background.paper,
+    color: theme.palette.text.primary,
+    marginBottom: theme.spacing(2),
+    boxShadow: 'none',
+    borderRadius: 0,
+    '& .action-button': {
       position: 'absolute',
-      top: '-20%',
-      left: '40%',
-      transform: 'translateX(-50%)',
-      background: alpha(theme.palette.primary.light, 0.5),
-      height: 80,
-      width: 80,
-      borderRadius: '50px',
-      zIndex: 2
-    },
-    '&:after': {
-      content: "''",
-      position: 'absolute',
-      top: '50%',
-      transform: 'translateY(-50%)',
-      right: '-14%',
-      background: alpha(theme.palette.primary.light, 0.5),
-      height: 80,
-      width: 80,
-      borderRadius: '50px',
-      zIndex: 2
+      bottom: theme.spacing(-1),
+      right: theme.spacing(-1),
+      zIndex: 10,
+      [theme.breakpoints.down('sm')]: {
+        minWidth: '40px !important',
+        minHeight: '40px !important',
+        padding: theme.spacing(1),
+        '& .MuiButton-startIcon': {
+          margin: 0
+        },
+        '& .MuiButton-label': {
+          display: 'none'
+        }
+      }
     },
     '& .detail-card-content': {
       position: 'relative',
-      zIndex: 2,
-      '&:before': {
-        content: "''",
-        position: 'absolute',
-        bottom: '-20%',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        background: alpha(theme.palette.primary.light, 0.5),
-        height: 80,
-        width: 80,
-        borderRadius: '50px',
-        zIndex: -1
-      }
+      padding: theme.spacing(3)
     },
     '& .detail-card-btn': {
       display: 'block',
@@ -56,18 +38,68 @@ const RootStyled = styled(Box)(({ theme }) => ({
       lineHeight: 0,
       minHeight: 50,
       color: theme.palette.common.white,
-      background: alpha(theme.palette.primary.light, 0.5),
-      boxShadow: 'none',
+      background: theme.palette.primary.main,
+      boxShadow: theme.shadows[2],
       '&:hover': {
         background: theme.palette.primary.dark
+      }
+    },
+    '& .email-heading': {
+      wordWrap: 'break-word'
+    },
+    '& .timeline': {
+      padding: 0,
+      margin: 0,
+      '& .timeline-opposite': {
+        flex: 0.3,
+        paddingRight: theme.spacing(1),
+        color: theme.palette.text.secondary
       },
-      '& .email-heading': {
-        wordWrap: 'break-word'
+      '& .timeline-dot': {
+        background: theme.palette.primary.main,
+        color: theme.palette.common.white,
+        margin: 0,
+        position: 'relative',
+        '&.current-status': {
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: -4,
+            left: -4,
+            right: -4,
+            bottom: -4,
+            border: `10px solid ${theme.palette.primary.main}`, // Thinner border with theme color
+            borderRadius: '50%',
+            zIndex: -1,
+            animation: 'pulse 1.5s infinite ease-in-out'
+          }
+        }
+      },
+      '& .timeline-connector': {
+        background: theme.palette.primary.light
+      },
+      '& .card-text': {
+        color: theme.palette.text.primary
       }
     }
   },
   '& .skeleton': {
     marginLeft: 'auto'
+  },
+  '@keyframes pulse': {
+    '0%': {
+      transform: 'scale(1)',
+      opacity: 0.7
+    },
+    '50%': {
+      transform: 'scale(1.2)',
+      opacity: 0.3
+    },
+    '100%': {
+      transform: 'scale(1)',
+      opacity: 0.7
+    }
   }
 }));
+
 export default RootStyled;

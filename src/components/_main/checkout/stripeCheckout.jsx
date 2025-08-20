@@ -45,7 +45,7 @@ const StripeCheckout = React.forwardRef((props, ref) => {
     const cardElement = elements.getElement('card');
     try {
       const { client_secret: clientSecret } = await api.paymentIntents(
-        cCurrency(totalWithDiscount || checkout.total),
+        cCurrency(totalWithDiscount || checkout.shipping),
         currency
       );
 

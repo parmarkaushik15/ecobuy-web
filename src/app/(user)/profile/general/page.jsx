@@ -20,9 +20,9 @@ const HeaderBreadcrumbs = dynamic(() => import('src/components/headerBreadcrumbs
 
 // Meta information
 export const metadata = {
-  title: 'Ecobuy - Your Gateway to Seamless Shopping and Secure Transactions',
-  applicationName: 'Ecobuy',
-  authors: 'Ecobuy'
+  title: 'Perfumeswale - Your Gateway to Seamless Shopping and Secure Transactions',
+  applicationName: 'Perfumeswale',
+  authors: 'Perfumeswale'
 };
 
 export default function General() {

@@ -51,6 +51,8 @@ const RootStyled = styled(List)(({ theme }) => ({
   },
   '& .circular-sekelton': {
     paddingRight: theme.spacing(2)
-  }
+  },
+  padding: theme.spacing(2),
+  borderRadius: '5px'
 }));
 export default RootStyled;

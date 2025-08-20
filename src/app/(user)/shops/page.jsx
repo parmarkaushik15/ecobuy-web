@@ -1,52 +1,57 @@
-import React from 'react';
-
-// mui
+'use client';
+import React, { useEffect, useState } from 'react';
 import { Typography, Grid, Box, Stack, Container } from '@mui/material';
-
-// components
 import ShopCard from 'src/components/cards/shop';
-
-// api
 import * as api from 'src/services';
 import HeaderBreadcrumbs from 'src/components/headerBreadcrumbs';
-export default async function ShopComponent() {
-  const data = await api.getShops();
+import Head from 'next/head'; // Make sure this is imported
+import { useQuery } from 'react-query';
+
+export default function ShopComponent() {
+  const [shops, setShops] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const pageTitle = 'Shops | Perfumeswale';
+  const { data: pageContextData, isLoading: loadingContext } = useQuery(['get-products-page-context'], () => {
+    return api.getShopsPageContext();
+  });
+
+  const content = pageContextData?.data?.content || {};
+  useEffect(() => {
+    document.title = pageTitle;
+
+    const fetchShops = async () => {
+      try {
+        const data = await api.getShops();
+        setShops(data?.data || []);
+      } catch (error) {
+        console.error('Error fetching shops:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchShops();
+  }, []);
 
   return (
     <>
-      <HeaderBreadcrumbs
-        heading="Shops"
-        links={[
-          {
-            name: 'Home',
-            href: '/'
-          },
-          {
-            name: 'Shops'
-          }
-        ]}
-      />
-
+      <Head>
+        <title>{pageTitle}</title>
+      </Head>
+      <HeaderBreadcrumbs heading="Shops" links={[{ name: 'Home', href: '/' }, { name: 'Shops' }]} />
       <Container maxWidth="xl">
-        <Stack
-          direction={'column'}
-          sx={{
-            gap: 3,
-            mt: 5
-          }}
-        >
+        <Stack direction="column" sx={{ gap: 3, mt: 5 }}>
           <Box>
             <Grid container spacing={2} justifyContent="center" alignItems="center">
-              {(data?.data).map((inner) => (
-                <React.Fragment key={Math.random()}>
-                  <Grid item lg={4} md={6} sm={6} xs={12}>
-                    <ShopCard shop={inner} isLoading={false} />
-                  </Grid>
-                </React.Fragment>
+              {shops.map((shop) => (
+                <Grid item lg={3} md={4} sm={6} xs={12} key={shop._id}>
+                  <ShopCard shop={shop} isLoading={false} />
+                </Grid>
               ))}
-              {!Boolean(data?.data.length) && (
+              {!loading && !Boolean(shops.length) && (
                 <Typography variant="h3" color="error.main" textAlign="center">
-                  Shop not found
+                  {content?.shopNoDataTitle || 'Shop not found'}
                 </Typography>
               )}
             </Grid>

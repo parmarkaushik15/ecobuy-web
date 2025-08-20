@@ -19,9 +19,9 @@ export default function Navbar() {
         sx={{
           boxShadow: 'none',
           position: 'sticky',
-          top: 80,
+          top: 63,
           zIndex: 999,
-          borderRadius: '5px',
+          borderRadius: '0px',
           bgcolor: (theme) => theme.palette.primary.main,
           display: { md: 'flex', xs: 'none' },
           pr: '0px !important'

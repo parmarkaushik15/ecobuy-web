@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 // mui
-import { Dialog } from '@mui/material';
+import { Box, Dialog } from '@mui/material';
 // components
 import DeleteDialog from 'src/components/dialog/delete';
 import Table from 'src/components/table/table';
@@ -63,16 +63,18 @@ export default function AdminProducts({ isVendor }) {
           }
         />
       </Dialog>
-      <Table
-        heading={'Low Stock Products'}
-        isDashboard
-        headData={TABLE_HEAD}
-        data={data}
-        isLoading={isLoading}
-        row={Product}
-        handleClickOpen={handleClickOpen}
-        isVendor={isVendor}
-      />
+      <Box sx={{ borderRadius: 0 }}>
+        <Table
+          heading={'Low Stock Products'}
+          isDashboard
+          headData={TABLE_HEAD}
+          data={data}
+          isLoading={isLoading}
+          row={Product}
+          handleClickOpen={handleClickOpen}
+          isVendor={isVendor}
+        />
+      </Box>
     </>
   );
 }

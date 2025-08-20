@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next-nprogress-bar';
+import { sendGAEvent } from '@next/third-parties/google';
 // mui
 import { Card, Button, CardHeader, Typography, Box, Skeleton, Stack, Divider } from '@mui/material';
 import { sum } from 'lodash';
@@ -40,6 +41,11 @@ export default function ShoppingCart({ loading }) {
   const { cart } = checkout;
 
   const [count, setCount] = React.useState(0);
+
+  const trackGAEvent = (eventName, params = {}) => {
+    sendGAEvent('event', eventName, params);
+    console.log(`GA4 Event: ${eventName}`, params); // Debug log
+  };
 
   const isEmptyCart = cart.length === 0;
   const handleDeleteCart = (productId) => {
@@ -120,7 +126,18 @@ export default function ShoppingCart({ loading }) {
               </Button>
               <Button
                 color="inherit"
-                onClick={() => dispatch(resetCart())}
+                onClick={() => {
+                  dispatch(resetCart());
+                  trackGAEvent('clear_cart', {
+                    items: cart.map((item) => ({
+                      item_id: item.pid,
+                      item_name: item.name,
+                      price: item.price,
+                      quantity: item.quantity
+                    })),
+                    value: sum(cart.map((item) => item.subtotal))
+                  });
+                }}
                 startIcon={<MdOutlineShoppingCart />}
                 disabled={isEmptyCart}
               >

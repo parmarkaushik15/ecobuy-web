@@ -16,7 +16,9 @@ import { fDateShort } from 'src/utils/formatTime';
 import { fCurrency } from 'src/utils/formatNumber';
 
 // icons
-import { IoEye } from 'react-icons/io5';
+import { IoDownload, IoEye } from 'react-icons/io5';
+import * as api from 'src/services';
+import { useMutation } from 'react-query';
 
 OrderList.propTypes = {
   isLoading: PropTypes.bool.isRequired,
@@ -55,6 +57,32 @@ export default function OrderList({ isLoading, row, isUser, isVendor }) {
   const theme = useTheme();
   const router = useRouter();
   let imageUrl = row?.items[0].cover || row?.items[0]?.imageUrl;
+
+  const { mutate: downloadLable, isLoading: labelLoading } = useMutation(
+    async (orderNo) => {
+      const response = await api.generateLabel({ orderNo });
+      return response;
+    },
+    {
+      onSuccess: async (response) => {
+        const labelUrl = response?.label_url;
+        const fileBlob = await api.downloadLabel({ url: labelUrl });
+
+        const url = window.URL.createObjectURL(fileBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `label.pdf`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+      },
+      onError: (err) => {
+        console.error('Label generation error:', err);
+        toast.error('Failed to generate shipping label. Please try again later.');
+      }
+    }
+  );
 
   imageUrl = process.env.IMAGE_BASE == 'LOCAL' ? `${process.env.IMAGE_URL}${imageUrl}` : imageUrl;
   return (
@@ -112,11 +140,21 @@ export default function OrderList({ isLoading, row, isUser, isVendor }) {
           {isLoading ? (
             <Skeleton variant="circular" width={34} height={34} sx={{ mr: 1 }} />
           ) : (
-            <Tooltip title="Preview">
-              <IconButton onClick={() => router.push(`/${isVendor ? 'vendor' : 'admin'}/orders/${row._id}`)}>
-                <IoEye />
-              </IconButton>
-            </Tooltip>
+            <>
+            {row?.status === 'ready to ship' && (
+                <Tooltip title="Download Lable">
+                  <IconButton onClick={() => downloadLable(row?.orderNo)}>
+                    <IoDownload />
+                  </IconButton>
+                </Tooltip>
+              )}
+              <Tooltip title="Preview">
+                <IconButton onClick={() => router.push(`/${isVendor ? 'vendor' : 'admin'}/orders/${row._id}`)}>
+                  <IoEye />
+                </IconButton>
+              </Tooltip>
+              
+            </>
           )}
         </Stack>
       </TableCell>

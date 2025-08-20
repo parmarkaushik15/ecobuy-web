@@ -9,13 +9,13 @@ import HeaderBreadcrumbs from 'src/components/headerBreadcrumbs';
 
 // Meta information
 export const metadata = {
-  title: 'Ecobuy Shopping Cart | Ecobuy - Convenient Shopping Cart for Easy Checkout',
+  title: 'Perfumeswale Shopping Cart | Perfumeswale - Convenient Shopping Cart for Easy Checkout',
   description:
-    'View your shopping cart on Ecobuy for easy checkout. Add, remove, and manage items effortlessly. Enjoy a seamless shopping experience with secure transactions and personalized recommendations. Explore your cart now!',
-  applicationName: 'Ecobuy',
-  authors: 'Ecobuy',
+    'View your shopping cart on Perfumeswale for easy checkout. Add, remove, and manage items effortlessly. Enjoy a seamless shopping experience with secure transactions and personalized recommendations. Explore your cart now!',
+  applicationName: 'Perfumeswale',
+  authors: 'Perfumeswale',
   keywords:
-    'shopping cart, Ecobuy, view cart, cart items, add to cart, remove from cart, manage cart, checkout, online shopping, secure transactions, personalized recommendations, seamless shopping, convenient shopping'
+    'shopping cart, Perfumeswale, view cart, cart items, add to cart, remove from cart, manage cart, checkout, online shopping, secure transactions, personalized recommendations, seamless shopping, convenient shopping'
 };
 
 export default async function Cart() {

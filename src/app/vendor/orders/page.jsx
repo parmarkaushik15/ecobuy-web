@@ -6,9 +6,9 @@ import OrdersList from 'src/components/_admin/orders/ordersList';
 
 // Meta information
 export const metadata = {
-  title: 'Order - Ecobuy',
-  applicationName: 'Ecobuy',
-  authors: 'Ecobuy'
+  title: 'Order-Vendor | Perfumeswale',
+  applicationName: 'Perfumeswale',
+  authors: 'Perfumeswale'
 };
 export default function page() {
   return (

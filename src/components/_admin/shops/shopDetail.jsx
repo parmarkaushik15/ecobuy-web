@@ -14,7 +14,7 @@ export default function ShopDetail({ data, isLoading }) {
     <Grid container spacing={3}>
       {data.map((v, i) => (
         <Grid key={i} item xs={12} sm={6} md={3}>
-          <Card>
+          <Card sx={{ borderRadius: 0, boxShadow: 'unset' }}>
             <CardContent>
               <Stack direction="row" alignItems="center" justifyContent="space-between">
                 <Stack>

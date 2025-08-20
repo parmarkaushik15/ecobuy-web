@@ -3,6 +3,9 @@ import React, { useState } from 'react';
 import { useMutation } from 'react-query';
 import { updateUserRole } from 'src/redux/slices/user';
 import { useDispatch } from 'react-redux';
+import { setLogout } from 'src/redux/slices/user';
+import { resetCart } from 'src/redux/slices/product';
+import { resetWishlist } from 'src/redux/slices/wishlist';
 import toast from 'react-hot-toast';
 import PropTypes from 'prop-types';
 import { useRouter } from 'next-nprogress-bar';
@@ -21,6 +24,8 @@ import axios from 'axios';
 import { Form, FormikProvider, useFormik } from 'formik';
 // api
 import * as api from 'src/services';
+// hooks
+import { deleteCookies } from 'src/hooks/cookies';
 
 CreateShopSettingFrom.propTypes = {
   data: PropTypes.object,
@@ -49,9 +54,15 @@ export default function CreateShopSettingFrom() {
   const { mutate, isLoading } = useMutation('new-user-shop', api.addShopByUser, {
     retry: false,
     onSuccess: () => {
-      toast.success('Shop is under review!');
+      toast.success('Shop is under review! Please wait for approval and log in again.');
       dispatch(updateUserRole());
-      router.push('/vendor/dashboard');
+      deleteCookies('token');
+      dispatch(resetWishlist());
+      dispatch(resetCart());
+      dispatch(setLogout());
+      setTimeout(() => {
+        router.push('/auth/login');
+      }, 2000);
     },
     onError: (error) => {
       toast.error(error.response.data.message);
@@ -83,6 +94,7 @@ export default function CreateShopSettingFrom() {
       streetAddress: Yup.string().required('Street Address is required')
     })
   });
+
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -111,7 +123,6 @@ export default function CreateShopSettingFrom() {
     validationSchema: ShopSettingScema,
     onSubmit: async (values) => {
       const { file, ...rest } = values;
-      console.log(file, '');
       try {
         mutate({
           ...rest

@@ -6,8 +6,29 @@ import { Box, alpha, Card, Grid, Typography, useTheme } from '@mui/material';
 import { MdVerified } from 'react-icons/md';
 import { FiClock } from 'react-icons/fi';
 import { BsShieldFillCheck } from 'react-icons/bs';
+import { useQuery } from 'react-query';
 
 export default function AdditionalInfo() {
+  const { data: pageContextData, isLoading: loadingContext } = useQuery(['get-products-page-context'], () => {
+    return api.getProductPageContext();
+  });
+
+  const content = pageContextData?.data?.content || {};
+
+  const PRODUCT_DESCRIPTION = [
+    {
+      title: content?.label1 || '100% Original',
+      icon: <MdVerified size={30} />
+    },
+    {
+      title: content?.label2 || '10 Days Replacement',
+      icon: <FiClock size={28} />
+    },
+    {
+      title: content?.label3 || '1 year Warranty',
+      icon: <BsShieldFillCheck size={28} />
+    }
+  ];
   const theme = useTheme();
   return (
     <Grid container spacing={3}>
@@ -16,6 +37,7 @@ export default function AdditionalInfo() {
           <Card
             sx={{
               borderRadius: '5px',
+              boxShadow: 'none',
               width: '100%',
               position: 'relative',
               py: 4,
@@ -56,21 +78,23 @@ export default function AdditionalInfo() {
                 my: 2,
                 mx: 'auto',
                 maxWidth: 280,
-                textAlign: 'center'
+                textAlign: 'center',
+                boxShadow: 'none'
               }}
             >
               <Box
                 sx={{
                   margin: 'auto',
                   marginBottom: 1,
-                  color: 'common.white',
+                  color: theme.palette.primary.main,
                   backgroundColor: 'primary.light',
                   height: 48,
                   width: 48,
                   borderRadius: '50px',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  boxShadow: 'none'
                 }}
               >
                 {item.icon}
@@ -85,17 +109,3 @@ export default function AdditionalInfo() {
     </Grid>
   );
 }
-const PRODUCT_DESCRIPTION = [
-  {
-    title: '100% Original',
-    icon: <MdVerified size={30} />
-  },
-  {
-    title: '10 Days Replacement',
-    icon: <FiClock size={28} />
-  },
-  {
-    title: '1 year Warranty',
-    icon: <BsShieldFillCheck size={28} />
-  }
-];

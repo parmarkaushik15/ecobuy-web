@@ -18,9 +18,9 @@ const InvoiceHistory = dynamic(() => import('src/components/_main/profile/invoic
 
 // Meta information
 export const metadata = {
-  title: 'Invoice | Ecobuy - Your Order Details and Payment Confirmation',
-  applicationName: 'Ecobuy',
-  authors: 'Ecobuy'
+  title: 'Invoice | Perfumeswale - Your Order Details and Payment Confirmation',
+  applicationName: 'Perfumeswale',
+  authors: 'Perfumeswale'
 };
 
 export default async function OrderPage() {

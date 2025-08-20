@@ -5,11 +5,11 @@ import Dashboard from 'src/components/_admin/dashboard';
 
 // Meta information
 export const metadata = {
-  title: 'Ecobuy - Dashboard',
-  description: 'Welcome to the Ecobuy Dashboard. Manage your e-commerce operations with ease.',
-  applicationName: 'Ecobuy Dashboard',
-  authors: 'Ecobuy',
-  keywords: 'dashboard, e-commerce, management, Ecobuy',
+  title: 'Dashboard-Vendor | Perfumeswale',
+  description: 'Welcome to the Perfumeswale Dashboard. Manage your e-commerce operations with ease.',
+  applicationName: 'Perfumeswale Dashboard',
+  authors: 'Perfumeswale',
+  keywords: 'dashboard, e-commerce, management, Perfumeswale',
   icons: {
     icon: '/favicon.png'
   }

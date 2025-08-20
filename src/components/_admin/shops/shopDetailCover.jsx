@@ -47,8 +47,8 @@ const CoverImgStyle = styled('div')({
 
 export default function ShopDetailCover({ data, isLoading, isUser, page }) {
   return (
-    <RootStyle>
-      {!isLoading && (
+    <RootStyle sx={{ borderRadius: 0, boxShadow: 'unset' }}>
+      {!isLoading && data?.cover?.url && (
         <Image
           src={process.env.IMAGE_BASE == 'LOCAL' ? `${process.env.IMAGE_URL}${data?.cover?.url}` : data?.cover?.url}
           alt={data?.title || data?.name}
@@ -62,7 +62,7 @@ export default function ShopDetailCover({ data, isLoading, isUser, page }) {
       <div>
         <Container maxWidth="xl">
           <InfoStyle>
-            {data?.logo ? (
+            {data?.logo?.url ? (
               <MyAvatar
                 data={{ cover: data?.logo?.url, fullName: data?.title }}
                 sx={{
@@ -185,20 +185,25 @@ export default function ShopDetailCover({ data, isLoading, isUser, page }) {
 ShopDetailCover.propTypes = {
   data: PropTypes.shape({
     cover: PropTypes.shape({
-      url: PropTypes.string.isRequired
+      url: PropTypes.string,
+      blurDataURL: PropTypes.string
     }),
     logo: PropTypes.shape({
-      url: PropTypes.string.isRequired
+      url: PropTypes.string
     }),
-
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    address: PropTypes.shape({
+      streetAddress: PropTypes.string,
+      city: PropTypes.string,
+      state: PropTypes.string,
+      country: PropTypes.string
+    }),
+    phone: PropTypes.string,
     approved: PropTypes.bool,
-    approvedAt: PropTypes.bool,
-    address: PropTypes.object.isRequired,
-    phone: PropTypes.any,
-    description: PropTypes.string.isRequired,
-    email: PropTypes.string.isRequired
-  }).isRequired,
+    approvedAt: PropTypes.string
+  }),
   isLoading: PropTypes.bool.isRequired,
-  isUser: PropTypes.bool
+  isUser: PropTypes.bool,
+  page: PropTypes.string
 };

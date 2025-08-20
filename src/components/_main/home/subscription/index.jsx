@@ -16,7 +16,7 @@ import subscriptionImg from '../../../../../public/images/subscription-img.png';
 import { Form, FormikProvider, useFormik } from 'formik';
 // api
 import * as api from 'src/services';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
@@ -44,6 +44,12 @@ export default function Subscription() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  const { data: pageContextData, isLoading: loadingContext } = useQuery(['get-ofers-aboutus-page-context'], () => {
+    return api.getOffersAboutusPageContext();
+  });
+
+  const content = pageContextData?.data?.content || {};
 
   //   api integrate
   const formik = useFormik({
@@ -127,9 +133,10 @@ export default function Subscription() {
                 </IconButton>
               </Box>
               <Stack spaceing={2} textAlign="center" mb={4}>
-                <Typography variant="h4">Sign up to Ecobuy</Typography>
+                <Typography variant="h4">{content?.popupTitle || 'Sign up to Perfumeswale'}</Typography>
                 <DialogContentText>
-                  Enter your email address to subscribe our notification of our new post & features by email.
+                  {content?.popupSubTitle ||
+                    'Enter your email address to subscribe our notification of our new post & features by email.'}
                 </DialogContentText>
               </Stack>
               <FormikProvider value={formik}>

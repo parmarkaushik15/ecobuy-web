@@ -95,7 +95,7 @@ export default function TableDetails({ ...props }) {
                       </ThumbImgStyle>
                       <Stack spacing={0.5}>
                         <Typography variant={'subtitle2'} noWrap fontSize={{ xs: '12px', sm: '0.875rem' }}>
-                          {row?.name.slice(0, 50)}
+                          {row?.name?.slice(0, 50)}
                         </Typography>
                         <Stack
                           spacing={1}

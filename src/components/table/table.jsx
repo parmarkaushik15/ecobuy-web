@@ -77,7 +77,12 @@ export default function CustomTable({ filters = [], ...props }) {
 
   const Component = row;
   return (
-    <Card>
+    <Card
+      sx={{
+        borderRadius: 0,
+        boxShadow: 'unset'
+      }}
+    >
       <>
         {!filters.length && !heading ? (
           <Stack spacing={2} direction="row" alignItems="center" justifyContent="space-between" sx={{ p: 2 }}>
@@ -126,7 +131,7 @@ export default function CustomTable({ filters = [], ...props }) {
                   {/* {(isLoading ? Array.from(new Array(6)) : data?.data).map((item) => {
                     return <Component key={Math.random()} row={item} isLoading={isLoading} {...rest} />;
                   })} */}
-                  {(isLoading ? Array.from({ length: 6 }) : (data?.data ?? [])).map((item) => (
+                  {(isLoading ? Array.from({ length: 6 }) : data?.data ?? []).map((item) => (
                     <Component key={Math.random()} row={item} isLoading={isLoading} {...rest} />
                   ))}
                 </TableBody>

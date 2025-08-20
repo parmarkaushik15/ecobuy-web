@@ -28,9 +28,9 @@ const WishlistMain = dynamic(() => import('src/components/_main/profile/wishlist
 
 // Meta information
 export const metadata = {
-  title: 'Wishlist | Ecobuy - Save Your Favorite Items for Later',
-  applicationName: 'Ecobuy',
-  authors: 'Ecobuy'
+  title: 'Wishlist | Perfumeswale - Save Your Favorite Items for Later',
+  applicationName: 'Perfumeswale',
+  authors: 'Perfumeswale'
 };
 
 export default function Wishlist() {
