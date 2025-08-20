@@ -141,7 +141,7 @@ export default function OrderList({ isLoading, row, isUser, isVendor }) {
             <Skeleton variant="circular" width={34} height={34} sx={{ mr: 1 }} />
           ) : (
             <>
-            {row?.status === 'ready to ship' && (
+              {row?.status === 'ready to ship' && (
                 <Tooltip title="Download Lable">
                   <IconButton onClick={() => downloadLable(row?.orderNo)}>
                     <IoDownload />
@@ -153,7 +153,6 @@ export default function OrderList({ isLoading, row, isUser, isVendor }) {
                   <IoEye />
                 </IconButton>
               </Tooltip>
-              
             </>
           )}
         </Stack>
