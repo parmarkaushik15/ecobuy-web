@@ -23,7 +23,7 @@ const nextConfig = {
     IMAGE_URL: process.env.IMAGE_URL
   },
   images: {
-    domains: ['api.ecobuy.site', 'res.cloudinary.com', 'localhost']
+    domains: ['apieco.codequality.us', 'res.cloudinary.com', 'localhost']
   }
 };
 
