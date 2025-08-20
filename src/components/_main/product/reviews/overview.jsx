@@ -31,6 +31,7 @@ const GridStyle = styled(Grid)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   flexDirection: 'column',
+  boxShadow: 'none', // Removes any shadow
   '&.border-bottom': {
     borderBottom: `solid 1px ${theme.palette.divider}`
   },
@@ -77,7 +78,8 @@ export default function ReviewOverview({ ...props }) {
     <Box
       sx={{
         height: 1,
-        borderRight: (theme) => `1px solid ${theme.palette.divider}`
+        borderRight: (theme) => `1px solid ${theme.palette.divider}`,
+        boxShadow: 'none' // Removes any shadow
       }}
     >
       <Grid container>

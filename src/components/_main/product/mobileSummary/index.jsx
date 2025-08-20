@@ -4,6 +4,7 @@ import { useRouter } from 'next-nprogress-bar';
 import { FacebookShareButton, TwitterShareButton, LinkedinShareButton, WhatsappShareButton } from 'next-share';
 import PropTypes from 'prop-types';
 import { toast } from 'react-hot-toast';
+import { sendGAEvent } from '@next/third-parties/google';
 // mui
 import {
   Box,
@@ -27,12 +28,13 @@ import { MdContentCopy } from 'react-icons/md';
 import { useFormik, Form, FormikProvider, useField } from 'formik';
 // redux
 import { useDispatch, useSelector } from 'src/redux/store';
-import { addCart } from 'src/redux/slices/product';
-
+import { addCart, setShippingDetails } from 'src/redux/slices/product';
 // components
 import ColorPreview from 'src/components/colorPreview';
 import SizePreview from 'src/components/sizePicker';
 import { fCurrency } from 'src/utils/formatNumber';
+import { useCurrencyConvert } from 'src/hooks/convertCurrency';
+import { useCurrencyFormatter } from 'src/hooks/formatCurrency';
 import RootStyled from './styled';
 
 ProductDetailsSumaryMobile.propTypes = {
@@ -42,14 +44,14 @@ ProductDetailsSumaryMobile.propTypes = {
   totalReviews: PropTypes.number.isRequired,
   totalRating: PropTypes.number.isRequired,
   brand: PropTypes.object.isRequired,
-  category: PropTypes.object.isRequired
+  category: PropTypes.object.isRequired,
+  shippingCost: PropTypes.number,
+  isFreeShipping: PropTypes.bool
 };
 
 const Incrementer = ({ ...props }) => {
   const { available } = props;
   const [field, , helpers] = useField(props);
-  // eslint-disable-next-line react/prop-types
-
   const { value } = field;
   const { setValue } = helpers;
 
@@ -77,29 +79,74 @@ const Incrementer = ({ ...props }) => {
 Incrementer.propTypes = {
   available: PropTypes.number.isRequired
 };
+
 export default function ProductDetailsSumaryMobile({ ...props }) {
-  const { product, isLoading, totalReviews, totalRating, brand, category } = props;
+  const { product, isLoading, totalReviews, totalRating, brand, category, shippingCost, isFreeShipping } = props;
   const [isClient, setIsClient] = useState(false);
   const [color, setColor] = useState(0);
   const [size, setSize] = useState(0);
+  const [selectedVariant, setSelectedVariant] = useState(
+    product?.variant?.[0] || { price: product?.price, priceSale: product?.priceSale }
+  );
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const { checkout } = useSelector(({ product }) => product);
+  const { isAuthenticated } = useSelector(({ user }) => user);
+  const [isLoaded, setLoaded] = useState(false);
+  const cCurrency = useCurrencyConvert();
+  const fCurrency = useCurrencyFormatter();
+  const isMobile = useMediaQuery('(max-width:768px)');
+
   useEffect(() => {
     setIsClient(true);
-  }, []);
-  const router = useRouter();
+    setLoaded(true);
+    // Set initial variant based on the first size
+    if (product?.variant?.length > 0) {
+      setSelectedVariant(product.variant[0]);
+      console.log('Initial selectedVariant:', product.variant[0]);
+    }
+  }, [product]);
 
-  const dispatch = useDispatch();
-
-  const { checkout } = useSelector(({ product }) => product);
-
-  const [isLoaded, setLoaded] = useState(false);
+  // Dispatch shipping details when buttons are clicked
+  const handleShippingDetails = () => {
+    const finalShippingCost = shippingCost ?? 0;
+    const finalIsFreeShipping = isFreeShipping ?? true;
+    if (shippingCost === undefined || isFreeShipping === undefined) {
+      console.warn('Shipping details missing, using defaults:', { finalShippingCost, finalIsFreeShipping });
+      toast.error('Failed to load shipping details, using default values.');
+    }
+    dispatch(setShippingDetails({ shippingCost: finalShippingCost, isFreeShipping: finalIsFreeShipping }));
+    console.log('Dispatched shipping details:', {
+      shippingCost: finalShippingCost,
+      isFreeShipping: finalIsFreeShipping
+    });
+  };
 
   const isMaxQuantity =
     !isLoading &&
     checkout.cart.filter((item) => item._id === product?._id).map((item) => item.quantity)[0] >= product?.available;
 
+  // GA4 Event Helper Function
+  const trackGAEvent = (eventName, params = {}) => {
+    const baseParams = {
+      item_id: product._id,
+      item_name: product.name,
+      price: selectedVariant.priceSale || selectedVariant.price,
+      currency: 'USD',
+      quantity: params.quantity || 1
+    };
+    sendGAEvent('event', eventName, { ...baseParams, ...params });
+    console.log(`GA4 Event: ${eventName}`, { ...baseParams, ...params });
+  };
+
   const onAddCart = (param) => {
+    handleShippingDetails(); // Dispatch shipping details
     toast.success('Added to cart');
     dispatch(addCart(param));
+    trackGAEvent('add_to_cart', {
+      quantity: param.quantity,
+      value: (param.priceSale || param.price) * param.quantity
+    });
   };
 
   const formik = useFormik({
@@ -107,58 +154,96 @@ export default function ProductDetailsSumaryMobile({ ...props }) {
     initialValues: {
       pid: product?._id,
       cover: product?.cover,
-
       quantity: 1
     },
     onSubmit: async (values, { setSubmitting }) => {
-      try {
-        const alreadyProduct = !isLoading && checkout.cart.filter((item) => item.pid === values.pid);
-        if (!Boolean(alreadyProduct.length)) {
-          const colorSelected = product?.colors.find((_, index) => index === color);
-          const sizeSelected = product?.sizes.find((_, index) => index === size);
-          onAddCart({
-            pid: product._id,
-            sku: product.sku,
-            color: colorSelected,
-            size: sizeSelected,
-            image: product?.images[0].url,
-            quantity: values.quantity,
-            price: product.priceSale === 0 ? product.price : product.priceSale,
-            subtotal: (product.priceSale || product?.price) * values.quantity
-          });
-          setFieldValue('quantity', 1);
+      if (!isAuthenticated) {
+        setSubmitting(false);
+        router.push('/auth/login');
+      } else {
+        try {
+          const alreadyProduct = !isLoading && checkout.cart.filter((item) => item.pid === values.pid);
+          if (!Boolean(alreadyProduct.length)) {
+            const colorSelected = product?.colors?.[color] || '';
+            const sizeSelected = product?.variant?.[size]?.size || '';
+            const cartItem = {
+              pid: product._id,
+              sku: product.sku,
+              name: product.name,
+              color: colorSelected,
+              size: sizeSelected,
+              shop: product.shop,
+              image: product?.image?.url || product?.images?.[0]?.url || '',
+              quantity: values.quantity,
+              price: selectedVariant.price,
+              priceSale: selectedVariant.priceSale || selectedVariant.price,
+              subtotal: (selectedVariant.priceSale || selectedVariant.price) * values.quantity,
+              available: product.available
+            };
+            console.log('Dispatching to cart (Buy Now):', cartItem);
+            handleShippingDetails(); // Dispatch shipping details
+            dispatch(addCart(cartItem));
+            setFieldValue('quantity', 1);
+            trackGAEvent('add_to_cart', {
+              quantity: values.quantity,
+              value: (selectedVariant.priceSale || selectedVariant.price) * values.quantity
+            });
+            trackGAEvent('purchase', {
+              value: (selectedVariant.priceSale || selectedVariant.price) * values.quantity,
+              transaction_id: `T_${Date.now()}`
+            });
+          }
+          setSubmitting(false);
+          router.push('/cart');
+        } catch (error) {
+          setSubmitting(false);
+          toast.error('Failed to add to cart');
         }
-
-        setSubmitting(false);
-        router.push('/cart');
-      } catch (error) {
-        setSubmitting(false);
       }
     }
   });
 
   const { values, touched, errors, setFieldValue, handleSubmit } = formik;
-  const handleAddCart = () => {
-    const colorSelected = product?.colors.find((_, index) => index === color);
-    const sizeSelected = product?.sizes.find((_, index) => index === size);
-    onAddCart({
-      pid: product._id,
-      sku: product.sku,
-      color: colorSelected,
 
-      image: product?.images[0].url,
-      size: sizeSelected,
-      quantity: values.quantity,
-      price: product.priceSale === 0 ? product.price : product.priceSale,
-      subtotal: (product.priceSale || product?.price) * values.quantity
-    });
-    setFieldValue('quantity', 1);
+  const handleAddCart = (event) => {
+    if (!isAuthenticated) {
+      event.stopPropagation();
+      router.push('/auth/login');
+    } else {
+      const colorSelected = product?.colors?.[color] || '';
+      const sizeSelected = product?.variant?.[size]?.size || '';
+      const cartItem = {
+        pid: product._id,
+        sku: product.sku,
+        name: product.name,
+        color: colorSelected,
+        size: sizeSelected,
+        shop: product.shop,
+        image: product?.image?.url || product?.images?.[0]?.url || '',
+        quantity: values.quantity,
+        price: selectedVariant.price,
+        priceSale: selectedVariant.priceSale || selectedVariant.price,
+        subtotal: (selectedVariant.priceSale || selectedVariant.price) * values.quantity,
+        available: product.available
+      };
+      console.log('Dispatching to cart (Add to Cart):', cartItem);
+      onAddCart(cartItem);
+      setFieldValue('quantity', 1);
+    }
   };
 
-  useEffect(() => {
-    setLoaded(true);
-  }, []);
-  const isMobile = useMediaQuery('(max-width:768px)');
+  // Handle Size Change
+  const handleSizeChange = (newSizeIndex) => {
+    setSize(newSizeIndex);
+    const selectedSize = product?.variant?.[newSizeIndex]?.size;
+    const selectedVariantData = product?.variant?.find((v) => v.size === selectedSize) || {
+      price: product.price,
+      priceSale: product.priceSale
+    };
+    setSelectedVariant(selectedVariantData);
+    console.log('Size changed:', { newSizeIndex, selectedSize, selectedVariantData });
+  };
+
   return (
     <RootStyled>
       <FormikProvider value={formik}>
@@ -171,17 +256,13 @@ export default function ProductDetailsSumaryMobile({ ...props }) {
             <Typography variant="body1" color="primary">
               {totalReviews} <span>{Number(totalReviews) > 1 ? 'Reviews' : 'Review'}</span>
             </Typography>
-
             <Typography variant="h4" className="text-price">
-              {product?.price <= product?.priceSale ? null : (
+              {fCurrency(cCurrency(selectedVariant.priceSale || selectedVariant.price))}
+              {selectedVariant.price <= selectedVariant.priceSale ? null : (
                 <Box component="span" className="old-price">
-                  {!isLoading && isLoaded && fCurrency(product?.price)}
+                  {!isLoading && isLoaded && fCurrency(cCurrency(selectedVariant.price))}
                 </Box>
               )}
-              <Box component="span">
-                &nbsp;
-                {!isLoading && isLoaded && fCurrency(product?.priceSale)}
-              </Box>
             </Typography>
           </Stack>
           <Stack spacing={1} my={3}>
@@ -197,12 +278,16 @@ export default function ProductDetailsSumaryMobile({ ...props }) {
                 {category?.name || 'Commercehope'}
               </Typography>
             </Stack>
-            {product?.price > product?.priceSale && (
+            {selectedVariant.price > selectedVariant.priceSale && (
               <Stack direction="row" alignItems="center" spacing={1}>
                 <Typography variant="subtitle1">Discount:</Typography>
                 <Typography variant="subtitle1" color="text.secondary" fontWeight={400} className="text-discount">
-                  {!isLoading && isLoaded && fCurrency(product?.price - product?.priceSale)}
-                  {<span>({(100 - (product?.priceSale / product?.price) * 100).toFixed(0)}% Discount)</span>}
+                  {!isLoading && isLoaded && fCurrency(cCurrency(selectedVariant.price - selectedVariant.priceSale))}
+                  {
+                    <span>
+                      ({(100 - (selectedVariant.priceSale / selectedVariant.price) * 100).toFixed(0)}% Discount)
+                    </span>
+                  }
                 </Typography>
               </Stack>
             )}
@@ -223,11 +308,16 @@ export default function ProductDetailsSumaryMobile({ ...props }) {
             </Stack>
             <Stack direction="row" alignItems="center" spacing={2} pt={1}>
               <Typography variant="subtitle1">Color:</Typography>
-              <ColorPreview color={color} setColor={setColor} colors={product?.colors} isDetail />
+              <ColorPreview color={color} setColor={setColor} colors={product?.colors || []} isDetail />
             </Stack>
             <Stack direction="row" alignItems="center" spacing={2} pt={1}>
-              <Typography variant="subtitle1">Size:</Typography>
-              <SizePreview size={size} setSize={setSize} sizes={product?.sizes} isDetail />
+              <Typography variant="subtitle1">Options:</Typography>
+              <SizePreview
+                size={size}
+                setSize={handleSizeChange}
+                sizes={product?.variant?.map((v) => v.size) || []}
+                isDetail
+              />
             </Stack>
           </Stack>
           <Stack direction="row" alignItems="center" spacing={2} className="incrementer-wrapper">
@@ -254,7 +344,7 @@ export default function ProductDetailsSumaryMobile({ ...props }) {
                 type="button"
                 color="primary"
                 variant="contained"
-                onClick={() => handleAddCart(product)}
+                onClick={handleAddCart}
                 className="cart-button"
               >
                 Add to Cart
@@ -266,11 +356,28 @@ export default function ProductDetailsSumaryMobile({ ...props }) {
                 type="submit"
                 variant="contained"
                 color="secondary"
+                sx={{
+                  background: 'linear-gradient(90deg, #d4af37 0%, #f1c40f 100%)',
+                  color: '#000',
+                  fontWeight: 600,
+                  borderRadius: '8px',
+                  py: 1.5,
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                  transition: 'all 0.3s ease',
+                  ':hover': {
+                    background: 'linear-gradient(90deg, #f1c40f 0%, #d4af37 100%)',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
+                  },
+                  ':disabled': {
+                    background: '#e0e0e0',
+                    color: '#888',
+                    boxShadow: 'none'
+                  }
+                }}
               >
                 Buy Now
               </Button>
             </Stack>
-
             <Stack direction="row" justifyContent="center">
               <Stack direction="row" spacing={0.5}>
                 <IconButton

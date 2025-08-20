@@ -8,14 +8,6 @@ import AddProduct from 'src/components/_admin/products/addProduct';
 import * as api from 'src/services';
 
 export default async function page() {
-  const data1 = await api.getAllCategories();
-  const data2 = await api.getAllBrandsByAdmin();
-  if (!data1 && data2) {
-    notFound();
-  }
-  const { data: categories } = data1;
-  const { data: brands } = data2;
-
   return (
     <div>
       <HeaderBreadcrumbs
@@ -28,14 +20,14 @@ export default async function page() {
           },
           {
             name: 'Products',
-            href: '/dashboard/products'
+            href: '/vendor/products'
           },
           {
             name: 'Add Product'
           }
         ]}
       />
-      <AddProduct brands={brands} categories={categories} isVendor />
+      <AddProduct isVendor />
     </div>
   );
 }

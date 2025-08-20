@@ -7,12 +7,12 @@ import RegisterMain from 'src/components/_main/auth/register';
 
 // Meta information
 export const metadata = {
-  title: 'Create Your Ecobuy Account | Join Us for Exclusive Deals and Seamless Shopping',
+  title: 'Create Your Perfumeswale Account | Join Us for Exclusive Deals and Seamless Shopping',
   description:
-    'Register with Ecobuy today to unlock a world of exclusive deals, personalized recommendations, and secure transactions. Join our community for a seamless shopping experience. Sign up now and elevate your online shopping journey!',
-  applicationName: 'Ecobuy',
-  authors: 'Ecobuy',
-  keywords: 'ecommerce, Ecobuy, Commerce, Register Ecobuy, RegisterFrom Ecobuy'
+    'Register with Perfumeswale today to unlock a world of exclusive deals, personalized recommendations, and secure transactions. Join our community for a seamless shopping experience. Sign up now and elevate your online shopping journey!',
+  applicationName: 'Perfumeswale',
+  authors: 'Perfumeswale',
+  keywords: 'ecommerce, Perfumeswale, Commerce, Register Perfumeswale, RegisterFrom Perfumeswale'
 };
 
 export default async function Register() {

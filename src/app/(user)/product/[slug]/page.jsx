@@ -42,9 +42,10 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ProductDetail({ params: { slug } }) {
-  const response = await api.getProductDetails(slug);
+  const [productResponse, settingsResponse] = await Promise.all([api.getProductDetails(slug), api.getSetting()]);
 
-  const { data, totalRating, totalReviews, brand, category } = response;
+  const { data, totalRating, totalReviews, brand, category } = productResponse;
+  const { shippingCost, isFreeShipping } = settingsResponse.data[0] || {};
 
   return (
     <Box>
@@ -78,6 +79,8 @@ export default async function ProductDetail({ params: { slug } }) {
                 category={category}
                 totalRating={totalRating}
                 totalReviews={totalReviews}
+                shippingCost={shippingCost}
+                isFreeShipping={isFreeShipping}
               />
             </Grid>
           </Grid>

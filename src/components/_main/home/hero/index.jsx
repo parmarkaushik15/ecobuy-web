@@ -41,9 +41,7 @@ export default function Hero({}) {
 
   return (
     <Stack direction="row" gap={2} mt={2}>
-      <Suspense>
-        <MegaMenu />
-      </Suspense>
+      <Suspense>{/* <MegaMenu /> */}</Suspense>
       <SingleSlideCarousel data={val} />
     </Stack>
   );

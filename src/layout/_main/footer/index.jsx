@@ -16,35 +16,46 @@ import { MdOutlineLocationOn } from 'react-icons/md';
 import { FiMail } from 'react-icons/fi';
 import { MdOutlineCall } from 'react-icons/md';
 import * as api from 'src/services';
-
-const MAIN_LINKS = [
-  {
-    heading: 'Resources',
-    listText1: 'Contact us',
-    listLink1: '/contact',
-    listText2: 'Products',
-    listLink2: '/products',
-    listText3: 'Blogs',
-    listLink3: '/blogs',
-    listText4: 'Compaigns',
-    listLink4: '/compaigns'
-  },
-  {
-    heading: 'About us',
-    listText1: 'About us',
-    listLink1: '/about',
-    listText2: 'Privacy policy',
-    listLink2: '/privacy-policy',
-    listText3: 'Term and conditions',
-    listLink3: '/terms-and-conditions',
-    listText4: 'Refund policy',
-    listLink4: '/refund-return-policy',
-    listText5: 'FAQs',
-    listLink5: '/faq'
-  }
-];
+import { useQuery } from 'react-query';
 
 export default function Footer() {
+  const {
+    data: pageContextData,
+    isLoading: loadingContext,
+    error
+  } = useQuery(['get-footer-page-context'], () => {
+    return api.getFooterPageContext();
+  });
+
+  const content = pageContextData?.data?.content || {};
+
+  const MAIN_LINKS = [
+    {
+      heading: content?.section1Title || 'Resources',
+      listText1: 'Contact us',
+      listLink1: '/contact',
+      listText2: 'Products',
+      listLink2: '/products',
+      listText3: 'Blogs',
+      listLink3: '/blogs',
+      listText4: 'Compaigns',
+      listLink4: '/compaigns'
+    },
+    {
+      heading: content?.section2Title || 'About us',
+      listText1: 'About us',
+      listLink1: '/about',
+      listText2: 'Privacy policy',
+      listLink2: '/privacy-policy',
+      listText3: 'Term and conditions',
+      listLink3: '/terms-and-conditions',
+      listText4: 'Refund policy',
+      listLink4: '/refund-return-policy',
+      listText5: 'FAQs',
+      listLink5: '/faq'
+    }
+  ];
+
   const [setting, setSetting] = useState({});
   useEffect(() => {
     getSettingDetail();
@@ -254,7 +265,7 @@ export default function Footer() {
           <Grid item md={5}>
             <Stack spacing={3}>
               <Typography variant="h4" color="text.primary">
-                Join a Newsletter
+                {content?.section3Title || 'Join a Newsletter'}
               </Typography>
               <NewsLetter />
 
@@ -297,9 +308,16 @@ export default function Footer() {
           </Grid>
         </Grid>
         <Divider sx={{ my: 3 }} />
-        <Typography variant="body1" color="text.primary" textAlign="center">
+        {/* <Typography variant="body1" color="text.primary" textAlign="center">
           {setting?.footerTagline}
-        </Typography>
+        </Typography> */}
+
+        <Stack direction="row" justifyContent="space-between" alignItems="center">
+          <Typography variant="body1" color="text.primary" textAlign="center">
+            {setting?.footerTagline}
+          </Typography>
+          <Box component="img" src="/payment-method.svg" alt="Payment Methods" sx={{ height: 24 }} />
+        </Stack>
       </Container>
     </Box>
   );
@@ -332,7 +350,7 @@ export default function Footer() {
 //               <br />
 //               <br />
 //             </Typography>
-//             <Typography variant="body2">info@Ecobuy.com</Typography>
+//             <Typography variant="body2">info@Perfumeswale.com</Typography>
 //             <Typography variant="body2">
 //               <i className="fa fa-phone" /> +91 9106559673
 //             </Typography>

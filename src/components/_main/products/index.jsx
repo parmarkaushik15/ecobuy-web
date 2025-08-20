@@ -1,50 +1,56 @@
 'use client';
-// react
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
-
-// mui
 import { useMediaQuery } from '@mui/material';
-
-// api
 import * as api from 'src/services';
 import { useQuery } from 'react-query';
-// components
 import ProductList from './productList';
 import SortBar from './sortbar';
+
 ProductListing.propTypes = {
   category: PropTypes.object,
   subCategory: PropTypes.object,
-  shop: PropTypes.object
+  shop: PropTypes.object,
+  compaign: PropTypes.object
 };
-// dynamic components
-const Pagination = dynamic(() => import('src/components/pagination'));
 
 const sortData = [
   { title: 'Top Rated', key: 'top', value: -1 },
-  { title: 'Asceding', key: 'name', value: 1 },
-  { title: 'Desceding', key: 'name', value: -1 },
+  { title: 'Ascending', key: 'name', value: 1 },
+  { title: 'Descending', key: 'name', value: -1 },
   { title: 'Price low to high', key: 'price', value: 1 },
   { title: 'Price high to low', key: 'price', value: -1 },
   { title: 'Oldest', key: 'date', value: 1 },
   { title: 'Newest', key: 'date', value: -1 }
 ];
-const getSearchParams = (searchParams) => {
-  return searchParams.toString().length ? '?' + searchParams.toString() : '';
+
+const getSearchParams = (searchParams, page) => {
+  const params = new URLSearchParams(searchParams);
+  params.set('page', page);
+  params.set('limit', 12); // Set limit to 12 products per page
+  return params.toString().length ? '?' + params.toString() : '';
 };
+
 export default function ProductListing({ category, subCategory, shop, compaign }) {
   const searchParams = useSearchParams();
   const { rate } = useSelector(({ settings }) => settings);
-  const { data, isLoading } = useQuery(
+  const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const observerRef = useRef(null);
+  const isMobile = useMediaQuery('(max-width:900px)');
+  const isFirstRender = useRef(true);
+
+  const { data, isLoading, isFetching, isRefetching } = useQuery(
     [
-      'products' + category || subCategory ? '-with-category' : '',
+      'products' + (category || subCategory ? '-with-category' : ''),
       searchParams.toString(),
       category,
       subCategory,
-      shop
+      shop,
+      page
     ],
     () =>
       api[
@@ -58,12 +64,55 @@ export default function ProductListing({ category, subCategory, shop, compaign }
                 ? 'getProductsByCompaign'
                 : 'getProducts'
       ](
-        getSearchParams(searchParams),
+        getSearchParams(searchParams, page),
         shop ? shop?.slug : category ? category?.slug : subCategory ? subCategory?.slug : compaign ? compaign.slug : '',
         rate
-      )
+      ),
+    {
+      keepPreviousData: true,
+      onSuccess: (newData) => {
+        if (page === 1) {
+          setProducts(newData?.data || []);
+        } else {
+          setProducts((prev) => [...prev, ...(newData?.data || [])]);
+        }
+        setHasMore((newData?.data?.length || 0) === 12); // Assume more pages if we get 12 products
+        isFirstRender.current = false;
+      }
+    }
   );
-  const isMobile = useMediaQuery('(max-width:900px)');
+
+  useEffect(() => {
+    // Reset products and page when search params change
+    setProducts([]);
+    setPage(1);
+    setHasMore(true);
+    isFirstRender.current = true;
+  }, [searchParams, category, subCategory, shop, compaign]);
+
+  useEffect(() => {
+    if (!hasMore || isFetching) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setPage((prev) => prev + 1);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => {
+      if (observerRef.current) {
+        observer.unobserve(observerRef.current);
+      }
+    };
+  }, [hasMore, isFetching]);
+
   return (
     <>
       <SortBar
@@ -75,8 +124,17 @@ export default function ProductListing({ category, subCategory, shop, compaign }
         isLoading={isLoading}
         compaign={compaign}
       />
-      <ProductList data={data} isLoading={isLoading} isMobile={isMobile} />
-      <Pagination data={data} />
+      <ProductList
+        data={{ ...data, data: products }}
+        isLoading={isLoading}
+        isMobile={isMobile}
+        isFirstLoadDone={!isFirstRender.current}
+      />
+      {hasMore && (
+        <div ref={observerRef} style={{ height: '20px', background: 'transparent' }}>
+          {isFetching && !isLoading && <p>Loading more...</p>}
+        </div>
+      )}
     </>
   );
 }

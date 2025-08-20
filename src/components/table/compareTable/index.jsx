@@ -3,6 +3,7 @@ import { useRouter } from 'next-nprogress-bar';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeCompareProduct } from 'src/redux/slices/compare';
 import Image from 'next/image';
+import { useQuery, useQueryClient } from 'react-query';
 
 // mui
 import {
@@ -26,8 +27,6 @@ import { IoIosCloseCircle } from 'react-icons/io';
 
 // api
 import * as api from 'src/services';
-import { useQuery } from 'react-query';
-
 // custom hooks
 import { useCurrencyConvert } from 'src/hooks/convertCurrency';
 import { useCurrencyFormatter } from 'src/hooks/formatCurrency';
@@ -47,19 +46,42 @@ const CompareTable = () => {
   const fCurrency = useCurrencyFormatter();
   const dispatch = useDispatch();
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { products: compareProducts, isLoading } = useSelector(({ compare }) => compare);
-  const { data: fetchedProducts } = useQuery(['get-brands-user'], () =>
-    api.getCompareProducts(compareProducts.map((v) => v._id))
+
+  // Use compareProducts IDs in query key to trigger refetch on change
+  const compareProductIds = compareProducts
+    .map((v) => v._id)
+    .sort()
+    .join(',');
+  const { data: fetchedProducts, isFetching } = useQuery(
+    ['get-compare-products', compareProductIds],
+    () => api.getCompareProducts(compareProducts.map((v) => v._id)),
+    {
+      enabled: compareProducts.length > 0, // Only fetch if there are products
+      staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+      cacheTime: 10 * 60 * 1000, // Keep cache for 10 minutes
+      onError: (error) => {
+        console.error('Error fetching compare products:', error);
+      }
+    }
   );
 
-  const findProductById = compareProducts.find((product) => product._id);
-
-  const onRemoveCompare = async (event) => {
+  const onRemoveCompare = (productId) => (event) => {
     event.stopPropagation();
-    dispatch(removeCompareProduct(findProductById._id));
+    try {
+      dispatch(removeCompareProduct(productId)); // Remove .unwrap() since it's not an async thunk
+      queryClient.invalidateQueries(['get-compare-products']); // Invalidate to trigger refetch
+    } catch (error) {
+      console.error('Error removing compare product:', error);
+    }
   };
 
-  return isLoading ? null : fetchedProducts?.data?.length ? (
+  return isLoading || isFetching ? (
+    <Box sx={{ textAlign: 'center', py: 4 }}>
+      <Typography>Loading...</Typography>
+    </Box>
+  ) : fetchedProducts?.data?.length ? (
     <TableContainer component={Card}>
       <Table
         sx={{
@@ -82,7 +104,7 @@ const CompareTable = () => {
               >
                 <Stack sx={{ position: 'relative' }}>
                   <IconButton
-                    onClick={onRemoveCompare}
+                    onClick={onRemoveCompare(product._id)}
                     aria-label="Remove from compare"
                     sx={{ position: 'absolute', top: 0, right: 0, zIndex: 50 }}
                   >
@@ -99,7 +121,7 @@ const CompareTable = () => {
                   >
                     <Image
                       src={
-                        process.env.IMAGE_BASE == 'LOCAL'
+                        process.env.IMAGE_BASE === 'LOCAL'
                           ? `${process.env.IMAGE_URL}${product.image.url}`
                           : product.image.url
                       }

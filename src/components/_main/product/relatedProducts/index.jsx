@@ -19,16 +19,24 @@ RelatedProducts.propTypes = {
 export default function RelatedProducts({ ...props }) {
   const { id } = props;
   const { data, isLoading } = useQuery(['related-products'], () => api.getRelatedProducts(id));
+
+  const { data: pageContextData, isLoading: loadingContext } = useQuery(['get-products-page-context'], () => {
+    return api.getProductPageContext();
+  });
+
+  const content = pageContextData?.data?.content || {};
+
   if (!isLoading && !Boolean(data?.data?.length)) {
     return null;
   }
   return (
     <RootStyled>
-      <Typography variant="h2" color="text.primary" className="heading">
-        Related Products
+      <Typography variant="h3" color="text.primary" className="heading">
+        {content?.relatedProductTitle || 'Related Products'}
       </Typography>
       <Typography variant="body1" color="text.secondary" className="description">
-        Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry.
+        {content?.relatedProductSubTitle ||
+          'You may also like these carefully selected fragrances that complement your choice.'}
       </Typography>
       <ProductsCarousel data={data?.data} isLoading={isLoading} />
     </RootStyled>

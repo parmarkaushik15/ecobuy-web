@@ -47,7 +47,7 @@ function MenuDesktopItem({ ...props }) {
             flexGrow: 1
           }}
         >
-          <Button
+          {/* <Button
             ref={anchorRef}
             className={` ${isOffset && isHome && 'offset'}`}
             id="composition-button"
@@ -60,7 +60,7 @@ function MenuDesktopItem({ ...props }) {
             size="large"
             sx={{
               boxShadow: 'none',
-              borderRadius: '5px',
+              borderRadius: '0px',
               width: 280,
               bgcolor: (theme) => alpha(theme.palette.common.black, 0.1),
               '&.arrow-icon': {
@@ -71,7 +71,7 @@ function MenuDesktopItem({ ...props }) {
             endIcon={<FaAngleDown size={14} className="arrow-icon" />}
           >
             {title}
-          </Button>
+          </Button> */}
         </Box>
         <MenuDesktopPopover
           isOpen={isOpen}

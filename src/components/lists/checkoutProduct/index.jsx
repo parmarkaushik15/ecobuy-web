@@ -121,7 +121,7 @@ export default function CartProductList({ ...props }) {
                     <Skeleton variant="text" width={52} sx={{ mx: 'auto' }} />
                   ) : (
                     <Typography variant="body1" color="text.primary" fontWeight={600}>
-                      ${price}
+                      {fCurrency(cCurrency(price))}
                     </Typography>
                   )}
                 </TableCell>

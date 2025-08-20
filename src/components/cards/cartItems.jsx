@@ -51,7 +51,7 @@ export default function CheckoutCard({ cart, loading }) {
                 )}
                 <Box>
                   <Typography variant="subtitle1" noWrap>
-                    {loading ? <Skeleton variant="text" width={160} /> : value.name.slice(0, 18)}
+                    {loading ? <Skeleton variant="text" width={160} /> : value.name?.slice(0, 18)}
                   </Typography>
                   <Stack direction="row" gap={1}>
                     <Typography

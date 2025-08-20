@@ -8,12 +8,12 @@ import OTPMain from 'src/components/_main/auth/otp';
 
 // Meta information
 export const metadata = {
-  title: 'Verify Your Email with Ecobuy | Confirm Your Account for Secure Shopping',
+  title: 'Verify Your Email with Perfumeswale | Confirm Your Account for Secure Shopping',
   description:
-    'Complete the email verification process at Ecobuy to ensure a secure and personalized shopping experience. Confirm your account and gain access to exclusive features. Shop confidently with a verified email. Verify now!',
-  applicationName: 'Ecobuy',
-  authors: 'Ecobuy',
-  keywords: 'ecommerce, Ecobuy, Commerce, VerifyEmail Ecobuy, VerifyEmail Page Ecobuy'
+    'Complete the email verification process at Perfumeswale to ensure a secure and personalized shopping experience. Confirm your account and gain access to exclusive features. Shop confidently with a verified email. Verify now!',
+  applicationName: 'Perfumeswale',
+  authors: 'Perfumeswale',
+  keywords: 'ecommerce, Perfumeswale, Commerce, VerifyEmail Perfumeswale, VerifyEmail Page Perfumeswale'
 };
 export default async function VerifyOTP() {
   return (

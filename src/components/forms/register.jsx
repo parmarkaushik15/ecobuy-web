@@ -239,7 +239,7 @@ export default function RegisterForm() {
           </Link>
         </Typography>
         <Typography variant="body2" align="center" color="text.secondary" mt={2}>
-          By registering, I agree to Ecobuy&nbsp;
+          By registering, I agree to Perfumeswale&nbsp;
           <Link underline="always" color="text.primary" href="#" fontWeight={700}>
             Terms
           </Link>

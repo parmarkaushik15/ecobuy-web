@@ -20,7 +20,7 @@ export default function page() {
           },
           {
             name: 'Settings',
-            href: '/dashboard/settings'
+            href: '/vendor/settings'
           },
           {
             name: 'Change Password'

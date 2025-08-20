@@ -105,7 +105,7 @@ export default function MegaMenuDesktopVertical({ ...other }) {
       sx={{
         minWidth: 280,
         bgcolor: 'background.paper',
-        borderRadius: '12px',
+        borderRadius: '5px',
         height: 343,
         overflowY: 'auto',
         overflowX: 'auto',

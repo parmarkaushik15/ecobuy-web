@@ -11,6 +11,7 @@ import DeleteDialog from 'src/components/dialog/delete';
 import Table from 'src/components/table/table';
 import Product from 'src/components/table/rows/product';
 import StatusDialog from 'src/components/dialog/status';
+import StockDialog from 'src/components/dialog/stock';
 // api
 import * as api from 'src/services';
 import { useQuery } from 'react-query';
@@ -18,7 +19,7 @@ import { useQuery } from 'react-query';
 const TABLE_HEAD = [
   { id: 'name', label: 'Product', alignRight: false, sort: true },
   { id: 'createdAt', label: 'Date', alignRight: false, sort: true },
-  { id: 'inventoryType', label: 'Status', alignRight: false, sort: false },
+  { id: 'inventoryType', label: 'Stocks', alignRight: false, sort: false },
   { id: 'rating', label: 'Rating', alignRight: false, sort: true },
   { id: 'price', label: 'Price', alignRight: false, sort: true },
   { id: 'approvalStatus', label: 'Approval Status', alignRight: false, sort: true },
@@ -31,7 +32,9 @@ export default function AdminProducts({ isVendor }) {
   const [open, setOpen] = useState(false);
   const [apicall, setApicall] = useState(false);
   const [id, setId] = useState(null);
+  const [row, setRow] = useState(null);
   const [statusOpen, setStatusOpen] = useState(false);
+  const [stockOpen, setStockOpen] = useState(false);
 
   const [status, setStatus] = useState('');
 
@@ -48,13 +51,15 @@ export default function AdminProducts({ isVendor }) {
   );
 
   const handleClickOpen = (prop, type) => {
-    console.log('type=', type);
-    setId(prop);
+    setId(prop.slug);
+    setRow(prop);
     if (type === 'delete') {
       setOpen(true);
     } else if (type === 'deactive' || type === 'active') {
       setStatus(type);
       setStatusOpen(true);
+    } else if (type === 'stock') {
+      setStockOpen(true); // Only need to open the dialog, no status to set
     }
   };
   const handleClose = () => {
@@ -64,7 +69,9 @@ export default function AdminProducts({ isVendor }) {
   const handleStatusClose = () => {
     setStatusOpen(false);
   };
-
+  const handleStockClose = () => {
+    setStockOpen(false); // This was incorrectly setting statusOpen before
+  };
   return (
     <>
       <Dialog onClose={handleClose} open={open} maxWidth={'xs'}>
@@ -90,7 +97,23 @@ export default function AdminProducts({ isVendor }) {
           deleteMessage={'Are you sure you want to update status?'}
         />
       </Dialog>
+      <Dialog onClose={handleStockClose} open={stockOpen} maxWidth={'xs'}>
+        <StockDialog
+          onClose={handleStockClose}
+          id={id}
+          refetch={refetch}
+          endPoint="updateStockByVendor"
+          type={'Stock updated'}
+          deleteMessage={'Are you sure you want to update stock quantity?'}
+          row={row}
+        />
+      </Dialog>
       <Table
+        style={{
+          '& .MuiPaper-root': {
+            borderRadius: '0px !important'
+          }
+        }}
         headData={TABLE_HEAD}
         data={data}
         isLoading={isLoading}

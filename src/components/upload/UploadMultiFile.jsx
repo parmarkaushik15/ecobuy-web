@@ -38,11 +38,14 @@ UploadMultiFile.propTypes = {
   blob: PropTypes.array.isRequired,
   isInitialized: PropTypes.bool.isRequired,
   isEdit: PropTypes.bool.isRequired,
-  loading: PropTypes.bool.isRequired
+  loading: PropTypes.bool.isRequired,
+  progress: PropTypes.number,
+  dropzoneText: PropTypes.string,
+  playButton: PropTypes.node
 };
 
 export default function UploadMultiFile({ ...props }) {
-  const { error, files, onRemove, blob, isEdit, onRemoveAll, loading, sx, ...other } = props;
+  const { error, files, onRemove, blob, isEdit, onRemoveAll, loading, sx, dropzoneText, playButton, ...other } = props;
   const hasFile = files.length > 0;
   const { getRootProps, getInputProps, isDragActive, isDragReject } = useDropzone({
     ...other
@@ -64,18 +67,17 @@ export default function UploadMultiFile({ ...props }) {
         <input {...getInputProps()} disabled={loading} />
         <Box sx={{ p: 3, ml: { md: 2 } }}>
           <Typography gutterBottom variant="h5">
-            Drop or a Select Images
+            {dropzoneText || 'Drop or Select Images'}
           </Typography>
-
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            Drop images here or click through your machine.
+            Drop {dropzoneText ? 'video' : 'images'} here or click to browse.
           </Typography>
         </Box>
       </DropZoneStyle>
 
       <List disablePadding sx={{ ...(hasFile && { my: 3 }) }}>
         {(loading ? [...Array(isEdit ? files.length + blob.length : blob.length)] : files).map((file, i) => (
-          <React.Fragment key={'image' + i}>
+          <React.Fragment key={'file' + i}>
             {loading ? (
               <ListItem
                 {...varFadeInRight}
@@ -126,8 +128,15 @@ export default function UploadMultiFile({ ...props }) {
                 </IconButton>
                 <Paper
                   variant="outlined"
-                  component="img"
-                  src={!file.blob ? file.url : file.blob}
+                  component={file.url && file.url.endsWith('.mp4') ? 'video' : 'img'}
+                  src={
+                    file.blob
+                      ? URL.createObjectURL(file.blob)
+                      : file.url.startsWith('http')
+                        ? file.url
+                        : `${process.env.BASE_URL}/product/${file.url.split('/').pop()}`
+                  }
+                  controls={file.url && file.url.endsWith('.mp4')}
                   sx={{
                     width: '100%',
                     height: '100%',
@@ -142,13 +151,16 @@ export default function UploadMultiFile({ ...props }) {
       </List>
 
       {hasFile && (
-        <Stack direction="row" justifyContent="flex-end">
+        <Stack direction="row" justifyContent="flex-end" spacing={1}>
           {loading ? (
             <Skeleton variant="rectangular" width={106} height={36} sx={{ mr: 1.5 }} />
           ) : (
-            <Button variant="contained" onClick={onRemoveAll} sx={{ mr: 1.5 }}>
-              Remove All
-            </Button>
+            <>
+              {playButton}
+              <Button variant="contained" onClick={onRemoveAll}>
+                Remove All
+              </Button>
+            </>
           )}
         </Stack>
       )}

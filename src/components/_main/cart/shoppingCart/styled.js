@@ -8,7 +8,8 @@ const RootStyled = styled(Box)(({ theme }) => ({
     '& .card-header': {
       marginBottom: theme.spacing(1),
       padding: 0
-    }
+    },
+    boxShadow: 'none'
   },
   [theme.breakpoints.down('sm')]: {
     '& .product-list': {

@@ -99,13 +99,16 @@
 // }
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import BlurImage from 'src/components/blurImage';
+import Link from 'next/link';
 import * as api from 'src/services';
 
 export default function Banner({ type }) {
   const [bannerImg, setBannerImg] = useState('');
   const [blurDataURL, setBlurDataURL] = useState('');
+  const [productURL, setProductURL] = useState('');
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     getAllAdvertiseByAdmin();
@@ -120,6 +123,7 @@ export default function Banner({ type }) {
 
         let imgURL = '';
         let blurURL = '';
+        let prodURL = '';
 
         const numericType = Number(type);
 
@@ -127,58 +131,72 @@ export default function Banner({ type }) {
           case 1:
             imgURL =
               process.env.IMAGE_BASE === 'LOCAL'
-                ? `${process.env.IMAGE_URL}${advertiseData.advertise_img.url}`
-                : advertiseData.advertise_img.url;
-            blurURL = advertiseData.advertise_img.blurDataURL;
+                ? `${process.env.IMAGE_URL}${advertiseData.advertise_img?.url || ''}`
+                : advertiseData.advertise_img?.url || '';
+            blurURL = advertiseData.advertise_img?.blurDataURL || '';
+            prodURL = advertiseData.advertise_img?.productURL || '';
             break;
           case 2:
             imgURL =
               process.env.IMAGE_BASE === 'LOCAL'
-                ? `${process.env.IMAGE_URL}${advertiseData.advertise2_img.url}`
-                : advertiseData.advertise2_img.url;
-            blurURL = advertiseData.advertise2_img.blurDataURL;
+                ? `${process.env.IMAGE_URL}${advertiseData.advertise2_img?.url || ''}`
+                : advertiseData.advertise2_img?.url || '';
+            blurURL = advertiseData.advertise2_img?.blurDataURL || '';
+            prodURL = advertiseData.advertise2_img?.productURL || '';
             break;
           case 3:
             imgURL =
               process.env.IMAGE_BASE === 'LOCAL'
-                ? `${process.env.IMAGE_URL}${advertiseData.advertise3_img.url}`
-                : advertiseData.advertise3_img.url;
-            blurURL = advertiseData.advertise3_img.blurDataURL;
+                ? `${process.env.IMAGE_URL}${advertiseData.advertise3_img?.url || ''}`
+                : advertiseData.advertise3_img?.url || '';
+            blurURL = advertiseData.advertise3_img?.blurDataURL || '';
+            prodURL = advertiseData.advertise3_img?.productURL || '';
             break;
           case 4:
             imgURL =
               process.env.IMAGE_BASE === 'LOCAL'
-                ? `${process.env.IMAGE_URL}${advertiseData.advertise4_img.url}`
-                : advertiseData.advertise4_img.url;
-            blurURL = advertiseData.advertise4_img.blurDataURL;
+                ? `${process.env.IMAGE_URL}${advertiseData.advertise4_img?.url || ''}`
+                : advertiseData.advertise4_img?.url || '';
+            blurURL = advertiseData.advertise4_img?.blurDataURL || '';
+            prodURL = advertiseData.advertise4_img?.productURL || '';
             break;
           case 5:
             imgURL =
               process.env.IMAGE_BASE === 'LOCAL'
-                ? `${process.env.IMAGE_URL}${advertiseData.advertise5_img.url}`
-                : advertiseData.advertise5_img.url;
-            blurURL = advertiseData.advertise5_img.blurDataURL;
+                ? `${process.env.IMAGE_URL}${advertiseData.advertise5_img?.url || ''}`
+                : advertiseData.advertise5_img?.url || '';
+            blurURL = advertiseData.advertise5_img?.blurDataURL || '';
+            prodURL = advertiseData.advertise5_img?.productURL || '';
             break;
           default:
             imgURL = '';
             blurURL = '';
+            prodURL = '';
             break;
         }
 
-        setBannerImg(imgURL);
-        setBlurDataURL(blurURL);
+        if (!imgURL || !blurURL) {
+          setError(true); // Set error if image URL or blurDataURL is missing
+        } else {
+          setBannerImg(imgURL);
+          setBlurDataURL(blurURL);
+          setProductURL(prodURL);
+          setError(false);
+        }
       } else {
         console.warn('No data received in API response.');
+        setError(true);
       }
     } catch (error) {
       console.error('Error fetching advertise images:', error);
+      setError(true);
     }
   };
 
   return (
     <Box
       sx={{
-        mt: 4,
+        mt: 0,
         overflow: 'hidden',
         position: 'relative',
         display: { md: 'block', xs: 'none' }
@@ -186,23 +204,43 @@ export default function Banner({ type }) {
     >
       <Box
         sx={{
-          mt: 3,
-          py: 12,
-          height: 300,
+          mt: 0,
+          py: 6,
+          height: 300, // Increased height for taller images
           position: 'relative'
         }}
       >
-        {bannerImg && blurDataURL ? (
-          <BlurImage
-            src={bannerImg}
-            alt="banner"
-            blurDataURL={blurDataURL}
-            layout="fill"
-            sizes="700px"
-            objectFit="cover"
-          />
+        {bannerImg && blurDataURL && !error ? (
+          <Link
+            href={productURL || '#'}
+            style={{ textDecoration: 'none', display: 'block', height: '100%' }}
+            rel="noopener noreferrer"
+          >
+            <BlurImage
+              src={bannerImg}
+              alt={`banner-${type}`}
+              blurDataURL={blurDataURL}
+              layout="fill"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              objectFit="cover"
+              onError={() => setError(true)}
+            />
+          </Link>
         ) : (
-          <div>No image available</div>
+          <Box
+            sx={{
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              bgcolor: 'grey.200',
+              borderRadius: 2
+            }}
+          >
+            <Typography variant="body1" color="text.secondary">
+              {error ? `Banner ${type} not available` : 'Loading...'}
+            </Typography>
+          </Box>
         )}
       </Box>
     </Box>

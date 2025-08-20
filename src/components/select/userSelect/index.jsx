@@ -2,15 +2,15 @@
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next-nprogress-bar';
-// mui
+// MUI
 import { Avatar, IconButton, Stack, Box } from '@mui/material';
 import { MdSupervisorAccount } from 'react-icons/md';
-// components
+// Components
 import MenuPopover from 'src/components/popover/popover';
 import { PATH_PAGE } from 'src/routes/paths';
 import { UserList } from 'src/components/lists';
 import BlurImageAvatar from 'src/components/avatar';
-// redux
+// Redux
 import { useSelector } from 'react-redux';
 
 function getKeyByValue(object, value) {
@@ -39,8 +39,9 @@ export default function UserSelect({ isAdmin }) {
   const handleClickOpen = () => {
     router.push(`/auth/login${isAuthPath || isHomePath ? '' : `?redirect=${pathname}`}`);
   };
+
   return (
-    <Box>
+    <Box sx={{ position: 'relative' }}>
       {!isAuthenticated && !isAdmin ? (
         <Stack direction="row" gap={1}>
           <IconButton aria-label="lang-curr-select" onClick={handleClickOpen} color="primary">
@@ -56,7 +57,9 @@ export default function UserSelect({ isAdmin }) {
                   priority
                   alt={user.firstName}
                   src={
-                    process.env.IMAGE_BASE == 'LOCAL' ? `${process.env.IMAGE_URL}${user?.cover?.url}` : user?.cover?.url
+                    process.env.IMAGE_BASE === 'LOCAL'
+                      ? `${process.env.IMAGE_URL}${user?.cover?.url}`
+                      : user?.cover?.url
                   }
                   layout="fill"
                   objectFit="cover"
@@ -74,7 +77,9 @@ export default function UserSelect({ isAdmin }) {
                   priority
                   alt={user.firstName}
                   src={
-                    process.env.IMAGE_BASE == 'LOCAL' ? `${process.env.IMAGE_URL}${user?.cover?.url}` : user?.cover?.url
+                    process.env.IMAGE_BASE === 'LOCAL'
+                      ? `${process.env.IMAGE_URL}${user?.cover?.url}`
+                      : user?.cover?.url
                   }
                   layout="fill"
                   objectFit="cover"
@@ -90,6 +95,7 @@ export default function UserSelect({ isAdmin }) {
             open={openUser}
             onClose={handleCloseUser}
             anchorEl={anchorRef.current}
+            disableScrollLock // Prevent scroll lock to avoid layout shift
             sx={{
               width: 300
             }}

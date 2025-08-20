@@ -1,4 +1,5 @@
 import http from './http';
+import { sha256 } from 'js-sha256';
 
 export const register = async (payload) => {
   const { data } = await http.post(`/auth/register`, payload);
@@ -299,6 +300,12 @@ export const createVendorProduct = async (payload) => {
   const { data: response } = await http.post(`/vendor/products`, payload);
   return response;
 };
+
+export const updateVendorShopAddress = async (payload) => {
+  const { data } = await http.post(`/vendor/address/update`, payload);
+  return data;
+};
+
 export const updateVendorProduct = async ({ currentSlug, ...payload }) => {
   const { data: response } = await http.put(`/vendor/products/${currentSlug}`, payload);
   return response;
@@ -654,8 +661,8 @@ export const getFaqData = async () => {
   const { data } = await http.get(`/faqs`);
   return data;
 };
-export const getBlogData = async () => {
-  const { data } = await http.get(`/blog`);
+export const getBlogData = async (search) => {
+  const { data } = await http.get(`/blog?search=${search}`);
   return data;
 };
 export const getBlogSlugs = async (slug) => {
@@ -686,4 +693,177 @@ export const getSetting = async () => {
 export const getOrderInfo = async (oid) => {
   const { data } = await http.get(`/track-order/${oid}`);
   return data;
+};
+export const updateStockByVendor = async (param) => {
+  const { data } = await http.put(`/vendor/update/stock/products/${param.slug}`, {
+    qty: param.qty
+  });
+  return data;
+};
+
+// Get order status history
+export const getOrderStatusHistory = async ({ orderId }) => {
+  const { data } = await http.post('/order/status/history/status-history', { orderId });
+  return data;
+};
+
+// Update vendor order status
+export const updateVendorOrderStatus = async ({ orderId, status, notes }) => {
+  const { data } = await http.post('/order/status/change', { orderId, status, notes });
+  return data;
+};
+
+// In src/services/index.js
+export const cancelOrder = async ({ orderId, cancelReason }) => {
+  const { data } = await http.post('/order/cancel', { orderId, cancelReason });
+  return data;
+};
+
+export const returnOrder = async ({ orderId, reason }) => {
+  const { data } = await http.post('/order/request/return', { orderId, reason });
+  return data;
+};
+
+export const reOrder = async ({ previousOrderId }) => {
+  const { data } = await http.post('/reOrder', { previousOrderId });
+  return data;
+};
+
+// Create shipment
+export const createShipment = async ({ order_id }) => {
+  const { data } = await http.post('/create/shipment', { order_id });
+  return data;
+};
+
+export const getAllVendorDetails = async ({ vendorId }) => {
+  const params = new URLSearchParams({ vendor: vendorId });
+  const { data } = await http.get(`/all/average/report?${params.toString()}`);
+  return data;
+};
+
+// New APIs for reports
+export const getMonthlyReport = async ({ vendorId, month }) => {
+  const params = new URLSearchParams({ vendor: vendorId });
+  if (month) params.append('month', month);
+  const { data } = await http.get(`/vendor/report/month?${params.toString()}`);
+  return data;
+};
+
+export const getYearlyReport = async ({ vendorId, page = 1, limit = 10 }) => {
+  const params = new URLSearchParams({ vendor: vendorId, page, limit });
+  const { data } = await http.get(`/vendor/report?${params.toString()}`);
+  return data;
+};
+
+export const updateReportStatus = async ({ reportId, status }) => {
+  const { data } = await http.post('/update/vendor/report/status', { reportId, status });
+  return data;
+};
+
+export const getHomePageContext = async () => {
+  const { data } = await http.get('/get/home/PageConstant');
+  return data;
+};
+
+export const getFooterPageContext = async () => {
+  const { data } = await http.get('/get/footer/PageConstant');
+  return data;
+};
+
+export const getProductPageContext = async () => {
+  const { data } = await http.get('/get/product/PageConstant');
+  return data;
+};
+
+export const getOffersAboutusPageContext = async () => {
+  const { data } = await http.get('/get/offers-aboutus/PageConstant');
+  return data;
+};
+
+export const getShopsPageContext = async () => {
+  const { data } = await http.get('/get/shop/PageConstant');
+  return data;
+};
+
+export const getContactusPageContext = async () => {
+  const { data } = await http.get('/get/contactUs/PageConstant');
+  return data;
+};
+
+export const getCmsBySlug = async (slug) => {
+  const { data } = await http.get(`/admin/cms/${slug}`);
+  return data;
+};
+
+export const updateVariant = async (productId, payload) => {
+  const { data } = await http.put(`/admin/products/update-variant/${productId}`, payload);
+  return data;
+};
+
+export const razorpayCreateOrder = async (amount, currency, receipt) => {
+  const { data } = await http.post(`/admin/razorpay/createOrder`, {
+    amount,
+    currency,
+    receipt
+  });
+  return data;
+};
+
+// export const verifyRazorpayPayment = async (paymentData) => {
+//   const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = paymentData;
+//   if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
+//     console.error('Missing Razorpay payment data:', paymentData);
+//     throw new Error('Invalid payment data');
+//   }
+//   console.log('Verifying payment with payload:', paymentData);
+//   const { data } = await http.post('/razorpay/verifyPayment', {
+//     razorpay_payment_id,
+//     razorpay_order_id,
+//     razorpay_signature
+//   }, {
+//     headers: {
+//       'Content-Type': 'application/json'
+//     }
+//   });
+//   return data;
+// };
+
+export const verifyRazorpayPayment = async (paymentData) => {
+  const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = paymentData;
+  if (!razorpay_payment_id || !razorpay_order_id || !razorpay_signature) {
+    console.error('Missing Razorpay payment data:', paymentData);
+    throw new Error('Invalid payment data');
+  }
+  console.log('Verifying payment with payload:', paymentData);
+  const { data } = await http.post(
+    '/razorpay/verifyPayment',
+    {
+      razorpay_payment_id,
+      razorpay_order_id,
+      razorpay_signature
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  );
+  return data;
+};
+
+export const getShipmentPrice = async (payload) => {
+  const { data } = await http.post('/shipment/fetch-shipment-price', payload);
+  return data;
+};
+
+export const generateLabel = async (data) => {
+  const { data: responseData } = await http.post('/generate/lable', data);
+  return responseData;
+};
+
+export const downloadLabel = async (data) => {
+  const response = await http.post('/label/download', data, {
+    responseType: 'blob'
+  });
+  return response.data;
 };

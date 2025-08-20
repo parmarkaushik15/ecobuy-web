@@ -1,15 +1,14 @@
 'use client';
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 // mui
-import { Card, CardContent, FormControlLabel, Radio, Typography, Stack, RadioGroup, Collapse } from '@mui/material';
+import { Card, CardContent, FormControlLabel, Radio, Typography, Stack, RadioGroup } from '@mui/material';
 // icons
 import { BsCash, BsStripe } from 'react-icons/bs';
 import { FaPaypal } from 'react-icons/fa';
 import { IoCash } from 'react-icons/io5';
-// componenets
-import StripeCheckoutForm from 'src/components/stripe/Form';
+import { SiRazorpay } from 'react-icons/si';
 
 PaymentMethodCard.propTypes = {
   paymentGateway: PropTypes.array,
@@ -20,11 +19,27 @@ PaymentMethodCard.propTypes = {
 };
 
 export default function PaymentMethodCard({ paymentGateway, value, setValue, error, setGateway }) {
+  useEffect(() => {
+    if (paymentGateway && paymentGateway.length > 0 && !value) {
+      // Prioritize COD if available
+      const defaultMethod =
+        paymentGateway.find((item) => item.pgConstant === 'COD') ||
+        paymentGateway.find((item) => item.pgConstant === 'RAZORPAY') ||
+        paymentGateway[0]; // Fallback to first available method
+      if (defaultMethod) {
+        setValue(defaultMethod.pgConstant);
+        setGateway(defaultMethod);
+      }
+    }
+  }, [paymentGateway, value, setValue, setGateway]);
+
   const handleChange = (event) => {
-    setValue(event.target.value);
-    const gateway = paymentGateway.find((item) => event.target.value == item.pgConstant);
+    const selectedValue = event.target.value;
+    setValue(selectedValue);
+    const gateway = paymentGateway.find((item) => selectedValue === item.pgConstant);
     setGateway(gateway);
   };
+
   return (
     <Card>
       <CardContent>
@@ -37,14 +52,16 @@ export default function PaymentMethodCard({ paymentGateway, value, setValue, err
             {paymentGateway &&
               paymentGateway.map((item) => (
                 <FormControlLabel
+                  key={item.pgConstant}
                   value={item.pgConstant}
                   control={<Radio />}
                   label={
-                    <Stack direction="row" alignItem="center" spacing={1} ml={1}>
-                      {item.pgConstant == 'COD' && <IoCash size={20} />}
-                      {item.pgConstant == 'PAYPAL' && <FaPaypal size={20} />}
-                      {item.pgConstant == 'STRIPE' && <BsStripe size={20} />}
-                      {item.pgConstant == 'PHONEPE' && <BsCash size={20} />}
+                    <Stack direction="row" alignItems="center" spacing={1} ml={1}>
+                      {item.pgConstant === 'COD' && <IoCash size={20} />}
+                      {item.pgConstant === 'PAYPAL' && <FaPaypal size={20} />}
+                      {item.pgConstant === 'STRIPE' && <BsStripe size={20} />}
+                      {item.pgConstant === 'RAZORPAY' && <SiRazorpay size={20} />}
+                      {item.pgConstant === 'PHONEPE' && <BsCash size={20} />}
                       <Typography variant="subtitle2">{item.pgName}</Typography>
                     </Stack>
                   }

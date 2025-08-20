@@ -6,10 +6,11 @@ import HeaderBreadcrumbs from 'src/components/headerBreadcrumbs';
 
 // Meta information
 export const metadata = {
-  title: 'Products - Ecobuy',
-  applicationName: 'Ecobuy',
-  authors: 'Ecobuy'
+  title: 'Products-Vendor | Perfumeswale',
+  applicationName: 'Perfumeswale',
+  authors: 'Perfumeswale'
 };
+
 export default async function AdminProducts() {
   return (
     <>

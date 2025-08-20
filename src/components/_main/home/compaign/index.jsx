@@ -31,14 +31,18 @@ export default function CompaignsComponent({}) {
           </Typography>
         </Box>
         <Button
-          variant="contained"
+          variant="text"
           color="primary"
           size="large"
           sx={{
-            borderRadius: '5px',
+            alignItems: 'center',
+            textTransform: 'none',
+            fontSize: '1rem',
             display: { xs: 'none', md: 'flex' },
             minWidth: 130,
-            px: 1
+            fontWeight: 500,
+            textDecoration: 'none',
+            '&:hover': { textDecoration: 'underline', backgroundColor: 'transparent' }
           }}
           endIcon={<IoIosArrowForward />}
           component={NextLink}
@@ -48,7 +52,7 @@ export default function CompaignsComponent({}) {
         </Button>
       </Stack>
       <Box>
-        <Grid container spacing={2} justifyContent="center" alignItems="center">
+        <Grid container spacing={2} justifyContent="center" alignItems="center" mb={6}>
           {(isLoading ? Array.from(new Array(6)) : data?.data).map((inner) => (
             <React.Fragment key={Math.random()}>
               <Grid item lg={3} md={4} sm={6} xs={12}>

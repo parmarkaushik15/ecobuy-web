@@ -124,7 +124,7 @@ export default function ShopProductCard({ ...props }) {
           })}
           sx={{
             bgcolor: isLoading || loading ? 'transparent' : 'common.white',
-            position: 'relative',
+            position: 'static',
             cursor: 'pointer',
 
             '&:after': {
@@ -175,9 +175,9 @@ export default function ShopProductCard({ ...props }) {
               }}
             >
               {
-                <Tooltip title="Add to cart">
+                <Tooltip title="Preview">
                   <IconButton
-                    aria-label="add to cart"
+                    aria-label="Preview"
                     disabled={loading || product?.available < 1}
                     onClick={() => setOpen(true)}
                     size={isTablet ? 'small' : 'medium'}

@@ -1,15 +1,16 @@
 import * as React from 'react';
-// icons
+// Icons
 import { IoSearch } from 'react-icons/io5';
-// mui
+// MUI
 import { Dialog, Stack, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
-// components
+// Components
 import Search from './search';
 import './index.css';
 
 export default function SimpleDialogDemo() {
   const [open, setOpen] = React.useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -42,7 +43,11 @@ export default function SimpleDialogDemo() {
         </IconButton>
       </Stack>
 
-      <Dialog open={open} onClose={handleClose} sx={{ '& .MuiPaper-root': { width: 600 } }}>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        disableScrollLock // Prevent MUI from locking scroll
+      >
         <Search onClose={handleClose} />
       </Dialog>
     </>

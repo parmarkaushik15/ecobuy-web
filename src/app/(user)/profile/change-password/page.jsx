@@ -12,9 +12,9 @@ import BreadcrumbsSkeleton from 'src/components/_main/skeletons/products/breadcr
 
 // Meta information
 export const metadata = {
-  title: 'Change Password | Ecobuy - Update Your Account Password Securely',
-  applicationName: 'Ecobuy',
-  authors: 'Ecobuy'
+  title: 'Change Password | Perfumeswale - Update Your Account Password Securely',
+  applicationName: 'Perfumeswale',
+  authors: 'Perfumeswale'
 };
 
 // components

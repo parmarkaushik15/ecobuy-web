@@ -73,7 +73,7 @@ export default function AdminDialog({ isOpen }) {
               }}
               textAlign="center"
             >
-              WELCOME TO Ecobuy
+              WELCOME TO Perfumeswale
             </DialogTitle>
             <Typography variant="body1" textAlign="center" color="GrayText">
               Attention: Please ensure all necessary environment variables are set.

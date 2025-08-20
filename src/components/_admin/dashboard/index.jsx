@@ -155,7 +155,9 @@ export default function Dashboard({ isVendor }) {
           />
         </Grid>
         <Grid item xs={12}>
-          <LowStockProducts isVendor={isVendor} />
+          <Box sx={{ borderRadius: 0 }}>
+            <LowStockProducts isVendor={isVendor} />
+          </Box>
         </Grid>
       </Grid>
     </Box>
