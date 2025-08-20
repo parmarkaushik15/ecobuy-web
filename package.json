@@ -7,7 +7,7 @@
     "build": "npx prettier . --write && next build",
     "start": "next start -p 5001",
     "lint": "next lint",
-    "prod": "next build && next start"
+    "prod": "npm run build && npm run start"
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.23.10",
