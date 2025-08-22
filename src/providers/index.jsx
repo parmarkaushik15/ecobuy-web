@@ -41,7 +41,26 @@ export default function Providers(props) {
   );
 
   useEffect(() => {
-    initCsrf();
+    // Initialize CSRF token
+    const initializeCsrf = async () => {
+      try {
+        await initCsrf();
+      } catch (error) {
+        console.error('Failed to initialize CSRF:', error);
+      }
+    };
+
+    initializeCsrf();
+
+    // Retry CSRF initialization if it fails
+    const interval = setInterval(async () => {
+      if (window.__CSRF_FAILED__) {
+        console.log('Retrying CSRF initialization...');
+        await initializeCsrf();
+      }
+    }, 5000); // Retry every 5 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
