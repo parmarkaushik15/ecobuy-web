@@ -4,16 +4,22 @@ import React, { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { useAppSettings } from 'src/hooks/useAppSettings';
+import { useSelector } from 'react-redux';
 
 export default function AnalyticsWrapper({ children }) {
   const { settings, loading } = useAppSettings();
+  const { consent } = useSelector((state) => state.user);
   const pathname = usePathname();
 
   useEffect(() => {
-    // console.log('useEffect triggered - Loading:', loading, 'GA ID:', settings?.googleAnalytics);
-
-    if (loading || !settings?.googleAnalytics || typeof window.gtag !== 'function') {
-      console.log('Skipping gtag - Conditions not met');
+    if (loading || !settings?.googleAnalytics || !consent?.analytics || typeof window.gtag !== 'function') {
+      console.log(
+        'Skipping gtag - Conditions not met:',
+        loading,
+        !settings?.googleAnalytics,
+        !consent?.analytics,
+        typeof window.gtag !== 'function'
+      );
       return;
     }
 
@@ -31,10 +37,10 @@ export default function AnalyticsWrapper({ children }) {
     const timer = setTimeout(handleRouteChange, 500); // Increased to 500ms
 
     return () => clearTimeout(timer);
-  }, [pathname, settings?.googleAnalytics, loading]);
+  }, [pathname, settings?.googleAnalytics, loading, consent?.analytics]);
 
-  if (loading) {
-    console.log('Rendering children only - Still loading');
+  if (loading || !consent?.analytics) {
+    console.log('Rendering children only - Still loading or analytics not consented');
     return <>{children}</>;
   }
 

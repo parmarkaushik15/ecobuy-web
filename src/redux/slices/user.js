@@ -8,7 +8,8 @@ const initialState = {
   user: null,
   count: 0,
   isInitialized: false,
-  followingShops: []
+  followingShops: [],
+  consent: null // { essential: boolean, analytics: boolean }
 };
 
 // slice
@@ -25,7 +26,9 @@ const slice = createSlice({
       state.user = null;
       state.isAuthenticated = false;
     },
-
+    setConsent(state, action) {
+      state.consent = action.payload;
+    },
     setCount(state) {
       state.count = state.count + 1;
     },
@@ -60,6 +63,7 @@ export default slice.reducer;
 export const {
   setLogin,
   setLogout,
+  setConsent,
   setCount,
   setInitialize,
   updateStatus,

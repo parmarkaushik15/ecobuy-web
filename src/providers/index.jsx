@@ -11,6 +11,7 @@ import ThemeRegistry from 'src/theme';
 import { Provider } from 'react-redux';
 import { reduxStore, persistor } from 'src/redux';
 import { PersistGate } from 'redux-persist/integration/react';
+import { setConsent } from 'src/redux/slices/user';
 
 // react query
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -28,7 +29,7 @@ const ProgressBar = dynamic(() => import('src/components/ProgressBar'), {
   ssr: false
 });
 
-export default function Providers(props) {
+export default function Providers({ children, cookieConsent, ...props }) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -41,27 +42,31 @@ export default function Providers(props) {
   );
 
   useEffect(() => {
-    // Initialize CSRF token
-    const initializeCsrf = async () => {
+    const initializeCsrfAndConsent = async () => {
       try {
+        // Initialize CSRF token
         await initCsrf();
+
+        // Initialize consent from cookieConsent prop
+        if (cookieConsent) {
+          reduxStore.dispatch(setConsent(JSON.parse(cookieConsent)));
+        }
       } catch (error) {
-        console.error('Failed to initialize CSRF:', error);
+        console.error('Failed to initialize CSRF or consent:', error);
       }
     };
 
-    initializeCsrf();
+    initializeCsrfAndConsent();
 
-    // Retry CSRF initialization if it fails
     const interval = setInterval(async () => {
       if (window.__CSRF_FAILED__) {
         console.log('Retrying CSRF initialization...');
-        await initializeCsrf();
+        await initCsrf();
       }
-    }, 5000); // Retry every 5 seconds
+    }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [cookieConsent]);
 
   return (
     <Provider store={reduxStore}>
@@ -86,7 +91,7 @@ export default function Providers(props) {
               }
               persistor={persistor}
             >
-              {props.children}
+              {children}
             </PersistGate>
           </QueryClientProvider>
           <ProgressBar />
@@ -98,5 +103,6 @@ export default function Providers(props) {
 
 Providers.propTypes = {
   isAuth: PropTypes.bool.isRequired,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  cookieConsent: PropTypes.string
 };

@@ -8,6 +8,7 @@ import Navbar from 'src/layout/_main/navbar';
 import Footer from 'src/layout/_main/footer';
 import Topbar from 'src/layout/_main/topbar';
 import ActionBar from 'src/layout/_main/actionbar';
+import CookieConsentBanner from 'src/components/CookieConsentBanner';
 
 // Meta information
 export const metadata = {
@@ -34,6 +35,7 @@ export default async function RootLayout({ children }) {
       {children}
       <Toolbar sx={{ display: { xs: 'block', md: 'none' } }} />
       <Footer />
+      <CookieConsentBanner />
     </>
   );
 }
