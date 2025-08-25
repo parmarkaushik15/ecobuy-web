@@ -145,10 +145,10 @@ export default function ShopProductCard({ ...props }) {
               }}
             />
           ) : (
-            <Box component={Link} href={linkTo}>
+            <Box sx={{ position: 'absolute', inset: 0 }}>
               <BlurImage
                 alt={name}
-                src={process.env.IMAGE_BASE == 'LOCAL' ? `${process.env.IMAGE_URL}${image?.url}` : image?.url}
+                src={process.env.IMAGE_BASE === 'LOCAL' ? `${process.env.IMAGE_URL}${image?.url}` : image?.url}
                 fill
                 draggable="false"
                 objectFit="cover"
@@ -176,14 +176,16 @@ export default function ShopProductCard({ ...props }) {
             >
               {
                 <Tooltip title="Preview">
-                  <IconButton
-                    aria-label="Preview"
-                    disabled={loading || product?.available < 1}
-                    onClick={() => setOpen(true)}
-                    size={isTablet ? 'small' : 'medium'}
-                  >
-                    <GoEye />
-                  </IconButton>
+                  <span>
+                    <IconButton
+                      aria-label="Preview"
+                      disabled={loading || product?.available < 1}
+                      onClick={() => setOpen(true)}
+                      size={isTablet ? 'small' : 'medium'}
+                    >
+                      <GoEye />
+                    </IconButton>
+                  </span>
                 </Tooltip>
               }
 

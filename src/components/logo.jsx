@@ -33,7 +33,14 @@ export const Logo = ({ logo }) => {
           }}
         />
       ) : (
-        <Image draggable="false" src={logoImage} alt="banner-1" static sizes="100px" objectFit="cover" />
+        <Image
+          draggable="false"
+          src={logoImage}
+          alt="banner-1"
+          // static
+          sizes="100px"
+          objectFit="cover"
+        />
       )}
     </Box>
   );

@@ -215,7 +215,7 @@ export default function CarouselAnimation({ product }) {
             const isVideo = item?.url?.endsWith('.mp4');
             return (
               <Box
-                key={item._id || Math.random()}
+                key={item._id || item.url || item.src || `media-${i}`}
                 className={`controls-button ${mediaIndex === i ? 'active' : ''}`}
                 onClick={() => {
                   const newDirection = i > mediaIndex ? 1 : -1;
