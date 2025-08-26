@@ -15,7 +15,7 @@ import { LiaFileInvoiceSolid } from 'react-icons/lia';
 import { IoIosHeartEmpty } from 'react-icons/io';
 import { LuLayoutDashboard } from 'react-icons/lu';
 import { SlHome } from 'react-icons/sl';
-import { TbUserSquareRounded } from 'react-icons/tb';
+import { TbUserSquareRounded, TbClock } from 'react-icons/tb';
 import { CiShop } from 'react-icons/ci';
 
 // styles
@@ -143,6 +143,17 @@ export default function UserList({ ...props }) {
           <TbUserSquareRounded />
         </ListItemIcon>
         Profile
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          setOpen(false);
+          router.push('/last-login');
+        }}
+      >
+        <ListItemIcon className="menu-icon">
+          <TbClock />
+        </ListItemIcon>
+        Last Logins
       </MenuItem>
       <MenuItem
         onClick={() => {

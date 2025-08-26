@@ -867,3 +867,17 @@ export const downloadLabel = async (data) => {
   });
   return response.data;
 };
+export const getFingerprint = async (userId) => {
+  const { data } = await http.get(`/fingerprint/${userId}`);
+  return data;
+};
+
+export const blockFingerprint = async (id) => {
+  const { data } = await http.put(`/block/${id}`);
+  return data;
+};
+
+export const unblockFingerprint = async (id) => {
+  const { data } = await http.put(`/unblock/${id}`);
+  return data;
+};
