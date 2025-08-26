@@ -9,6 +9,7 @@ import toast from 'react-hot-toast';
 
 // formik
 import { useFormik, Form, FormikProvider } from 'formik';
+import { getDeviceInfo } from 'src/utils/deviceInfo';
 // cookies
 import { createCookies } from 'src/hooks/cookies';
 // redux
@@ -75,7 +76,14 @@ export default function LoginForm() {
     onSubmit: async (values) => {
       const { email, password } = values;
       setloading(true);
-      mutate({ email, password });
+
+      try {
+        const deviceInfo = await getDeviceInfo();
+        mutate({ email, password, deviceInfo });
+      } catch (err) {
+        console.error('Error collecting device info:', err);
+        mutate({ email, password }); // fallback
+      }
     }
   });
   const { errors, touched, values, handleSubmit, getFieldProps } = formik;
