@@ -14,27 +14,27 @@ BlockDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired,
   currentBlock: PropTypes.bool.isRequired,
-  apicall: PropTypes.func.isRequired,
-  type: PropTypes.string.isRequired
+  onUpdateRow: PropTypes.func.isRequired
 };
 
-export default function BlockDialog({ onClose, id, currentBlock, apicall, type }) {
+export default function BlockDialog({ onClose, id, currentBlock, onUpdateRow }) {
   const endPoint = currentBlock ? 'unblockFingerprint' : 'blockFingerprint';
+
   const { isLoading, mutate } = useMutation(() => api[endPoint](id), {
+    onMutate: async () => {
+      onUpdateRow(id, !currentBlock);
+    },
     onSuccess: () => {
-      toast.success(type);
-      apicall((prev) => !prev);
+      toast.success(currentBlock ? 'IP unblocked' : 'IP blocked');
       onClose();
     },
     onError: (err) => {
+      onUpdateRow(id, currentBlock);
       toast.error(err.response?.data?.message || 'Something went wrong!');
     }
   });
 
-  const handleToggle = () => {
-    console.log('BlockDialog: ID=', id, 'Action=', endPoint); // Debugging log
-    mutate();
-  };
+  const handleToggle = () => mutate();
 
   const actionText = currentBlock ? 'Unblock' : 'Block';
   const color = currentBlock ? 'success' : 'error';
@@ -42,13 +42,7 @@ export default function BlockDialog({ onClose, id, currentBlock, apicall, type }
 
   return (
     <>
-      <DialogTitle
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          mb: 1
-        }}
-      >
+      <DialogTitle sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
         <Box
           sx={{
             height: 40,

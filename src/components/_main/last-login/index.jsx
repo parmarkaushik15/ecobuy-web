@@ -22,44 +22,34 @@ const TABLE_HEAD = [
 
 export default function LastLogins() {
   const { user } = useSelector((state) => state.user);
-  const [apicall, setApicall] = useState(false);
   const [open, setOpen] = useState(false);
   const [id, setId] = useState(null);
   const [isBlocked, setIsBlocked] = useState(false);
+  const [rows, setRows] = useState([]);
 
-  const { data, isLoading } = useQuery(['user-fingerprints', apicall, user?._id], () => api.getFingerprint(user._id), {
+  const { isLoading } = useQuery(['user-fingerprints', user?._id], () => api.getFingerprint(user._id), {
     enabled: !!user?._id,
+    onSuccess: (res) => setRows(res.data || []),
     onError: (err) => toast.error(err.response?.data?.message || 'Something went wrong!')
   });
 
   const handleClickOpen = (rowId, blocked) => () => {
-    console.log('Opening dialog for rowId=', rowId, 'blocked=', blocked);
-    setId(rowId); // ✅ Use row._id here
+    setId(rowId);
     setIsBlocked(blocked);
     setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleClose = () => setOpen(false);
+  const handleUpdateRow = (rowId, newBlocked) => {
+    setRows((prev) => prev.map((r) => (r._id === rowId ? { ...r, isBlock: newBlocked } : r)));
   };
 
-  // Wrap the data to match the expected shape for Table component
-  const tableData = {
-    data: data?.data || [],
-    page: 1,
-    totalPages: 1
-  };
+  const tableData = { data: rows, page: 1, totalPages: 1 };
 
   return (
     <>
-      <Dialog onClose={handleClose} open={open} maxWidth={'xs'}>
-        <BlockDialog
-          onClose={handleClose}
-          id={id}
-          currentBlock={isBlocked}
-          apicall={setApicall}
-          type={isBlocked ? 'IP unblocked' : 'IP blocked'}
-        />
+      <Dialog onClose={handleClose} open={open} maxWidth="xs">
+        <BlockDialog onClose={handleClose} id={id} currentBlock={isBlocked} onUpdateRow={handleUpdateRow} />
       </Dialog>
       <Table
         headData={TABLE_HEAD}
