@@ -24,6 +24,7 @@ LastLoginRow.propTypes = {
 };
 
 export default function LastLoginRow({ isLoading, row, handleClickOpen }) {
+  console.log('rowwwwwwwwwwww', row);
   if (isLoading || !row) {
     return (
       <TableRow hover>
@@ -59,7 +60,7 @@ export default function LastLoginRow({ isLoading, row, handleClickOpen }) {
         <Label color={row.isBlock ? 'error' : 'success'}>{row.isBlock ? 'Yes' : 'No'}</Label>
       </TableCell>
       <TableCell align="right">
-        <IconButton onClick={handleClickOpen(row.userId, row.isBlock)}>
+        <IconButton onClick={handleClickOpen(row._id, row.isBlock)}>
           <IoShield />
         </IconButton>
       </TableCell>

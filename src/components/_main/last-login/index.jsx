@@ -32,8 +32,9 @@ export default function LastLogins() {
     onError: (err) => toast.error(err.response?.data?.message || 'Something went wrong!')
   });
 
-  const handleClickOpen = (userId, blocked) => () => {
-    setId(userId); // Use userId instead of fingerprint ID
+  const handleClickOpen = (rowId, blocked) => () => {
+    console.log('Opening dialog for rowId=', rowId, 'blocked=', blocked);
+    setId(rowId); // ✅ Use row._id here
     setIsBlocked(blocked);
     setOpen(true);
   };

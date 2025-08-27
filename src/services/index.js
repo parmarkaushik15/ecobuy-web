@@ -867,6 +867,7 @@ export const downloadLabel = async (data) => {
   });
   return response.data;
 };
+
 export const getFingerprint = async (userId) => {
   const { data } = await http.get(`/fingerprint/${userId}`);
   return data;
