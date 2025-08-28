@@ -882,3 +882,13 @@ export const unblockFingerprint = async (id) => {
   const { data } = await http.put(`/unblock/${id}`);
   return data;
 };
+
+export const getCaptcha = async () => {
+  // Fetch CAPTCHA with timestamp to prevent caching
+  const response = await http.get(`/auth/captcha?${Date.now()}`, {
+    responseType: 'blob' // Handle raw image data
+  });
+  // Convert blob to object URL
+  const imageUrl = URL.createObjectURL(response.data);
+  return { image: imageUrl };
+};
